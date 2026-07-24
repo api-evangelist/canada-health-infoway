@@ -1,0 +1,138 @@
+aid: canada-health-infoway
+name: Canada Health Infoway
+review:
+  question: Does Canada Health Infoway expose a real, documented public developer API surface, and is there a machine-readable FHIR CapabilityStatement or OpenAPI?
+  answer: true
+  date: '2026-07-24'
+  reviewer: API Evangelist
+homeMarket: Canada
+findings:
+  summary: |
+    Canada Health Infoway is the federal steward of pan-Canadian digital-health
+    interoperability. It runs a confirmed developer portal (Accelero) and a live
+    national Terminology Gateway that exposes TWO documented APIs on host
+    termapi.infoway-inforoute.ca: a HL7 FHIR R4 (4.0.1) Terminology Service and a
+    companion RESTful (non-FHIR) Terminology Service. Both ship Swagger 2.0 specs,
+    harvested verbatim. The FHIR service serves a live CapabilityStatement at
+    /fhir/v1/metadata (anonymous), published by "Canada Health Infoway", software
+    "Infoway Terminology Gateway" on HAPI FHIR. Terminology CONTENT reads are gated
+    behind free registration + a session/token login; the CapabilityStatement is the
+    only anonymously reachable surface (a data CodeSystem search without a session
+    returned HTTP 500). Infoway also stewards the CA Core+ / CA Baseline pan-Canadian
+    FHIR profiles, the Canadian FHIR Registry, and the Canadian URI Registry - these
+    are standards/registries rather than REST API products and are captured as portal
+    links, not as apis[] entries.
+  developerPortal:
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools
+    httpStatus: 200
+    confirmed: true
+    note: Accelero developer-tools hub lists Canadian FHIR Registry, Canadian URI Registry, HAPI, and the Terminology Service APIs. infocentral.infoway-inforoute.ca 302-redirects into accelero.
+  fhirCapabilityStatement:
+    captured: true
+    url: https://termapi.infoway-inforoute.ca/fhir/v1/metadata
+    httpStatus: 200
+    contentType: application/fhir+json
+    fhirVersion: 4.0.1
+    publisher: Canada Health Infoway
+    software: Infoway Terminology Gateway 1.0 (HAPI FHIR)
+    savedAs: fhir/infoway-terminology-gateway-capabilitystatement.json
+    resources:
+    - CodeSystem (read, vread, history-instance, search-type; $lookup)
+    - ConceptMap (read, vread, history-instance, search-type; $translate)
+    - ValueSet (read, vread, history-instance, search-type; $expand, $validate-code)
+    - OperationDefinition (read)
+  smartConfiguration:
+    served: false
+    probed: https://termapi.infoway-inforoute.ca/.well-known/smart-configuration
+    httpStatus: 404
+    note: No SMART-on-FHIR .well-known/smart-configuration is served; this is a terminology service, not a patient-data / SMART-app FHIR server.
+  downloadableSpecs:
+    count: 3
+    items:
+    - path: openapi/infoway-fhir-terminology-service-api-openapi.json
+      format: Swagger 2.0
+      title: Terminology FHIR API 1.0.0
+      basePath: /fhir/v1
+      source: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger.json
+      httpStatus: 200
+      paths: 19
+    - path: openapi/infoway-terminology-service-api-openapi.json
+      format: Swagger 2.0
+      title: Terminology API 1.0.0
+      basePath: /rest/v1
+      source: https://termapi.infoway-inforoute.ca/schema/v1/swagger.json
+      httpStatus: 200
+      paths: 36
+    - path: fhir/infoway-terminology-gateway-capabilitystatement.json
+      format: FHIR R4 CapabilityStatement
+      source: https://termapi.infoway-inforoute.ca/fhir/v1/metadata
+      httpStatus: 200
+  authModel:
+    fhirTerminologyService: Anonymous read of /metadata (CapabilityStatement). Terminology content resources require an authenticated session; CapabilityStatement.rest.security is empty.
+    restTerminologyService: Session login via POST /rest/v1/session using basic-authorization credentials, single sign-on token (ssotoken), or JSON Web Token (btoken bearer); most read endpoints accept auth/btoken query parameters.
+    registration: Free account registration at https://accelero.infoway-inforoute.ca/en/register; login via https://auth-users.infoway-inforoute.ca/auth/UI/Login
+    smartOnFhir: false
+    oauthScopes: none documented (SMART patient/*.read style scopes not applicable to this terminology service)
+  standardsConformance:
+    system: National / government digital-health steward for Canada
+    stewards:
+    - CA Core+ (pan-Canadian core FHIR specification, developed with CIHI)
+    - CA Baseline FHIR profiles
+    - Canadian FHIR Registry (national FHIR profile repository)
+    - Canadian URI Registry
+    note: Canada's national analogue to NHS England / ADHA / US Core stewardship. USCore / UKCore / AUCore / Da Vinci / CARIN are not the Canadian baseline; the Canadian baseline is CA Core+ / CA Baseline.
+  accessPosture: gated (free registration + session login for terminology content; anonymous FHIR CapabilityStatement)
+  transports:
+  - protocol: REST
+    scheme: https
+    baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+    documented: true
+    note: HL7 FHIR R4 terminology service (HAPI FHIR).
+  - protocol: REST
+    scheme: https
+    baseURL: https://termapi.infoway-inforoute.ca/rest/v1
+    documented: true
+    note: Non-FHIR RESTful terminology browsing/download API.
+  - protocol: WebSocket
+    scheme: wss
+    documented: false
+    note: No WebSocket surface documented. The RESTful API offers notification subscriptions (webhook-style) via /rest/v1/notification, not a streaming socket.
+  probes:
+  - url: https://accelero.infoway-inforoute.ca/
+    httpStatus: 200
+  - url: https://infocentral.infoway-inforoute.ca/
+    httpStatus: 200
+  - url: https://infoscribe.infoway-inforoute.ca/display/PCI
+    httpStatus: 200
+  - url: https://tgateway.infoway-inforoute.ca/
+    httpStatus: 200
+  - url: https://termapi.infoway-inforoute.ca/fhir/v1/metadata
+    httpStatus: 200
+  - url: https://termapi.infoway-inforoute.ca/fhir/v1/CodeSystem
+    httpStatus: 500
+    note: Data resource search without an authenticated session errors; content is gated.
+  - url: https://termapi.infoway-inforoute.ca/rest/v1/codesystems
+    httpStatus: 403
+    note: RESTful content read without session is forbidden; content is gated.
+  - url: https://github.com/Infoway
+    httpStatus: 200
+    note: Ambiguous "infoway" org with zero public repositories; NOT confirmed as Canada Health Infoway, so no GitHubOrganization link was recorded.
+sources:
+- url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools
+  type: DeveloperPortal
+  note: Confirmed developer-tools hub.
+- url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  type: Documentation
+  note: Links the two Swagger UIs for the RESTful and FHIR terminology APIs.
+- url: https://termapi.infoway-inforoute.ca/fhir/v1/metadata
+  type: CapabilityStatement
+  note: Live FHIR R4 CapabilityStatement, publisher Canada Health Infoway.
+- url: https://www.infoway-inforoute.ca/en/what-we-do/connected-care/digital-health-standards
+  type: Documentation
+  note: Digital health standards / pan-Canadian interoperability overview.
+- url: https://accelero.infoway-inforoute.ca/en/initiatives/pan-canadian-core-specifications
+  type: Documentation
+  note: CA Core+ pan-Canadian core specification initiative.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

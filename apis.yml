@@ -1,0 +1,111 @@
+aid: canada-health-infoway
+url: https://raw.githubusercontent.com/api-evangelist/canada-health-infoway/refs/heads/main/apis.yml
+name: Canada Health Infoway
+kind: company
+description: >-
+  Canada Health Infoway is an independent, federally funded not-for-profit organization
+  that leads the adoption of digital health and pan-Canadian interoperability across
+  Canada's province- and territory-fragmented healthcare system. Infoway stewards the
+  pan-Canadian FHIR interoperability specifications - CA Core+ and the CA Baseline profiles
+  developed with the Canadian Institute for Health Information (CIHI) - and operates the
+  Canadian FHIR Registry, the Canadian URI Registry, and a national Terminology Gateway.
+  Its developer-facing API surface, published through the Accelero developer portal, is
+  a HAPI-FHIR R4 (4.0.1) Terminology Service exposing CodeSystem, ValueSet, and ConceptMap
+  resources with $lookup, $expand, $translate, and $validate-code operations, alongside a
+  companion RESTful Terminology API for browsing code systems, subsets, maps, and packages.
+  Infoway is a standards steward and terminology infrastructure operator for the Canadian
+  market rather than a commercial clinical-data platform; the terminology content APIs are
+  gated behind free registration and a session/token login, while the FHIR CapabilityStatement
+  is served anonymously.
+accessModel:
+  pricing: unknown
+  onboarding: registration
+  trial: false
+  try_now: false
+  public: false
+  label: Free registration · gated terminology content
+  confidence: medium
+  source:
+  - review
+  generated: '2026-07-24'
+  method: manual
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Healthcare
+- Canada
+- FHIR
+- HL7
+- Interoperability
+- Terminology
+- National Health System
+- Digital Health
+- Standards
+- CA Core
+created: '2026-07-24'
+modified: '2026-07-24'
+specificationVersion: '0.19'
+apis:
+- aid: canada-health-infoway:infoway-fhir-terminology-service-api
+  name: Infoway FHIR Terminology Service API
+  description: >-
+    HL7 FHIR R4 (4.0.1) terminology service from Canada Health Infoway's Terminology Gateway
+    (HAPI FHIR), exposing CodeSystem, ValueSet, ConceptMap, and OperationDefinition resources
+    with read/vread/history/search plus the $lookup, $expand, $translate, and $validate-code
+    terminology operations. A live FHIR CapabilityStatement is served at the base URL's
+    /metadata endpoint.
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - FHIR
+  - Terminology
+  - Healthcare
+  - Interoperability
+  properties:
+  - type: OpenAPI
+    url: openapi/infoway-fhir-terminology-service-api-openapi.json
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+- aid: canada-health-infoway:infoway-terminology-service-api
+  name: Infoway Terminology Service API
+  description: >-
+    RESTful (non-FHIR) terminology API from Canada Health Infoway for browsing and downloading
+    Canadian terminology content - code systems, subsets (value sets), maps, resource locations,
+    and packages - with delta/versioning, session login (basic credentials, SSO token, or JWT),
+    and webhook-style notification subscriptions.
+  humanURL: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+  baseURL: https://termapi.infoway-inforoute.ca/rest/v1
+  tags:
+  - Terminology
+  - Healthcare
+  - REST
+  properties:
+  - type: OpenAPI
+    url: openapi/infoway-terminology-service-api-openapi.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+common:
+- type: Website
+  url: https://www.infoway-inforoute.ca/en/
+- type: DeveloperPortal
+  url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools
+- type: Documentation
+  url: https://www.infoway-inforoute.ca/en/what-we-do/connected-care/digital-health-standards
+- type: APIReference
+  url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+- type: SignUp
+  url: https://accelero.infoway-inforoute.ca/en/register
+- type: Login
+  url: https://auth-users.infoway-inforoute.ca/auth/UI/Login
+- type: Blog
+  url: https://www.infoway-inforoute.ca/en/blog
+- type: About
+  url: https://www.infoway-inforoute.ca/en/about-us
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

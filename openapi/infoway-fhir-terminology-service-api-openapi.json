@@ -1,0 +1,2196 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "FHIR web services used to access terminology data.",
+        "version": "1.0.0",
+        "title": "Terminology FHIR API",
+        "termsOfService": "https://ic.infoway-inforoute.ca/en/about/tou?title=8_UserReferencesAndSupports/Terms_And_License_Agreements"
+    },
+    "basePath": "/fhir/v1",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/CodeSystem": {
+            "get": {
+                "tags": ["CodeSystem"],
+                "summary": "Retrieves a list of code systems",
+                "description": "Retrieves a list of code systems matching the provided search criteria.",
+                "operationId": "findCodeSystems",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "name",
+                        "description" : "The name of the code system. By default, this filter matches a code system if its name equals or starts with the supplied parameter value.  Also supports the <a href='http://www.hl7.org/fhir/search.html#string'><code>:contains</code> and <code>:exact</code> modifiers</a>.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_sort",
+                        "description" : "Indicates which order to return the results. Terminology Gateway currently only supports sorting on a single field, not chained sort rules.",
+                        "in" : "query",
+                        "type" : "string",
+                        "enum" : ["_id", "-_id", "identifier", "-identifier", "name", "-name"]
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/BundleOfCodeSystems"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+         "/CodeSystem/{id}": {
+            "get": {
+                "tags": ["CodeSystem"],
+                "summary": "Retrieves a single code system by id",
+                "description": "Retrieves a single code system corresponding to the provided id.",
+                "operationId": "getCodeSystem",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "The code system identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_summary",
+                        "description" : "Requests that the server return a subset of the resource.  Code System concepts are omitted if set to true.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : false
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/CodeSystem"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown code system identifier"
+                    }
+                }
+            }
+        },
+        "/CodeSystem/{id}/_history": {
+            "get": {
+                "tags": ["CodeSystem"],
+                "summary": "Retrieves the history of a particular code system",
+                "description": "Retrieves the specified version history, sorted with oldest versions last",
+                "operationId": "getCodeSystemHistory",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "The code system identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/BundleOfCodeSystems"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown code system identifier"
+                    }
+                }
+            }
+        },
+         "/CodeSystem/{id}/_history/{vid}": {
+            "get": {
+                "tags": ["CodeSystem"],
+                "summary": "Retrieves a single code system by id and version id",
+                "description": "Retrieves a single code system corresponding to the provided id and version id.",
+                "operationId": "getCodeSystemVersion",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "The code system identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "vid",
+                        "required" : true,
+                        "description" : "The code system version identifier.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_summary",
+                        "description" : "Requests that the server return a subset of the resource.  Code System concepts are omitted if set to true.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : false
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/CodeSystem"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown code system identifier"
+                    }
+                }
+            }
+        },
+       "/CodeSystem/$lookup": {
+            "get": {
+                "tags": ["CodeSystem"],
+                "summary": "Retrieves a single concept from a code system",
+                "description": "Given a code and a code system, get additional details about the concept, including definition, status, designations, and properties.",
+                "operationId": "lookupConcept",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "code",
+                        "description" : "The code that is to be located.",
+                        "in" : "query",
+                        "required" : true,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "system",
+                        "description" : "The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]",
+                        "in" : "query",
+                        "required" : true,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "version",
+                        "description" : "The version of the code system.",
+                        "in" : "query",
+                        "required" : false,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/ConceptLookupResponseParameter"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown code, code system identifier, or code system version."
+                    }
+                }
+            },
+            "post": {
+                "tags": ["CodeSystem"],
+                "summary": "Retrieves a single concept from a code system",
+                "description": "Given a Coding, get additional details about the concept, including definition, status, designations, and properties.",
+                "operationId": "lookupConceptByCoding",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "parameters",
+                        "description" : "The Parameters resource containing a Coding for the desired concept.",
+                        "in" : "body",
+                        "required" : true,
+                        "schema" : {
+                            "$ref": "#/definitions/CodingParameter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/ConceptLookupResponseParameter"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown code, code system identifier, or code system version."
+                    }
+                }
+            }
+        },
+        "/ConceptMap": {
+            "get": {
+                "tags": ["ConceptMap"],
+                "summary": "Retrieves a list of concept maps",
+                "description": "Retrieves a list of concept maps matching the provided search criteria.",
+                "operationId": "findConceptMaps",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "name",
+                        "description" : "The name of the concept map. By default, this filter matches a concept map if its name equals or starts with the supplied parameter value.  Also supports the <a href='http://www.hl7.org/fhir/search.html#string'><code>:contains</code> and <code>:exact</code> modifiers</a>.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_sort",
+                        "description" : "Indicates which order to return the results. Terminology Gateway currently only supports sorting on a single field, not chained sort rules.",
+                        "in" : "query",
+                        "type" : "string",
+                        "enum" : ["_id", "-_id", "identifier", "-identifier", "name", "-name"]
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/BundleOfConceptMaps"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+         "/ConceptMap/{id}": {
+            "get": {
+                "tags": ["ConceptMap"],
+                "summary": "Retrieves a single concept map by id",
+                "description": "Retrieves a single concept map corresponding to the provided id.",
+                "operationId": "getConceptMap",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "The concept map identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/ConceptMap"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown concept map identifier"
+                    }
+                }
+            }
+        },
+        "/ConceptMap/{id}/_history": {
+            "get": {
+                "tags": ["ConceptMap"],
+                "summary": "Retrieves the history of a particular concept map",
+                "description": "Retrieves the specified version history, sorted with oldest versions last",
+                "operationId": "getConceptMapHistory",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "The concept map identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/BundleOfConceptMaps"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown concept map identifier"
+                    }
+                }
+            }
+        },
+         "/ConceptMap/{id}/_history/{vid}": {
+            "get": {
+                "tags": ["ConceptMap"],
+                "summary": "Retrieves a single concept map by id and version id",
+                "description": "Retrieves a single concept map corresponding to the provided id and version id.",
+                "operationId": "getConceptMapVersion",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "The concept map identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "vid",
+                        "required" : true,
+                        "description" : "The concept map version identifier.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/ConceptMap"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown concept map identifier"
+                    }
+                }
+            }
+        },
+        "/ConceptMap/{id}/$translate": {
+            "get": {
+                "tags": ["ConceptMap"],
+                "summary": "Translate a code from one value set to another, based on the existing value set and concept maps resources",
+                "description": "The operation returns a set of parameters including a 'result' for whether there is an acceptable match.",
+                "operationId": "translateConcept",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "The concept map identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "code",
+                        "description" : "The code that is to be translated.",
+                        "in" : "query",
+                        "required" : true,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "system",
+                        "description" : "The system for the code that is to be translated",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "version",
+                        "description" : "The version of the system, if one was provided in the source data",
+                        "in" : "query",
+                        "required" : false,
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "reverse",
+                        "description" : "if this is true, then the operation should return all the codes that might be mapped to this code.",
+                        "in" : "query",
+                        "required" : false,
+                        "type" : "boolean"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/Parameters"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown code, code system identifier, or code system version."
+                    }
+                }
+            },
+            "post": {
+                "tags": ["ConceptMap"],
+                "summary": "Translate a code from one value set to another, based on the existing value set and concept maps resources",
+                "description": "The operation returns a set of parameters including a 'result' for whether there is an acceptable match.",
+                "operationId": "translateConcept",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "The concept map identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "parameters",
+                        "description" : "The Parameters resource containing a Coding or a CodeableConcept for the desired concept.",
+                        "in" : "body",
+                        "required" : true,
+                        "schema" : {
+                            "$ref": "#/definitions/ConceptMapTranslateInParameter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/Parameters"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    },
+                    "404": {
+                        "description": "Unknown code, code system identifier, or code system version."
+                    }
+                }
+            }
+        },
+        "/ValueSet": {
+            "get": {
+                "tags": ["ValueSet"],
+                "summary": "Retrieves a list of value sets",
+                "description": "Retrieves a list of value sets matching the provided search criteria.",
+                "operationId": "findValueSets",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "name",
+                        "description" : "The name of the value set. Regular expression format is allowed for this parameter.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "date",
+                        "description" : "The value set publication date. The expected format is 'yyyy-MM-dd'.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "status",
+                        "description" : "The status of the value set.",
+                        "in" : "query",
+                        "type" : "string",
+                        "enum" : ["active", "draft", "retired"]
+                    },
+                    {
+                        "name" : "_sort",
+                        "description" : "Indicates which order to return the results. Terminology Gateway currently only supports sorting on a single field, not chained sort rules.",
+                        "in" : "query",
+                        "type" : "string",
+                        "enum" : ["_id", "-_id", "name", "-name", "status", "-status"]
+                    },
+                    {
+                        "name" : "_count",
+                        "description" : "Enables pagination by providing a hint to the server regarding how many resources should be returned in a single page.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/BundleOfValueSets"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+        "/ValueSet/{id}": {
+            "get": {
+                "tags": ["ValueSet"],
+                "summary": "Retrieves a single value set by id",
+                "description": "Retrieves a single value set corresponding to the provided id.",
+                "operationId": "getValueSet",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "value set identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/ValueSet"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+        "/ValueSet/{id}/_history": {
+            "get": {
+                "tags": ["ValueSet"],
+                "summary": "Retrieves the history of a particular value set",
+                "description": "Retrieves the specified version history, sorted with oldest versions last",
+                "operationId": "getValueSetHistory",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "value set identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_since",
+                        "description" : "Only include resource versions that were created at or after the given instant in time. The expected format is 'yyyy-MM-dd'.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_at",
+                        "description" : "Only include resource versions that were current at some point during the time period. The expected format is 'yyyy-MM-dd'.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/BundleOfValueSets"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+        "/ValueSet/{id}/_history/{vid}": {
+            "get": {
+                "tags": ["ValueSet"],
+                "summary": "Retrieves a single value set by id and version id",
+                "description": "Retrieves a single value set corresponding to the provided id and version id.",
+                "operationId": "getValueSetVersion",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "value set identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "vid",
+                        "required" : true,
+                        "description" : "value set version identifier",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/ValueSet"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+        "/ValueSet/{id}/$expand": {
+            "get": {
+                "tags": ["ValueSet"],
+                "summary": "Retrieves a single value set by id including all active concepts",
+                "description": "Retrieves a single value set corresponding to the provided id. The value set is expanded, and includes all active concepts.",
+                "operationId": "getValueSetExpansion",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "value set identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "filter",
+                        "description" : "A text filter that is applied to restrict the names of the codes that are returned. Regular expression format is allowed for this parameter.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "date",
+                        "description" : "The date for which the expansion should be generated. The expected format is 'yyyy-MM-dd'.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "displayLanguage",
+                        "description" : "Specifies the language to be used for description in the expansions i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)",
+                        "in" : "query",
+                        "type" : "string",
+                        "enum" : ["en", "fr"]
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/ExpandedValueSet"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+        "/ValueSet/{id}/_history/{vid}/$expand": {
+            "get": {
+                "tags": ["ValueSet"],
+                "summary": "Retrieves a single value set by id and version id including all active concepts",
+                "description": "Retrieves a single value set corresponding to the provided id and version id. The value set is expanded, and includes all active concepts.",
+                "operationId": "getValueSetVersionExpansion",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "value set identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "vid",
+                        "required" : true,
+                        "description" : "value set version identifier",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "filter",
+                        "description" : "A text filter that is applied to restrict the names of the codes that are returned. Regular expression format is allowed for this parameter.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "date",
+                        "description" : "The date for which the expansion should be generated. The expected format is 'yyyy-MM-dd'.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "displayLanguage",
+                        "description" : "Specifies the language to be used for description in the expansions i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)",
+                        "in" : "query",
+                        "type" : "string",
+                        "enum" : ["en", "fr"]
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/ExpandedValueSet"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+        "/ValueSet/{id}/$validate-code": {
+            "get": {
+                "tags": ["ValueSet"],
+                "summary": "Validates that a single code is a member of a value set",
+                "description": "Validates that a single code is a member of a value set",
+                "operationId": "getValueSetCodeValidation",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "value set identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "code",
+                        "required" : true,
+                        "description" : "The code that is to be validated.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "system",
+                        "required" : true,
+                        "description" : "The code system id for the code that is to be validated.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "display",
+                        "description" : "The display associated with the code, if provided.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "date",
+                        "description" : "The date for which the validation should be checked. Normally, this is the current conditions (which is the default values) but under some circumstances, systems need to validate that a correct code was used at some point in the past. The expected format is 'yyyy-MM-dd'.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "displayLanguage",
+                        "description" : "Non-standard parameter. Specifies the language to be used for description in the validation i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)",
+                        "in" : "query",
+                        "type" : "string",
+                        "enum" : ["en", "fr"]
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/Parameters"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+        "/ValueSet/{id}/_history/{vid}/$validate-code": {
+            "get": {
+                "tags": ["ValueSet"],
+                "summary": "Validates that a single code is a member of a given version of a value set",
+                "description": "Validates that a single code is a member of a given version of a value set",
+                "operationId": "getValueSetVersionCodeValidation",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "auth",
+                        "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "id",
+                        "required" : true,
+                        "description" : "value set identifier. Either the OID or the name are considered valid identifiers.",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "vid",
+                        "required" : true,
+                        "description" : "value set version identifier",
+                        "in" : "path",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "code",
+                        "required" : true,
+                        "description" : "The code that is to be validated.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "system",
+                        "required" : true,
+                        "description" : "The code system id for the code that is to be validated.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "display",
+                        "description" : "The display associated with the code, if provided.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "date",
+                        "description" : "The date for which the validation should be checked. Normally, this is the current conditions (which is the default values) but under some circumstances, systems need to validate that a correct code was used at some point in the past. The expected format is 'yyyy-MM-dd'.",
+                        "in" : "query",
+                        "type" : "string"
+                    },
+                    {
+                        "name" : "displayLanguage",
+                        "description" : "Non-standard parameter. Specifies the language to be used for description in the validation i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)",
+                        "in" : "query",
+                        "type" : "string",
+                        "enum" : ["en", "fr"]
+                    },
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/Parameters"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        },
+        "/metadata": {
+            "get": {
+                "tags": ["CapabilityStatement"],
+                "summary": "Retrieves the server's capability statement",
+                "description": "Retrieves the server's capability statement",
+                "operationId": "getCapabilityStatement",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name" : "_pretty",
+                        "description" : "Non-standard parameter to request that responses be pretty-printed.",
+                        "in" : "query",
+                        "type" : "boolean",
+                        "default" : true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema" : {
+                            "$ref": "#/definitions/CapabilityStatement"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters"
+                    },
+                    "403": {
+                        "description": "Missing or invalid credentials"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "OID": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+         "CodeSystem": {
+            "type": "object",
+            "required": [
+                "status",
+                "content"
+            ],
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "CodeSystem"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the code system as assigned by the server, in this case, an OID."
+                },
+                "identifier": {
+                    "$ref": "#/definitions/OID"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Business version of the code system"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name for this code system"
+                },
+                "description": {
+                	"type": "string",
+                	"description": "Natural language description of the code system"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "draft",
+                        "retired"
+                    ],
+                    "description": "Status of this version of the code system"
+                },
+                "language": {
+                	"type": "string",
+                	"description": "Primary language of the resource content"
+                },
+                "content": {
+                    "type": "string",
+                    "enum": [
+                        "not-present",
+                        "example",
+                        "fragment",
+                        "complete"
+                    ],
+                    "description": "How much of the content of the code system - the concepts and codes it defines - are represented in this response's 'concept' array."
+                },
+               "property": {
+                	"type": "array",
+                	"items": {
+	                	"type": "object",
+			            "required": [
+			                "code"
+			            ],
+    	            	"properties": {
+    	            		"code": {
+    	            			"type": "string",
+    	            			"description": "Identifies the property on the concepts, and when referred to in operations"
+    	            		},
+    	            		"description": {
+    	            			"type" : "string",
+    	            			"description": "Why the property is defined, and/or what it conveys"
+    	            		},
+    	            		"type": {
+    	            			"type": "string",
+    	            			"enum": [
+    	            				"string",
+    	            				"code",
+    	            				"coding",
+    	            				"integer",
+    	            				"boolean",
+    	            				"dateTime"
+    	            			]
+    	            		}
+    	            	}
+    	            }
+                },
+                "concept": {
+                	"type": "array",
+                	"description": "Concepts in the code system",
+                	"items": {
+	                	"type": "object",
+			            "required": [
+			                "code"
+			            ],
+    	            	"properties": {
+    	            		"code": {
+    	            			"type": "string",
+    	            			"description": "The code for this concept"
+    	            		},
+    	            		"display": {
+    	            			"type": "string",
+    	            			"description": "The preferred display for this concept"
+    	            		},
+    	            		"property": {
+			                	"type": "array",
+			                	"items": {
+				                	"type": "object",
+						            "required": [
+						                "code"
+						            ],
+			    	            	"properties": {
+			    	            		"code": {
+			    	            			"type": "string",
+			    	            			"description": "Identifies the property returned"
+			    	            		},
+			    	            		"value": {
+			    	            			"type" : "string",
+			    	            			"description": "The value of the property returned"
+			    	            		}
+			    	            	}
+			    	            }
+							}
+						}
+					}			    	       
+                }
+            }
+        },
+        "CodingParameter" : {
+            "type": "object",
+            "required": [
+                "parameter"
+            ],
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "Parameters"
+                    ]
+                },
+                "parameter": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "valueCoding"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "enum": [
+                                    "coding"
+                                ]
+                            },
+                            "valueCoding": {
+                                "type": "object",
+                                "required": [
+                                    "system",
+                                    "code"
+                                ],
+                                "properties": {
+                                    "system": {
+                                        "type": "string",
+                                        "description": "The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "description" : "The code that is to be located."
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "description" : "The version of the code system."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ConceptLookupResponseParameter": {
+            "type": "object",
+            "required": [
+                "resourceType",
+                "parameter"
+            ],
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "Parameters"
+                    ]
+                },
+                "parameter": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "name"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "The name of the response parameter.",
+                                "enum": [
+                                    "name",
+                                    "version",
+                                    "display"
+                                ]
+                            },
+                            "valueString": {
+                                "type": "string",
+                                "description": "The value of the response parameter."
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ConceptMap": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "ConceptMap"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the concept map as assigned by the server, in this case, an OID."
+                },
+                "identifier": {
+                    "$ref": "#/definitions/OID"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Business version of the concept map"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name for this concept map"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "draft",
+                        "retired"
+                    ],
+                    "description": "Status of this version of the concept map"
+                },
+                "publisher": {
+                    "type": "string",
+                    "description": "Publisher for this concept map"
+                },
+                "group": {
+                	"type": "array",
+                	"items": {
+    	            	"properties": {
+    	            	    "element": {
+    	            	        "type": "object",
+    	            	        "properties": {
+    	            		        "code": {
+    	            			        "type": "string",
+    	            			        "description": "The code for the source concept"
+    	            		        },
+    	            		        "display": {
+    	            			        "type": "string",
+    	            			        "description": "The preferred display for the source concept"
+    	            		        },
+    	            		        "target": {
+    	            		            "type": "array",
+    	            		            "items": {
+    	            		                "properties": {
+    	            		                    "code": {
+    	            			                  "type": "string",
+    	            			                  "description": "The code for the source concept"
+    	            		                    },
+    	            		                    "display": {
+    	            			                    "type": "string",
+    	            			                    "description": "The preferred display for the source concept"
+    	            		                    }
+    	            		                }
+    	            		            }
+    	            		        }
+    	            	        }
+    	            	    }
+						}
+					}			    	       
+                }
+            }
+        },
+        "ConceptMapTranslateInParameter" : {
+            "type": "object",
+            "required": [
+                "parameter"
+            ],
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "Parameters"
+                    ]
+                },
+                "parameter": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "valueCoding"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "enum": [
+                                    "coding",
+                                    "codeableConcept",
+                                    "reverse"
+                                ]
+                            },
+                            "valueCoding": {
+                                "type": "object",
+                                "required": [
+                                    "system",
+                                    "code"
+                                ],
+                                "properties": {
+                                    "system": {
+                                        "type": "string",
+                                        "description": "The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "description" : "The code that is to be located."
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "description" : "The version of the code system."
+                                    }
+                                }
+                            },
+                            "valueCodeableConcept": {
+                                "type": "object",
+                                "properties": {
+                                    "coding": {
+                                        "type": "array",
+                                        "items" : {
+                                            "type": "object",
+                                            "required": [
+                                                "system",
+                                                "code"
+                                            ],
+                                            "properties": {
+                                                "system": {
+                                                    "type": "string",
+                                                    "description": "The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]"
+                                                },
+                                                "code": {
+                                                    "type": "string",
+                                                    "description" : "The code that is to be located."
+                                                },
+                                                "version": {
+                                                    "type": "string",
+                                                    "description" : "The version of the code system."
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "valueBoolean": {
+                                "type": "boolean",
+                                "enum": [
+                                    "true",
+                                    "false"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ValueSet": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "ValueSet"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "local identifier of the value set as assigned by the server"
+                },
+                "identifier": {
+                    "$ref": "#/definitions/OID"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "id of this version of the value set"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "informal name for this value set"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "draft",
+                        "retired"
+                    ],
+                    "description": "status of this version of the value set"
+                },
+                "description": {
+                	"type": "string",
+                	"description": "Human language description of the value set"
+                }
+            }
+        },
+        "ExpandedValueSet": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "ValueSet"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "local identifier of the value set as assigned by the server"
+                },
+                "identifier": {
+                    "$ref": "#/definitions/OID"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "id of this version of the value set"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "informal name for this value set"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "draft",
+                        "retired"
+                    ],
+                    "description": "status of this version of the value set"
+                },
+                "description": {
+                	"type": "string",
+                	"description": "Human language description of the value set"
+                },
+                "expansion": {
+                	"type": "array",
+                	"items": {
+	                	"type": "object",
+    	            	"properties": {
+    	            		"timestamp": {
+	                			"type": "string",
+	                			"format" : "date-time",
+	                			"description": "Time ValueSet expansion happened"
+    	            		},
+    	            		"total": {
+			                    "type": "integer",
+			                    "format": "int32",
+			                    "description" : "Total number of codes in the expansion"
+    	            		},
+    	            		"contains": {
+    	            			"type": "array",
+    	            			"items": {
+    	            				"type": "object",
+    	            				"properties": {
+    	            					"system": {
+			    	            			"$ref": "#/definitions/OID"
+    	            					},
+    	            					"abstract": {
+    	            						"type": "boolean",
+    	            						"description": "If user cannot select this entry"
+    	            					},
+    	            					"version": {
+    	            						"type": "string",
+    	            						"description": "Version in which this code/display is defined"
+    	            					},
+    	            					"code": {
+    	            						"type": "string",
+    	            						"description": "Code - if blank, this is not a selectable code"
+    	            					},
+    	            					"display": {
+    	            						"type": "string",
+    	            						"description": "User display for the concept"
+    	            					}
+    	            				}
+    	            			}
+    	            		}
+        	        	}
+        	        }
+                }
+            }
+        },
+        "BundleOfCodeSystems": {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "Bundle"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "local identifier of the bundle as assigned by the server"
+                },
+                "meta": {
+                	"type": "object",
+                	"properties" : {
+                		"lastUpdated" : {
+                			"type": "string",
+                			"format" : "date-time",
+                			"description": "when the resource last changed"
+                		}
+                	},
+                	"description" : "metadata about the bundle"
+                },
+               	"type": {
+                    "type": "string",
+                    "enum": [
+                        "searchset"
+                    ],
+                    "description" : "indicates the purpose of this bundle"
+               	},
+                "total": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description" : "the total number of matches for the search"
+               	},
+                "link": {
+                    "type": "array",
+					"items": {
+						"type": "object",
+						"properties" : {
+							"relation": {
+								"type": "string",
+								"description": "a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]"
+							},
+							"url" : {
+								"type": "string",
+								"description" : "the reference details for the link"
+							}
+						}
+					},
+                   	"description" : "a series of links that provide context to this bundle"
+                },
+                "entry": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+						"properties": {
+							"fullUrl": {
+                                "type" : "string",
+                                "description" : "the absolute URL for the resource"
+                           	},
+                            "resource" : {
+                                "$ref": "#/definitions/CodeSystem"
+                            }
+						}
+                    }
+                }
+            }
+        },
+        "BundleOfConceptMaps": {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "Bundle"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "local identifier of the bundle as assigned by the server"
+                },
+                "meta": {
+                	"type": "object",
+                	"properties" : {
+                		"lastUpdated" : {
+                			"type": "string",
+                			"format" : "date-time",
+                			"description": "when the resource last changed"
+                		}
+                	},
+                	"description" : "metadata about the bundle"
+                },
+               	"type": {
+                    "type": "string",
+                    "enum": [
+                        "searchset"
+                    ],
+                    "description" : "indicates the purpose of this bundle"
+               	},
+                "total": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description" : "the total number of matches for the search"
+               	},
+                "link": {
+                    "type": "array",
+					"items": {
+						"type": "object",
+						"properties" : {
+							"relation": {
+								"type": "string",
+								"description": "a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]"
+							},
+							"url" : {
+								"type": "string",
+								"description" : "the reference details for the link"
+							}
+						}
+					},
+                   	"description" : "a series of links that provide context to this bundle"
+                },
+                "entry": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+						"properties": {
+							"fullUrl": {
+                                "type" : "string",
+                                "description" : "the absolute URL for the resource"
+                           	},
+                            "resource" : {
+                                "$ref": "#/definitions/ConceptMap"
+                            }
+						}
+                    }
+                }
+            }
+        },
+        "BundleOfValueSets": {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "Bundle"
+                    ]
+                },
+                "id": {
+                    "type": "string",
+                    "description": "local identifier of the bundle as assigned by the server"
+                },
+                "meta": {
+                	"type": "object",
+                	"properties" : {
+                		"lastUpdated" : {
+                			"type": "string",
+                			"format" : "date-time",
+                			"description": "when the resource last changed"
+                		}
+                	},
+                	"description" : "metadata about the bundle"
+                },
+               	"type": {
+                    "type": "string",
+                    "enum": [
+                        "searchset"
+                    ],
+                    "description" : "indicates the purpose of this bundle"
+               	},
+                "total": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description" : "the total number of matches for the search"
+               	},
+                "link": {
+                    "type": "array",
+					"items": {
+						"type": "object",
+						"properties" : {
+							"relation": {
+								"type": "string",
+								"description": "a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]"
+							},
+							"url" : {
+								"type": "string",
+								"description" : "the reference details for the link"
+							}
+						}
+					},
+                   	"description" : "a series of links that provide context to this bundle"
+                },
+                "entry": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+						"properties": {
+							"fullUrl": {
+                                "type" : "string",
+                                "description" : "the absolute URL for the resource"
+                           	},
+                            "resource" : {
+                                "$ref": "#/definitions/ValueSet"
+                            }
+						}
+                    }
+                }
+            }
+        },
+        "Parameters" : {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "Parameters"
+                    ]
+                },
+                "parameter": {
+                	"type": "array",
+                	"items": {
+                		"type": "object",
+                		"properties": {
+                			"name": {
+                				"type": "string",
+                				"description": "The name of the parameter"
+                			},
+                			"valueBoolean": {
+                				"type": "boolean",
+                				"description": "The value of the parameter, represented as a boolean"
+                			},
+                			"valueString": {
+                				"type": "string",
+                				"description": "The value of the parameter, represented as a string"
+                			}
+                		}
+                	}
+                }
+            }
+        },
+        "CapabilityStatement" : {
+            "type": "object",
+            "properties": {
+                "resourceType": {
+                    "type": "string",
+                    "enum": [
+                        "CapabilityStatement"
+                    ]
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "draft",
+                        "retired"
+                    ],
+                    "description": "status of this version of the capability statement"
+                },
+                "date": {
+	                "type": "string",
+	                "format" : "date-time",
+	                "description": "Publication Date"
+                },
+                "publisher": {
+                    "type": "string",
+                    "description": "Name of the publisher"
+                },
+                "kind": {
+                    "type": "string",
+                    "enum": [
+                        "instance",
+                        "capability",
+                        "requirements"
+                    ],
+                    "description": "the kind of conformance profile this statement represents"
+                },
+                "software": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "A name the software is known by"
+                        },
+                        "version": {
+                            "type": "string",
+                            "description": "Version covered by this statement"
+                        }
+                    }
+                },
+                "fhirVersion": {
+                    "type": "string",
+                    "description": "FHIR Version the system uses"
+                },
+                "acceptUnknown": {
+                    "type": "string",
+                    "enum": [
+                        "no",
+                        "extensions",
+                        "elements",
+                        "both"
+                    ],
+                    "description": "A code that indicates whether an application accepts unknown elements or extensions when reading resources."
+                },
+                "format": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "description": "Mime types supported"
+                    }
+                },
+                "rest": {
+                	"type": "array",
+                	"items": {
+                		"type": "object",
+                		"properties": {
+                		    "mode": {
+                                "type": "string",
+                                "enum": [
+                                    "client",
+                                    "server"
+                                ],
+                                "description": "The mode of a RESTful conformance statement."
+                		    },
+                		    "resource": {
+                		    	"type": "array",
+                		    	"items": {
+                		    		"type": "object",
+                		    		"properties": {
+                		    		    "type": {
+                                            "type": "string",
+                                            "description": "A resource type that is supported"
+                		    		    },
+                		    		    "profile": {
+                		    		        "type": "object",
+                		    		        "properties": {
+                		    		            "reference": {
+                                                    "type": "string",
+                                                    "description": "Relative, internal or absolute URL reference"
+                		    		            }
+                		    		        }
+                		    		    },
+                		    		    "interaction": {
+                		    		        "type": "array",
+                		    		        "items": {
+                		    		            "type": "object",
+                		    		            "properties": {
+                		    		                "code": {
+                		    		                    "type": "string",
+                		    		                    "description": "Operations supported by REST at the type or instance level."
+                		    		                }
+                		    		            }
+                		    		        }
+                		    		    },
+                		    		    "searchParam": {
+                		    		        "type": "array",
+                		    		        "items": {
+                		    		            "type": "object",
+                		    		            "properties": {
+                		    		                "name": {
+                		    		                    "type": "string",
+                		    		                    "description": "Name of search parameter"
+                		    		                },
+                		    		                "type": {
+                		    		                    "type": "string",
+                		    		                    "description": "Data types allowed to be used for search parameters."
+                		    		                },
+                		    		                "documentation": {
+                		    		                    "type": "string",
+                		    		                    "description": "Server-specific usage"
+                		    		                }
+                		    		            }
+                		    		        }
+                		    		    }
+                		    		}
+                		    	}
+                		    },
+                		    "operation": {
+                		        "type": "array",
+                		        "items": {
+                		            "type": "object",
+                		            "properties": {
+                		                "name": {
+                		                    "type": "string",
+                		                    "description": "Name by which the operation/query is invoked"
+                		                },
+                		                "definition": {
+                		                     "type": "object",
+                		                     "properties": {
+                		                         "reference": {
+                                                    "type": "string",
+                                                    "description": "Relative, internal or absolute URL reference"
+                		                         }
+                		                     }
+                		                }
+                		            }
+                		        }
+                		    }
+                		}
+                	}
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Find out more",
+        "url": "https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway"
+    }
+}

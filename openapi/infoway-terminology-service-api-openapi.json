@@ -1,0 +1,3759 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "RESTful web services used to browse terminology data.",
+    "version" : "1.0.0",
+    "title" : "Terminology API",
+    "termsOfService" : "http://swagger.io/terms/"
+  },
+	"basePath" : "/rest/v1",
+  "tags" : [
+
+    {
+      "name" : "codesystems",
+      "description" : "APIs for accessing code system data"
+    },
+    {
+      "name" : "codesystem",
+      "description" : "Retrieves information about a single codesystem"
+    },
+    {
+      "name" : "concepts",
+      "description" : "APIs for accessing concepts from terminology subsets"
+    },
+    {
+      "name" : "concept",
+      "description" : "Retrieves concept(s) associated to a subset version"
+    },
+    {
+      "name" : "entities",
+      "description" : "Retrieves the list of entities associated to a codesystem version"
+    },
+    {
+      "name": "maps",
+      "description": "APIs for accessing map data"
+    },
+
+    {
+      "name" : "notification",
+      "description" : "APIs for accessing user notifications"
+    },
+    {
+      "name": "packages",
+      "description": "APIs for accessing package data"
+    },
+    {
+      "name": "package",
+      "description": "Retrieves information about a single package"
+    },
+    {
+      "name": "resourcelocations",
+      "description": "APIs for accessing resource location data"
+    },
+    {
+      "name": "resourcelocation",
+      "description": "Retrieves the list of resource locations"
+    },
+    {
+      "name" : "session",
+      "description" : "APIs for programmatically logging in"
+    },
+
+    {
+      "name" : "subsets",
+      "description" : "APIs for terminology subsets",
+      "externalDocs" : {
+        "description" : "Find out more",
+        "url" : "https://infocentral.infoway-inforoute.ca"
+      }
+    },
+    {
+      "name" : "subset",
+      "description" : "Retrieves information about a single subset"
+    }
+  ],
+  "paths" : {
+    "/codesystems" : {
+      "get" : {
+        "tags" : ["codesystems"],
+        "summary" : "Retrieves a list of codesystems",
+        "description" : "Retrieves a list of codesystems matching the provided search criteria.",
+        "operationId" : "getCodeSystems",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "name",
+            "description" : "returns only codesystems matching the given name. The name filter can use a regular expression format.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name","versionid"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "page",
+            "description" : "page number used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1"
+          },
+          {
+            "name" : "size",
+            "description" : "page size used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1000"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CodeSystems"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/codesystems/download" : {
+      "get" : {
+        "tags" : ["codesystems"],
+        "summary" : "Returns a downloadable list containing all codesystems.",
+        "description" : "Generates a full list containing all codesystems. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set.",
+        "operationId" : "downloadCodeSystems",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name","versionid","effectivedate", "active", "language"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/codesystem/{codesystemid}/versions" : {
+      "get" : {
+        "tags" : ["codesystems"],
+        "summary" : "Returns metadata for all versions of a codesystem.",
+        "description" : "Returns the metadata associated to all codesystem version.",
+        "operationId" : "getCodeSystemVersions",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "codesystemid",
+            "required" : true,
+            "description" : "codesystem identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          },
+          {
+            "name" : "variant",
+            "description" : "SNOMED CT Variant. Required for SNOMED CT.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["core", "canadian"]
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CodeSystem"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/codesystem/{codesystemid}/download" : {
+      "get" : {
+        "tags" : ["codesystems"],
+        "summary" : "Returns metadata for a single codesystem version.",
+        "description" : "Returns downloadable metadata for a single codesystem version.",
+        "operationId" : "downloadCodeSystem",
+        "produces" : [ "application/json", "application/xml","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/octet-stream", "application/zip"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "apikey",
+            "required" : true,
+            "description" : "security key required to access the web service",
+            "in" : "query",
+            "type" : "string",
+            "default" : "AB3"
+          },
+          {
+            "name" : "codesystemid",
+            "required" : true,
+            "description" : "codesystem identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "codesystem version, latest version if not provided",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml", "excel", "rf2", "access"],
+            "default" : "json"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name","active","language"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "variant",
+            "description" : "SNOMED CT Variant. Required for SNOMED CT.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["core", "canadian"]
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid apikey"
+          }
+        }
+      }
+    },
+    "/codesystem/{codesystemid}" : {
+      "get" : {
+        "tags" : ["codesystems"],
+        "summary" : "Returns metadata for a single codesystem version.",
+        "description" : "Returns the metadata associated to a single codesystem version.",
+        "operationId" : "getCodeSystemVersion",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "codesystemid",
+            "required" : true,
+            "description" : "codesystem identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "codesystem version, latest version if not provided",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          },
+          {
+            "name" : "variant",
+            "description" : "SNOMED CT Variant. Required for SNOMED CT.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["core", "canadian"]
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CodeSystemVersion"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/codesystem/{codesystemid}/entities" : {
+      "get" : {
+        "tags" : ["codesystems"],
+        "summary" : "Retrieves the list of entities that are part of a codesystem version.",
+        "description" : "Retrieves a full list of entities that are part of a codesystem version.",
+        "operationId" : "getCodeSystemEntities",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "codesystemid",
+            "required" : true,
+            "description" : "codesystem identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "codesystem version, latest version if not provided",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "name",
+            "description" : "returns only entities matching the given name. The name filter can use a regular expression format",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name","versionid","effectivedate","active","language"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "page",
+            "description" : "page number used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1"
+          },
+          {
+            "name" : "size",
+            "description" : "page size used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1000"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Entities"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subsets" : {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Retrieves a list of subsets",
+        "description" : "Retrieves a list of subsets matching the provided search criteria.",
+        "operationId" : "findSubsets",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "active",
+            "description" : "returns active or inactive subsets if specified, all subsets if this parameter is absent",
+            "in" : "query",
+            "type" : "boolean"
+          },
+          {
+            "name" : "reflang",
+            "description" : "returns only subsets for the specified language. The language identifier must be provided in ISO639-1 format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["en"]
+          },
+          {
+            "name" : "startdate",
+            "description" : "returns only subsets that were active on or after the given start date. The date must be specified as yyyyMMdd",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "enddate",
+            "description" : "returns only subsets that were active on or before the given end date. The date must be specified as yyyyMMdd",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "name",
+            "description" : "returns only subsets matching the given name. The name filter can use a regular expression format",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name","active","language"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "page",
+            "description" : "page number used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1"
+          },
+          {
+            "name" : "size",
+            "description" : "page size used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1000"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          },
+          {
+            "name" : "tags",
+            "description" : "describes a specific category of subsets that this subset belongs to",
+            "in" : "query",
+            "type" : "string"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Subsets"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subsets/download" : {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Returns a downloadable list containing all subsets.",
+        "description" : "Generates a full list containing all subsets. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set.",
+        "operationId" : "downloadSubsets",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name","active","language"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          },
+          {
+            "name" : "tags",
+            "description" : "describes a specific category of subsets that this subset belongs to",
+            "in" : "query",
+            "type" : "string"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subset/{subsetid}/versions" : {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Returns metadata for all versions of a subset.",
+        "description" : "Returns the metadata associated to all subset version.",
+        "operationId" : "getSubsetVersions",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subsetid",
+            "required" : true,
+            "description" : "subset identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Subset"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subset/{subsetid}" : {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Returns metadata for a single subset version.",
+        "description" : "Returns the metadata associated to a single subset version.",
+        "operationId" : "getSubsetVersion",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subsetid",
+            "required" : true,
+            "description" : "subset identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "subset version, latest version if not provided",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "reflang",
+            "description" : "returns the subset version for the specified language. The language identifier must be provided in ISO639-1 format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["en"]
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/SubsetVersion"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subset/{subsetid}/download" : {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Downloads the data associated to a subset version.",
+        "description" : "Downloads the data associated to a subset version. This includes all concepts that are part of the subset. The data is returned as an attachment to the HTTP response.",
+        "operationId" : "downloadSubset",
+        "produces" : ["application/json", "application/xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subsetid",
+            "required" : true,
+            "description" : "subset identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "subset version, latest version if not provided",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name","active","language"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml","excel"],
+            "default" : "json"
+          },
+		  {
+            "name" : "lang",
+            "description" : "returns the output in the specified language. Only supported for excel outputs. The language identifier must be provided in ISO639-1 format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["en","fr"]
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/codesystem/{codesystemid}/entity/{entityid}" : {
+      "get" : {
+        "tags" : ["codesystems"],
+        "summary" : "Retrieves a single entity associated with a codesystem.",
+        "description" : "Retrieves a single entity associated with a codesystem.",
+        "operationId" : "getCodeSystemEntity",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "codesystemid",
+            "required" : true,
+            "description" : "codesystem identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "entityid",
+            "required" : true,
+            "description" : "codesystem identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "codesystem version, latest version if not provided",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Entity"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subset/{subsetid}/delta" : {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Retrieves the delta between two subset versions.",
+        "description" : "Generates a list of differences between two subset versions. The differeces might include changes in the subset metadata or their concept list. The versions that are being compared don't necessarily have to be consecutive.",
+        "operationId" : "deltaSubsets",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subsetid",
+            "required" : true,
+            "description" : "subset identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "fromversion",
+            "description" : "id of the first subset version to be compared. The initial subset version will be used if this parameter isn't specified.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "toversion",
+            "description" : "id of the second subset version to be compared. The most recent subset version will be used if this parameter isn't specified.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Delta"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subset/{subsetid}/delta/download" : {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Downloads the delta between two subset versions.",
+        "description" : "Downloads a list of differences between two subset versions. The differences might include changes in the subset metadata or their concept list. The versions that are being compared don't necessarily have to be consecutive.",
+        "operationId" : "downloadDeltaSubset",
+        "produces" : ["application/xml", "application/excel", "application/json"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subsetid",
+            "required" : true,
+            "description" : "subset identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "fromversion",
+            "description" : "id of the first subset version to be compared. The initial subset version will be used if this parameter isn't specified.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "toversion",
+            "description" : "id of the second subset version to be compared. The most recent subset version will be used if this parameter isn't specified.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml", "excel"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subset/{subsetid}/concepts" : {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Retrieves the list of concepts that are part of a subset version.",
+        "description" : "Retrieves a full list of concepts that are part of a subset version.",
+        "operationId" : "getConcepts",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subsetid",
+            "required" : true,
+            "description" : "subset identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "subset version, latest version if not provided",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "active",
+            "description" : "returns active or inactive concepts if specified, all concepts if this parameter is absent",
+            "in" : "query",
+            "type" : "boolean"
+          },
+          {
+            "name" : "reflang",
+            "description" : "returns concepts for the specified language. The language identifier must be provided in ISO639-1 format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["en"]
+          },
+          {
+            "name" : "name",
+            "description" : "returns only concepts matching the given name. The name filter can use a regular expression format",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name","term","effectivedate","active"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "page",
+            "description" : "page number used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1"
+          },
+          {
+            "name" : "size",
+            "description" : "page size used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1000"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Concepts"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/subset/{subsetid}/concepts/{conceptid}": {
+      "get" : {
+        "tags" : ["subsets"],
+        "summary" : "Retrieves the matching concept within the subset",
+        "description" : "Retrieves the concept details that matches the supplied concept identifier within the matching subset.",
+        "operationId" : "getConcept",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subsetid",
+            "required" : true,
+            "description" : "subset identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "conceptid",
+            "required" : true,
+            "description" : "concept identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "version identifier for the subset",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["xml", "json"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref": "#/definitions/Concept"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/maps" : {
+      "get" : {
+        "tags": ["maps"],
+        "summary": "Retrieves a list of maps.",
+        "description" : "Retrieves a list of maps matching the provided search criteria.",
+        "operationId" : "getAllMaps",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "name",
+            "description" : "returns only maps matching the given name. The name filter supports globbing.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "tags",
+            "description" : "returns only maps that has the given tag(s). Can search multiple tags by comma separating.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "domain",
+            "description" : "returns only maps matching the given domain(s). Can search multiple domains by comma separating.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "owner",
+            "description" : "returns only maps owned by the the specified owner.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "page",
+            "description" : "page number used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1"
+          },
+          {
+            "name" : "size",
+            "description" : "page size used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1000"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Maps"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/maps/download" : {
+      "get" : {
+        "tags": ["maps"],
+        "summary": "Returns a downloadable list containing all maps.",
+        "description" : "Generates a full list containing all maps. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set.",
+        "operationId" : "mapDownload",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction. Only relevant if the sortby parameter is also specified.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/map/{mapid}/versions" : {
+      "get" : {
+        "tags": ["maps"],
+        "summary": "Returns metadata for all versions of a map.",
+        "description" : "Returns the metadata associated to all map version.",
+        "operationId" : "mapVersions",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "mapid",
+            "required" : true,
+            "description" : "map identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MapVersion"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/map/{mapid}" : {
+      "get": {
+        "tags": ["maps"],
+        "summary": "Returns metadata for a single map version.",
+        "description": "Returns the metadata associated to a single map version. Chooses the latest map version if versionid is not provided.",
+        "operationId": "getMapById",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "mapid",
+            "required" : true,
+            "description" : "map identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "map version identifer",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Map"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/map/{mapid}/download" : {
+      "get": {
+        "tags": ["maps"],
+        "summary": "Downloads the data associated to a map version.",
+        "description": "Downloads the data associated to a map version. This includes all map elements that are part of this map. The data is returned as an attachement to the HTTP response.",
+        "operationId": "mapDownloadId",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "mapid",
+            "required" : true,
+            "description" : "map identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "map version identifer",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
+
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/map/{mapid}/delta" : {
+      "get": {
+        "tags": ["maps"],
+        "summary": "Retrieves the delta between two map versions.",
+        "description": "Generates a list of differences between two map versiosn. The differences might include changes in the map metadata or their map elements list. The versions that are being compared don't necessarily have to be consecutive.",
+        "operationId": "mapDelta",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "mapid",
+            "required" : true,
+            "description" : "map identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "fromversion",
+            "description" : "from map version identifer",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "toversion",
+            "description" : "to map version identifer",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MapDelta"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/map/{mapid}/delta/download" : {
+      "get": {
+        "tags": ["maps"],
+        "summary": "Downloads the delta between two map versions.",
+        "description": "Downloads a list of differences between two map versions. The differences might include changes in the map metadata or their map elements list. The versions that are being compared don't necessarily have to be consecutive.",
+        "operationId": "mapDeltaDownload",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "mapid",
+            "required" : true,
+            "description" : "map identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "fromversion",
+            "description" : "from map version identifer",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "toversion",
+            "description" : "to map version identifer",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" :"file"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/map/{mapid}/targets" : {
+      "get": {
+        "tags": ["maps"],
+        "summary": "Retrieves a list of map elements for the supplied map version.",
+        "description": "Retrieves a list of map elements from a supplied version of a map matching the provided search criteria. Gets latest map version if versionid is not supplied",
+        "operationId": "mapLatestVersionTarget",
+        "produces" : ["application/json", "application/xml"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "mapid",
+            "required" : true,
+            "description" : "map identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "map version identifier",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "src",
+            "description" : "concept codes, comma separate for multiple",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subset",
+            "description" : "subset identifier",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "subsetver",
+            "description" : "subset version identifier",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "reverse",
+            "description" : "boolean to reverse map element's source and target concepts for reverse lookup",
+            "in" : "query",
+            "type" : "boolean",
+            "default" : false
+          },
+          {
+            "name" : "format",
+            "required" : false,
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          },
+          {
+            "name" : "page",
+            "description" : "page number used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1"
+          },
+          {
+            "name" : "size",
+            "description" : "page size used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1000"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MapElements"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/map/{mapid}/concepts" : {
+      "get" : {
+        "tags": ["maps"],
+        "summary": "Retrieves elements belonging to a map.",
+        "description": "Retrieves all map elements belonging to a map.",
+        "operationId": "getMapElements",
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "mapid",
+            "required" : true,
+            "description" : "map identifier",
+            "in" : "path",
+            "type" : "string"
+          },
+          {
+            "name" : "versionid",
+            "description" : "map version identifier",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "sortby",
+            "description" : "sorts the result set by the specified field.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["id","name"]
+          },
+          {
+            "name" : "sortdir",
+            "description" : "sorting direction.",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["ascending","descending"]
+          },
+          {
+            "name" : "page",
+            "description" : "page number used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1"
+          },
+          {
+            "name" : "size",
+            "description" : "page size used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1000"
+          },
+          {
+            "name" : "format",
+            "description" : "output format",
+            "in" : "query",
+            "type" : "string",
+            "enum" : ["json","xml"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/MapElements"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/ResourceLocation" : {
+      "get" : {
+        "tags" : ["resourcelocations"],
+        "summary" : "Retrieves a list of resource locations.",
+        "description" : "Retrives a list of resource locations that matches the supplied parameters.",
+        "operationId" : "searchResourceLocation",
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "name",
+            "description" : "Name of the resource",
+            "type" : "string",
+            "in" : "query"
+          },
+          {
+            "name" : "publisher",
+            "description" : "Publisher of the resource",
+            "type" : "string",
+            "in" : "query"
+          },
+          {
+            "name" : "tags",
+            "description" : "Resource tags",
+            "type" : "string",
+            "in" : "query"
+          },
+          {
+            "name" : "meta",
+            "description" : "Metadata associated with the resource",
+            "type" : "string",
+            "in" : "query"
+          },
+          {
+            "name" : "page",
+            "description" : "page number used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1"
+          },
+          {
+            "name" : "size",
+            "description" : "page size used for pagination",
+            "in" : "query",
+            "type" : "integer",
+            "default" : "1000"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref": "#/definitions/ResourceLocations"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/ResourceLocation/download" : {
+      "get" : {
+        "tags" : ["resourcelocations"],
+        "summary" : "Retrieves a list of all resource locations.",
+        "description" : "Retrives a list of all resource locations in the specified format",
+        "operationId" : "downloadResourceLocations",
+        "produces" : ["application/json", "application/xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "format",
+            "in" : "query",
+            "description" : "output format",
+            "type" : "string",
+            "enum" : ["json", "xml", "excel"],
+            "default" : "json"
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/ResourceLocation/{id}" : {
+      "get" : {
+        "tags" : ["resourcelocations"],
+        "summary" : "Retrieves a resource location.",
+        "description" : "Retrives a resource location with the matching identifier.",
+        "operationId" : "getResourceLocation",
+        "produces" : ["application/json"],
+        "parameters" : [
+          {
+            "name" : "auth",
+            "description" : "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "btoken",
+            "description" : "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in" : "query",
+            "type" : "string"
+          },
+          {
+            "name" : "id",
+            "in" : "path",
+            "type" : "string",
+            "description" : "resource identifier",
+            "required" : true
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ResourceLocation"
+            }
+          },
+          "400" : {
+            "description" : "Invalid parameters"
+          },
+          "403" : {
+            "description" : "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/notification" : {
+      "get": {
+        "tags": ["notification"],
+        "summary": "Get all notifications.",
+        "description": "Get all notifications for the currently logged user.",
+        "operationId": "getNotificationsList",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "description": "Username for the subscriptions. Must match the currently logged in user or match the username from other credentials provided.",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      },
+      "post": {
+        "tags": ["notification"],
+        "summary": "Subscribe to a resource.",
+        "description": "Subscribe to a resource. Must provide a request body with the field target and an optional field username, which must match the logged user's username or username from other credentials.",
+        "operationId": "addNotifications",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description" :"A 'target' field is required, which consists of mandatory field 'type' and either of 'id' or 'name' of the resource, comma-separated for multiple. Globbing is supported for resource names. 'Username' field is optional but must match the logged user's username or username from other credentials.",
+            "required" : true,
+            "schema": {
+              "type": "object",
+              "$ref" : "#/definitions/Notification"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["notification"],
+        "summary": "Deletes a subscription to a resource.",
+        "description": "Deletes a subscription to a resource. Must provide a request body.",
+        "operationId": "cancelNotifications",
+        "consumes" : ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description" :"A 'target' field is required, which consists of mandatory field 'type' and either of 'id' or 'name' of the resource, comma-separated for multiple. Globbing is supported for resource names. 'Username' field is optional but must match the logged user's username or username from other credentials.",
+            "required" : true,
+            "schema": {
+              "type":"object",
+              "$ref" : "#/definitions/Notification"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/session" : {
+      "post" : {
+        "tags": ["session"],
+        "summary": "Login in with basic authorization credentials, single sign on token or JSON web token.",
+        "description" : "Explicitly login programmatically. Returns a JSON with your username, single sign on token named 'authToken', JSON web token named 'btoken' and miscellaenous profile attributes.",
+        "operationId": "login",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      },
+      "delete" : {
+        "tags": ["session"],
+        "summary": "Explicitly logout programtically.",
+        "description": "Logout explicitly using your single sign on token. Your single sign on token will be expired after executing this call. You will be logged out from all Canada Health Infoway web services.",
+        "operationId": "logout",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/packages" : {
+      "get": {
+        "tags": ["packages"],
+        "summary": "Search for packages.",
+        "description": "Retrieve a list of packages that matches the search criteria.",
+        "operationId": "search",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "active",
+            "description": "Search packages by their status",
+            "in": "query",
+            "type": "string",
+            "enum": ["true", "false"]
+          },
+          {
+            "name": "name",
+            "description": "Search packages by their name. Supports globs.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "tags",
+            "description": "Search packages by their associated tags.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "owner",
+            "description": "Search packages by their maintaining organization.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "domains",
+            "description": "Search packages by their associated domains.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "sortby",
+            "description": "Sort search results by a field.",
+            "in": "query",
+            "type": "string",
+            "enum": ["id", "name", "owner"]
+          },
+          {
+            "name": "sortdir",
+            "description": "Sorting direction for the search results.",
+            "in": "query",
+            "type": "string",
+            "enum": ["ascending", "descending"],
+            "default": "ascending"
+          },
+          {
+            "name": "page",
+            "description": "Page number of the paginated search results.",
+            "in": "query",
+            "type": "integer",
+            "default": "1"
+          },
+          {
+            "name": "size",
+            "description": "Page size of the paginated search results.",
+            "in": "query",
+            "type": "integer",
+            "default": "1000"
+          },
+          {
+            "name": "format",
+            "description": "Format for the search results.",
+            "in": "query",
+            "type": "string",
+            "enum": ["json", "xml"],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Packages"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/packages/download": {
+      "get": {
+        "tags": ["packages"],
+        "summary": "Download a list of all packages.",
+        "description": "Download a list of all packages as an HTTP attachment.",
+        "operationId": "downloadPackages",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "sortby",
+            "description": "Sort search results by a field.",
+            "in": "query",
+            "type": "string",
+            "enum": ["id", "name"]
+          },
+          {
+            "name": "sortdir",
+            "description": "Sorting direction for the search results.",
+            "in": "query",
+            "type": "string",
+            "enum": ["ascending", "descending"],
+            "default": "ascending"
+          },
+          {
+            "name": "format",
+            "description": "Format for the data.",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "enum": ["json", "xml"],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/package/{packageid}/versions": {
+      "get": {
+        "tags": ["packages"],
+        "summary": "Return all versions of a package.",
+        "description": "Returns all the versions for a given package, including the list of artifacts.",
+        "operationId": "getVersions",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "packageid",
+            "description": "Package identifier",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "format",
+            "description": "Format for the data.",
+            "in": "query",
+            "type": "string",
+            "enum": ["json", "xml"],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Package"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/package/{packageid}" : {
+      "get": {
+        "tags": ["packages"],
+        "summary": "Return a single version of a package.",
+        "description": "Returns a single version for a given package, including the list of artifacts.",
+        "operationId": "getVersion",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "packageid",
+            "description": "Package identifier",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "versionid",
+            "description": "Package version identifier. Defaults to latest version if not provided.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "format",
+            "description": "Format for the data.",
+            "in": "query",
+            "type": "string",
+            "enum": ["json", "xml"],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PackageVersion"
+              }
+            }
+
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/package/{packageid}/download" : {
+      "get": {
+        "tags": ["packages"],
+        "summary": "Downloads the data for a package.",
+        "description": "Downloads the data for a given package, either for a single version or all versions, including the list of artifacts.",
+        "operationId": "downloadPackage",
+        "produces": ["application/json", "application/xml", "application/zip",  "application/octet-stream"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "packageid",
+            "description": "Package identifier",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "versionid",
+            "description": "Package version identifier. Defaults to latest version if not provided.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "format",
+            "description": "Download format.",
+            "in": "query",
+            "type": "string",
+            "enum": ["json", "xml", "pack", "zip"],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/package/{packageid}/delta" : {
+      "get": {
+        "tags": ["packages"],
+        "summary": "Gets the change log between two versions of a package.",
+        "description": "Diffs the content of two versions of the package and cascades to the artifacts if requested.",
+        "operationId": "delta",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "auth",
+            "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "btoken",
+            "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ssotoken",
+            "description": "Single sign on token, provided by OpenAM login server.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "packageid",
+            "description": "Package identifier",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "fromversion",
+            "description": "Version of the package to generate change logs to. Defaults to latest version if not provided.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "cascade",
+            "description" : "Cascade to package artifact change log.",
+            "in": "query",
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "format",
+            "description": "Format to get results in.",
+            "in": "query",
+            "type": "string",
+            "enum": ["json", "xml", "excel"],
+            "default": "json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid parameters"
+          },
+          "403": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Notification" : {
+      "type" : "object",
+      "properties" : {
+        "username" : {
+          "type": "string"
+        },
+        "target" : {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type":"string"
+            }
+          }
+
+        }
+      }
+    },
+    "Maps" : {
+      "type" : "object",
+      "properties" : {
+        "subsets" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Map"
+          }
+        },
+        "pagination" : {
+          "$ref" : "#/definitions/Pagination"
+        }
+      }
+    },
+    "Map": {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "map id"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "map name"
+        },
+        "url" : {
+          "type" : "string",
+          "description" : "url to map"
+        },
+        "fhirUri" : {
+          "type" : "string",
+          "description" : "FHIR URI of the map"
+        },
+        "latestVersion" : {
+          "type" : "string",
+          "description" : "id of the most recent map version"
+        },
+        "owner" : {
+          "type" : "string",
+          "description" : "organization owning the map"
+        },
+        "metadata" : {
+          "type" : "object",
+          "description" : "map of extra data"
+        },
+        "viewer" : {
+          "type" : "string",
+          "description" : "hint for the viewer to be used for rendering"
+        },
+        "tags" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "properties" : {
+          "type" : "object"
+        },
+        "domains" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "versions" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MapVersion"
+          }
+        }
+      }
+    },
+    "MapVersion" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "map id"
+        },
+        "versionId" : {
+          "type" : "string",
+          "description" : "version id of the map version"
+        },
+        "date" : {
+          "type" : "string",
+          "description" : "effective date of the map version",
+          "default" : "20170101"
+        },
+        "metadata" : {
+          "type" : "object"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : ["active","curated","public","retired"]
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "elements" : {
+          "type" : "array",
+          "items" : {
+            "$ref": "#/definitions/Concept"
+          }
+        },
+        "defaultElement" : {
+          "$ref" : "#/definitions/Concept"
+        }
+      }
+    },
+    "MapElements" : {
+      "type" : "object",
+      "properties" : {
+        "elements" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MapElement"
+          }
+        },
+        "pagination" : {
+          "$ref" : "#/definitions/Pagination"
+        }
+      }
+    },
+    "MapElement" : {
+      "type" : "object",
+      "properties" : {
+        "source" : {
+          "$ref" : "#/definitions/Concept"
+        },
+        "target" : {
+          "$ref" : "#/definitions/Concept"
+        }
+      }
+    },
+    "MapDelta" : {
+      "type" : "object",
+      "properties" : {
+        "fromVersionId" : {
+          "type" : "string",
+          "description" : "version identifier of map being compared from"
+        },
+        "toVersionId" : {
+          "type" : "string",
+          "description" : "version identifier of map being compared to"
+        },
+        "type" : {
+          "type" : "string",
+          "enum" : ["Map created", "Map metadata updated", "Map inactivated", "Element added", "Element updated", "Element removed"],
+          "description" : "type of change between two map versions"
+        },
+        "change" : {
+          "type" : "string",
+          "description" : "type of change between two map versions"
+        },
+        "effectiveDate" : {
+          "type" : "string",
+          "description" : "effective date of the change"
+        },
+        "fromVersion" : {
+          "$ref" : "#/definitions/MapVersion"
+        },
+        "toVersion" : {
+          "$ref" : "#/definitions/MapVersion"
+        },
+        "fromElement" : {
+          "$ref" : "#/definitions/MapElement"
+        },
+        "toElement" : {
+          "$ref" : "#/definitions/MapElement"
+        },
+        "updatedFields" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "description" : "updated properties between two map versions"
+        }
+      }
+    },
+    "CodeSystems" : {
+      "type" : "object",
+      "properties" : {
+        "codesystems" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CodeSystem"
+          }
+        },
+        "pagination" : {
+          "$ref" : "#/definitions/Pagination"
+        }
+      }
+    },
+    "CodeSystem" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "codesystem id"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "code system name"
+        },
+        "businessName" : {
+          "type" : "string",
+          "description" : "code system business name"
+        },
+        "url" : {
+          "type" : "string",
+          "description" : "code system URL"
+        },
+        "version" : {
+          "type" : "string",
+          "description" : "code system version"
+        },
+        "organization" : {
+          "type" : "string",
+          "description" : "organization owning the code system"
+        },
+        "latestVersion" : {
+          "type" : "string",
+          "description" : "id of the most recent codesystem version"
+        },
+        "versions" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CodeSystemVersion"
+          }
+        }
+      }
+    },
+    "CodeSystemVersion" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "codesystem id"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "codesystem name"
+        },
+        "versionId" : {
+          "type" : "string",
+          "description" : "codesystem version id"
+        },
+        "defaultLanguage" : {
+          "type" : "string",
+          "enum" : ["en"],
+          "description" : "codesystem version language in ISO639-1 format"
+        },
+        "supportedLanguage" : {
+          "type" : "string",
+          "description" : "codesystem version language in ISO639-1 format"
+        },
+        "propertyNames" : {
+          "type" : "object",
+          "description" : "map of the property names to their abbreviated form"
+        },
+        "propertyCodes" : {
+          "type" : "object",
+          "description" : "map of the abbreviated property names to their long form"
+        }
+      }
+    },
+    "Entities" : {
+      "type" : "object",
+      "properties" : {
+        "codesystems" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Entity"
+          }
+        },
+        "pagination" : {
+          "$ref" : "#/definitions/Pagination"
+        }
+      }
+    },
+    "Entity" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "entity id"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "entity name"
+        },
+        "definition" : {
+          "type" : "string",
+          "description" : "some definition"
+        },
+        "properties" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Subsets" : {
+      "type" : "object",
+      "properties" : {
+        "subsets" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Subset"
+          }
+        },
+        "pagination" : {
+          "$ref" : "#/definitions/Pagination"
+        }
+      }
+    },
+    "Subset" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "subset id"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "subset name"
+        },
+        "url" : {
+          "type" : "string",
+          "description" : "defining URL of the subset"
+        },
+        "fhirUri" : {
+          "type" : "string",
+          "description" : "FHIR URI of the subset"
+        },
+        "latestVersion" : {
+          "type" : "string",
+          "description" : "id of the most recent subset version"
+        },
+        "viewer" : {
+          "type" : "string",
+          "description" : "hint for the viewer to be used for rendering"
+        },
+        "versions" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SubsetVersion"
+          }
+        }
+      }
+    },
+    "SubsetVersion" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "subset id"
+        },
+        "url" : {
+          "type" : "string",
+          "description" : "subset url"
+        },
+        "fhirUri" : {
+          "type" : "string",
+          "description" : "FHIR URI of the subset"
+        },
+        "name" : {
+          "type": "string",
+          "description" : "subset name"
+        },
+        "versionId" : {
+          "type": "string",
+          "description" : "subset version id"
+        },
+        "effectiveDate" : {
+          "type": "string",
+          "description" : "version date in yyyyMMdd format"
+        },
+        "description" : {
+          "type": "string",
+          "description" : "subset version description"
+        },
+        "active" : {
+          "type": "string",
+          "enum" : ["true","false"],
+          "description" : "subset version status: active or inactive"
+        },
+        "status" : {
+          "type": "string",
+          "enum" : ["FINAL","DRAFT"],
+          "description" : "subset version status on whether metadata is a draft or finalized"
+        },
+        "language" : {
+          "type": "string",
+          "enum" : ["en"],
+          "description" : "subset version language in ISO639-1 format"
+        },
+        "comment" : {
+          "type": "string",
+          "description" : "release comment associated to the subset version"
+        },
+        "codeSystems" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CodeSystem"
+          }
+        }
+      }
+    },
+    "FullSubsetVersion" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "subset id"
+        },
+        "name" : {
+          "type": "string",
+          "description" : "subset name"
+        },
+        "versionId" : {
+          "type": "string",
+          "description" : "subset version id"
+        },
+        "effectiveDate" : {
+          "type": "string",
+          "description" : "version date in yyyyMMdd format"
+        },
+        "description" : {
+          "type": "string",
+          "description" : "subset version description"
+        },
+        "active" : {
+          "type": "string",
+          "enum" : ["true","false"],
+          "description" : "subset version status: active or inactive"
+        },
+        "language" : {
+          "type": "string",
+          "enum" : ["en"],
+          "description" : "subset version language in ISO639-1 format"
+        },
+        "comment" : {
+          "type": "string",
+          "description" : "release comment associated to the subset version"
+        },
+        "codeSystems" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CodeSystem"
+          }
+        },
+        "concepts" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Concept"
+          }
+        }
+      }
+    },
+    "Concepts" : {
+      "type" : "object",
+      "properties" : {
+        "concepts" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Concept"
+          }
+        },
+        "pagination" : {
+          "$ref" : "#/definitions/Pagination"
+        }
+      }
+    },
+    "Concept" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "concept id"
+        },
+        "name" : {
+          "type": "string",
+          "description" : "concept name"
+        },
+        "codeSystemId" : {
+          "type" : "string",
+          "description" : "code system id"
+        },
+        "codeSystemName" : {
+          "type" : "string",
+          "description" : "code system name"
+        },
+        "enDisplayName" : {
+          "type" : "string",
+          "description" : "English display name"
+        },
+        "enDisplayNameSecondary" : {
+          "type" : "string",
+          "description" : "secondary English display name"
+        },
+        "enAbbr" : {
+          "type" : "string",
+          "description" : "English name abbreviation"
+        },
+        "frDisplayName" : {
+          "type" : "string",
+          "description" : "French display name"
+        },
+        "frDisplayNameSecondary" : {
+          "type" : "string",
+          "description" : "secondary French display name"
+        },
+        "frAbbr" : {
+          "type" : "string",
+          "description" : "French name abbreviation"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "full concept description"
+        },
+        "effectiveDate" : {
+          "type" : "string",
+          "description" : "date when the concept was added to the concept or last modified in yyyyMMdd format",
+          "default" : "20170101"
+        },
+        "active" : {
+          "type": "string",
+          "enum" : ["true","false"],
+          "description" : "concept status: active or inactive"
+        },
+        "comment" : {
+          "type" : "string",
+          "description" : "additional comment"
+        },
+        "subsets" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SubsetVersionReference"
+          }
+        },
+
+        "properties" : {
+          "type" : "object",
+          "description" : "additional properties"
+        }
+      }
+    },
+    "SubsetVersionReference" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "subset id"
+        },
+        "name" : {
+          "type": "string",
+          "description" : "subset name"
+        },
+        "versionId" : {
+          "type": "string",
+          "description" : "subset version id"
+        },
+        "effectiveDate" : {
+          "type" : "string",
+          "description" : "date when the subset was added, in yyyyMMdd format",
+          "default" : "20170101"
+        },
+        "active" : {
+          "type": "string",
+          "enum" : ["true","false"],
+          "description" : "subset status: active or inactive"
+        }
+      }
+    },
+    "Association" : {
+      "type" : "object",
+      "properties" : {
+        "associationGroup" : {
+          "type" : "string",
+          "description" : "the concept association group"
+        },
+        "associationType" : {
+          "type" : "string",
+          "description" : "the concept association type"
+        },
+        "members" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Concept"
+          }
+        }
+      }
+    },
+    "Delta" : {
+      "type" : "object",
+      "properties" : {
+        "fromVersionId" : {
+          "type" : "string",
+          "description" : "previous version including data that has been modified"
+        },
+        "toVersionId" : {
+          "type" : "string",
+          "description" : "version where the change has been introduced"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "type of change",
+          "enum": ["SUBSET_ADDED","SUBSET_INACTIVATED","SUBSET_METADATA_UPDATED","CONCEPT_ADDED","CONCEPT_UPDATED","CONCEPT_INACTIVATED","CONCEPT_REMOVED", "RELATIONSHIP_ADDED", "RELATIONSHIP_REMOVED", "RELATIONSHIP_MOVED", "RELATIONSHIP_TYPE_CHANGED"]
+        },
+        "change" : {
+          "type" : "string",
+          "description" : "textual description of the change"
+        },
+        "effectiveDate" : {
+          "type" : "string",
+          "description" : "date when the change has been introduced"
+        },
+        "subsetMetadata" : {
+          "$ref" : "#/definitions/SubsetVersion"
+        },
+        "concept" : {
+          "$ref" : "#/definitions/Concept"
+        },
+        "relationship" : {
+          "$ref" : "#/definitions/Relationship"
+        },
+        "comments" : {
+          "type" : "string",
+          "description" : "additional comments"
+        }
+      }
+    },
+    "Relationship" : {
+      "type" : "object",
+      "properties" : {
+        "fromConceptParent" : {
+          "$ref" : "#/definitions/Concept"
+        },
+        "toConceptParent" : {
+          "$ref" : "#/definitions/Concept"
+        },
+        "fromConcept" : {
+          "$ref" : "#/definitions/Concept"
+        },
+        "toConcept" : {
+          "$ref" : "#/definitions/Concept"
+        },
+        "fromAssociationGroup" : {
+          "type" : "string",
+          "description" : "old value of concept's associationGroup"
+        },
+        "toAssociationGroup" : {
+          "type" : "string",
+          "description" : "new value of concept's associationGroup"
+        },
+        "fromAssociationType" : {
+          "type" : "string",
+          "description" : "old value of concept's associationType"
+        },
+        "toAssociationType" : {
+          "type" : "string",
+          "description" : "new value of concept's associationType"
+        }
+      }
+    },
+    "Pagination" : {
+      "type": "object",
+      "properties": {
+        "currentPage": {
+          "type": "integer",
+          "description": "currently returned page"
+        },
+        "totalPages": {
+          "type": "integer",
+          "description": "total number of pages required to displayed the entire result set"
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "page size"
+        },
+        "totalRecords": {
+          "type": "integer",
+          "description": "total number of records in the result set"
+        },
+        "firstRecord": {
+          "type": "integer",
+          "description": "first record returned by the current page"
+        },
+        "lastRecord": {
+          "type": "integer",
+          "description": "last record returned by the current page"
+        },
+        "nextPage": {
+          "type": "integer",
+          "description": "next page in the result set or -1 if this is the last page"
+        },
+        "nextRecord": {
+          "type": "integer",
+          "description": "next record in the result set or -1 if there are no more records to be returned"
+        }
+      }
+    },
+    "ResourceLocations" : {
+      "type" : "object",
+      "properties" : {
+        "resourceLocations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ResourceLocation"
+          }
+        },
+        "pagination" : {
+          "$ref" : "#/definitions/Pagination"
+        }
+      }
+    },
+    "ResourceLocation" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "name of the resource"
+        },
+        "canonical" :{
+          "type" : "string",
+          "description" : "canonical url of the resource"
+        },
+        "id" :{
+          "type" : "string",
+          "description" : "resource identifier"
+        },
+        "url" : {
+          "type" : "string",
+          "description" : "url of the resource"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "resource description"
+        },
+        "status" : {
+          "type" : "string",
+          "description" : "resource status",
+          "enum" : ["new", "curated", "public", "retired"]
+        },
+        "domain" : {
+          "type": "string",
+          "description" : "resource domain"
+        },
+        "interface" : {
+          "type" : "string",
+          "description" : "resource interface"
+        },
+        "type" : {
+          "type" : "array",
+          "description" : "type of the resource",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "publisher" : {
+          "type" : "object",
+          "description" : "resource publisher(s)"
+        },
+        "tags" : {
+          "type" : "array",
+          "description" : "tags associated with resource",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "metadata" : {
+          "type" : "object",
+          "description" : "metadata associated with resource"
+        }
+      }
+    },
+    "Packages" : {
+      "type" : "object",
+      "properties" : {
+        "packages" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Package"
+          }
+        },
+        "pagination" : {
+          "$ref" : "#/definitions/Pagination"
+        }
+      }
+    },
+    "Package" : {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "package identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "package name"
+        },
+        "url": {
+          "type": "string",
+          "description": "package url"
+        },
+        "latestVersion": {
+          "type": "string",
+          "description": "latest version of the package"
+        },
+        "status": {
+          "type": "string",
+          "description": "package status"
+        },
+        "viewer": {
+          "type": "string",
+          "description": "hint for the viewer for package to be rendered in"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PackageVersion"
+          },
+          "description": "versions of the package"
+        },
+        "tags": {
+          "type": "string",
+          "description": "tags associated with the package"
+        },
+        "properties": {
+          "type": "object",
+          "description": "additional properties"
+        },
+        "owner": {
+          "type": "string",
+          "description": "maintaining organization of the package"
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "domains the package belongs to"
+        }
+      }
+    },
+    "PackageVersion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "package identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "package name"
+        },
+        "versionId": {
+          "type" : "string",
+          "description": "version identifier"
+        },
+        "effectiveDate": {
+          "type": "string",
+          "description": "date when package version was added in yyyyMMdd format"
+        },
+        "description": {
+          "type": "string",
+          "description": "description of the package version"
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PackageArtifact"
+          },
+          "description": "composition of the package"
+        },
+        "releaseNotes": {
+          "type": "string",
+          "description": "description of the package version"
+        }
+      }
+    },
+    "PackageArtifact": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "type of the artifact: subset, codesystem or map"
+        },
+        "id": {
+          "type": "string",
+          "description": "identifier of the package artifact"
+        },
+        "name": {
+          "type": "string",
+          "description": "name of the package artifact"
+        },
+        "description": {
+          "type": "string",
+          "description": "description of the package artifact"
+        },
+        "versionId": {
+          "type": "string",
+          "description": "version identifier of the package artifact"
+        },
+        "visibility": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "FullPackageVersion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "package identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "package name"
+        },
+        "versionId": {
+          "type" : "string",
+          "description": "version identifier"
+        },
+        "description": {
+          "type": "string",
+          "description": "description of the package version"
+        },
+        "status": {
+          "type" : "string",
+          "description": "package version status"
+        },
+        "releaseNotes": {
+          "type" : "string",
+          "description": "release notes for this version of package"
+        },
+        "domains": {
+          "type" : "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "domains this package belongs to"
+        },
+        "owner": {
+          "type" : "string",
+          "description": "maintaining organization of this package"
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PackageArtifact"
+          },
+          "description": "composition of the package"
+        }
+      }
+    }
+  }
+}
