@@ -1,0 +1,28 @@
+# Canada Health Infoway — Terminology Gateway
+
+> Canada Health Infoway is an independent, federally funded not-for-profit that leads pan-Canadian digital-health interoperability. Its developer surface is the national Terminology Gateway: a HL7 FHIR R4 (4.0.1) terminology service plus a companion RESTful terminology API for browsing and downloading Canadian code systems, value sets (subsets), concept maps, and packages. Terminology content is gated behind free registration + a session/token login; the FHIR CapabilityStatement is served anonymously. Infoway also stewards CA Core+ / CA Baseline, the Canadian FHIR Registry, and the Canadian URI Registry.
+
+## APIs
+
+- [Infoway FHIR Terminology Service API](https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui): FHIR R4 CodeSystem/ValueSet/ConceptMap with $lookup, $expand, $translate, $validate-code. Base: https://termapi.infoway-inforoute.ca/fhir/v1
+- [Infoway Terminology Service API](https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html): RESTful browse/download of code systems, subsets, maps, packages, resource locations, and change notifications. Base: https://termapi.infoway-inforoute.ca/rest/v1
+
+## Specs
+
+- [FHIR Terminology OpenAPI (Swagger 2.0)](https://raw.githubusercontent.com/api-evangelist/canada-health-infoway/refs/heads/main/openapi/infoway-fhir-terminology-service-api-openapi.json)
+- [RESTful Terminology OpenAPI (Swagger 2.0)](https://raw.githubusercontent.com/api-evangelist/canada-health-infoway/refs/heads/main/openapi/infoway-terminology-service-api-openapi.json)
+- [FHIR CapabilityStatement (R4)](https://raw.githubusercontent.com/api-evangelist/canada-health-infoway/refs/heads/main/fhir/infoway-terminology-gateway-capabilitystatement.json)
+
+## Docs
+
+- [Developer Portal (Accelero)](https://accelero.infoway-inforoute.ca/en/tools/developer-tools)
+- [Terminology Service API docs](https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api)
+- [Digital Health Standards](https://www.infoway-inforoute.ca/en/what-we-do/connected-care/digital-health-standards)
+- [CA Core+ pan-Canadian core specification](https://accelero.infoway-inforoute.ca/en/initiatives/pan-canadian-core-specifications)
+- [Register (free)](https://accelero.infoway-inforoute.ca/en/register)
+
+## Auth
+
+- Session/token: Base64 basic credentials, SSO token (ssotoken), or JWT (btoken) via query param or Authorization header.
+- Login: POST https://termapi.infoway-inforoute.ca/rest/v1/session
+- No OAuth2 / SMART-on-FHIR scopes; no /.well-known/smart-configuration.

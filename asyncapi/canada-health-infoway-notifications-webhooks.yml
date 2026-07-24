@@ -1,0 +1,25 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/infoway-terminology-service-api-openapi.json (/notification)
+spec_type: Webhooks
+description: >-
+  The RESTful Terminology API exposes a webhook-style notification subscription surface
+  (not a streaming/AsyncAPI channel). Authenticated users subscribe to change notifications
+  for terminology targets (code systems, subsets, maps, packages); Infoway notifies the
+  subscriber when the subscribed content changes. No published AsyncAPI document exists, so
+  this captures the webhook/subscription catalog only.
+subscription_management:
+  list: {method: GET, path: /rest/v1/notification, operationId: getNotificationsList}
+  subscribe: {method: POST, path: /rest/v1/notification, operationId: addNotifications}
+  unsubscribe: {method: DELETE, path: /rest/v1/notification, operationId: cancelNotifications}
+subscription_model:
+  schema: openapi/infoway-terminology-service-api-openapi.json#/definitions/Notification
+  fields:
+    username: subscriber account
+    target: {name: subscribed resource name, type: resource type (codesystem/subset/map/package)}
+events:
+- name: terminology.content.changed
+  trigger: A subscribed terminology target (code system, subset, map, or package) is updated / a new version is published.
+  note: Event payload shape is not published in the OpenAPI; subscription record is the documented artifact.
+auth: Requires an authenticated session (see authentication/canada-health-infoway-authentication.yml).
+asyncapi_document: null

@@ -1,0 +1,66 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/infoway-terminology-service-api-openapi.json (definitions) + FHIR resource model
+description: >-
+  Entity-relationship graph derived from the RESTful terminology API definitions and the
+  FHIR terminology resource model. The two surfaces are projections of one terminology
+  content core: code systems and their entities/concepts, value-set subsets, concept maps,
+  and distributable packages.
+entities:
+- name: CodeSystem
+  fhir: CodeSystem
+  key: id (codesystemid)
+  fields: [id, name, url, fhirUri, latestVersion, versions]
+  relationships:
+  - {type: has_many, target: CodeSystemVersion, via: versions}
+  - {type: has_many, target: Entity, via: entities}
+- name: CodeSystemVersion
+  key: version
+  relationships:
+  - {type: belongs_to, target: CodeSystem, via: codesystemid}
+- name: Entity
+  key: entityid
+  relationships:
+  - {type: belongs_to, target: CodeSystem, via: codesystemid}
+- name: Concept
+  fhir: Coding
+  key: id (conceptid)
+  fields: [id, name, codeSystemId, codeSystemName, enDisplayName, frDisplayName, active, subsets, properties]
+  relationships:
+  - {type: belongs_to, target: CodeSystem, via: codeSystemId}
+  - {type: belongs_to, target: Subset, via: subsets}
+- name: Subset
+  fhir: ValueSet
+  key: id (subsetid)
+  fields: [id, name, url, fhirUri, latestVersion, versions]
+  relationships:
+  - {type: has_many, target: SubsetVersion, via: versions}
+  - {type: has_many, target: Concept, via: concepts}
+- name: SubsetVersion
+  key: version
+  relationships:
+  - {type: belongs_to, target: Subset, via: subsetid}
+- name: Map
+  fhir: ConceptMap
+  key: id (mapid)
+  fields: [id, name, url, fhirUri, latestVersion, owner, domains, versions]
+  relationships:
+  - {type: has_many, target: MapVersion, via: versions}
+  - {type: has_many, target: MapElement, via: concepts}
+  - {type: references, target: Subset, via: targets}
+- name: MapElement
+  relationships:
+  - {type: belongs_to, target: Map, via: mapid}
+- name: ResourceLocation
+  key: id
+  fields: [id, name, url]
+- name: Package
+  key: id (packageid)
+  fields: [id, name, url, status, owner, domains, versions, tags]
+  relationships:
+  - {type: has_many, target: PackageVersion, via: versions}
+  - {type: has_many, target: PackageArtifact, via: artifacts}
+- name: Notification
+  fields: [username, target]
+  note: Webhook-style subscription record (see asyncapi/canada-health-infoway-notifications-webhooks.yml).
+render: null

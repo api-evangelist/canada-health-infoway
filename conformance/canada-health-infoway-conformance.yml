@@ -1,0 +1,52 @@
+generated: '2026-07-24'
+method: searched
+source: FHIR CapabilityStatement (/fhir/v1/metadata) + openapi/*-openapi.json + Accelero docs
+description: >-
+  Industry / cross-cutting standards conformance for Canada Health Infoway's Terminology
+  Gateway. Infoway is the federal steward of pan-Canadian digital-health interoperability;
+  the developer surface is a HL7 FHIR R4 terminology service plus a companion RESTful API.
+standards:
+- id: hl7-fhir-r4
+  conforms: true
+  evidence: >-
+    Live CapabilityStatement at /fhir/v1/metadata declares fhirVersion 4.0.1; software
+    "Infoway Terminology Gateway" on HAPI FHIR.
+- id: fhir-terminology-service
+  conforms: true
+  evidence: >-
+    Implements the FHIR terminology operations $lookup (CodeSystem), $expand /
+    $validate-code (ValueSet), and $translate (ConceptMap).
+- id: ca-core-plus
+  conforms: true
+  evidence: >-
+    Infoway stewards CA Core+ (pan-Canadian core FHIR specification, developed with CIHI)
+    and the CA Baseline profiles; the Terminology Gateway serves the underlying code
+    systems, value sets, and concept maps.
+- id: ca-baseline
+  conforms: true
+  evidence: Steward of the CA Baseline pan-Canadian FHIR profiles.
+- id: rest
+  conforms: true
+  evidence: Both services are RESTful HTTPS APIs over JSON.
+- id: pagination
+  conforms: true
+  evidence: RESTful list responses embed a Pagination object; FHIR uses Bundle paging.
+- id: oauth2
+  conforms: false
+  evidence: No OAuth2 securitySchemes; auth is session/token (basic, SSO, JWT).
+- id: smart-on-fhir
+  conforms: false
+  evidence: No /.well-known/smart-configuration served (HTTP 404); terminology service, not a SMART app host.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: FHIR errors use OperationOutcome; RESTful errors use plain JSON, not application/problem+json.
+- id: oidc
+  conforms: false
+  evidence: No /.well-known/openid-configuration served.
+compliance_program:
+  published: false
+  note: >-
+    No SOC 2 / ISO 27001 / HIPAA / PCI trust-center or certification page is published for
+    the terminology developer surface. Infoway operates under Canadian federal privacy law
+    (PIPEDA) as a not-for-profit; no formal API-security certification program is advertised,
+    so no `Compliance` pointer is emitted (no fabrication).

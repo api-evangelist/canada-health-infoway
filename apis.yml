@@ -90,6 +90,42 @@ apis:
   - type: Documentation
     url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
 common:
+- type: DomainSecurity
+  url: security/canada-health-infoway-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/canada-health-infoway-agentic-access.yml
+- type: Authentication
+  url: authentication/canada-health-infoway-authentication.yml
+- type: Conventions
+  url: conventions/canada-health-infoway-conventions.yml
+- type: ErrorCatalog
+  url: errors/canada-health-infoway-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/canada-health-infoway-lifecycle.yml
+- type: Conformance
+  url: conformance/canada-health-infoway-conformance.yml
+- type: DataModel
+  url: data-model/canada-health-infoway-data-model.yml
+- type: MCPServer
+  url: mcp/canada-health-infoway-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/canada-health-infoway-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/canada-health-infoway-llms.txt
+- type: Overlay
+  name: FHIR Terminology Service enhancements
+  url: overlays/canada-health-infoway-fhir-terminology-service-api-overlay.yaml
+- type: Overlay
+  name: RESTful Terminology Service enhancements
+  url: overlays/canada-health-infoway-terminology-service-api-overlay.yaml
+- type: Webhooks
+  url: asyncapi/canada-health-infoway-notifications-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: TermsOfService
+  url: https://ic.infoway-inforoute.ca/en/about/tou?title=8_UserReferencesAndSupports/Terms_And_License_Agreements
+- type: PrivacyPolicy
+  url: https://www.infoway-inforoute.ca/en/privacy-policy
 - type: Website
   url: https://www.infoway-inforoute.ca/en/
 - type: DeveloperPortal

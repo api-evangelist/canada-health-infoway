@@ -1,0 +1,54 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/*-openapi.json + Accelero developer docs
+description: >-
+  Cross-cutting request/response semantics for Canada Health Infoway's Terminology Gateway
+  (FHIR R4 terminology service + companion RESTful terminology API). Derived from the two
+  Swagger 2.0 specs and the developer documentation.
+authentication:
+  style: session-token
+  detail: Base64 basic credentials, SSO token (ssotoken), or JWT (btoken) via query param or Authorization header
+  see: authentication/canada-health-infoway-authentication.yml
+idempotency:
+  supported: false
+  note: >-
+    No idempotency-key header or parameter is documented. The API surface is overwhelmingly
+    read-only (54 of 60 operations are GET); the few writes are session login/logout and
+    notification subscription management. No idempotency contract is published.
+pagination:
+  fhir:
+    style: fhir-bundle
+    detail: FHIR search returns a Bundle; standard FHIR paging (_count, Bundle.link next/self) applies.
+    params: [_count, _sort]
+  rest:
+    style: page-number
+    detail: RESTful list responses embed a Pagination object.
+    response_fields: [currentPage, totalPages, pageSize, totalRecords]
+    schema: openapi/infoway-terminology-service-api-openapi.json#/definitions/Pagination
+versioning:
+  scheme: uri-path
+  current: v1
+  detail: Both services are versioned in the path (/fhir/v1, /rest/v1). Content itself is versioned per resource via /_history (FHIR) and /versions + /delta (REST).
+content_negotiation:
+  fhir: [application/fhir+json, application/json]
+  rest: [application/json, application/xml]
+  pretty_print: "_pretty query parameter (FHIR)"
+error_envelope:
+  fhir:
+    format: fhir-operationoutcome
+    detail: FHIR errors are returned as an OperationOutcome resource per the HL7 FHIR R4 spec.
+    statuses: [400, 403, 404]
+  rest:
+    format: json
+    statuses: [400, 403]
+  see: errors/canada-health-infoway-problem-types.yml
+rate_limiting:
+  documented: false
+  note: No rate-limit headers or published quotas found.
+request_tracing:
+  documented: false
+cross_links:
+  authentication: authentication/canada-health-infoway-authentication.yml
+  errors: errors/canada-health-infoway-problem-types.yml
+  lifecycle: lifecycle/canada-health-infoway-lifecycle.yml
+  webhooks: asyncapi/canada-health-infoway-notifications-webhooks.yml

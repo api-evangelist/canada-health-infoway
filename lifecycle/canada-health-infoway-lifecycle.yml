@@ -1,0 +1,29 @@
+generated: '2026-07-24'
+method: searched
+source: openapi/*-openapi.json + infoway-inforoute.ca developer/legal pages
+versioning:
+  scheme: uri-path
+  current: v1
+  detail: >-
+    Both services carry the major version in the path (/fhir/v1, /rest/v1). FHIR resources
+    are individually versioned via /_history and /_history/{vid}; RESTful content exposes
+    /versions and /delta endpoints for versioned terminology change tracking.
+  content_versioning:
+    fhir: ["/_history", "/_history/{vid}"]
+    rest: ["/versions", "/delta", "/delta/download"]
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No published deprecation policy or RFC 8594 Sunset/Deprecation header support found.
+sla:
+  url: null
+  uptime_target: null
+  note: No published SLA (Infoway is a federally funded not-for-profit standards steward, not a commercial SaaS).
+status_page:
+  url: null
+  probed: https://status.infoway-inforoute.ca/
+  http_status: 000
+  note: No public status page resolves.
+terms_of_service: https://ic.infoway-inforoute.ca/en/about/tou?title=8_UserReferencesAndSupports/Terms_And_License_Agreements
+privacy_policy: https://www.infoway-inforoute.ca/en/privacy-policy
+deprecated_operations: []

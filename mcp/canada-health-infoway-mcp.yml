@@ -1,0 +1,49 @@
+generated: '2026-07-24'
+method: derived
+status: candidate
+source: openapi/infoway-fhir-terminology-service-api-openapi.json, openapi/infoway-terminology-service-api-openapi.json
+description: >-
+  Candidate MCP server derived from the Terminology Gateway OpenAPI operations. Canada
+  Health Infoway does not publish an official hosted MCP server; this is a proposed tool
+  surface an integrator could stand up over the read/terminology operations. Each tool
+  inherits its input contract from the backing OpenAPI operation. All content tools require
+  an authenticated Infoway session (see authentication/).
+server:
+  name: canada-health-infoway-terminology
+  transport: http
+  url: null
+  auth: session/token (basic, ssotoken, or btoken JWT)
+tools:
+- name: lookup_concept
+  description: FHIR $lookup — return properties/display for a code in a code system.
+  source_operation: openapi/infoway-fhir-terminology-service-api-openapi.json#lookupConcept
+- name: expand_valueset
+  description: FHIR $expand — expand a ValueSet into its member codes.
+  source_operation: openapi/infoway-fhir-terminology-service-api-openapi.json#getValueSetExpansion
+- name: validate_code
+  description: FHIR $validate-code — check whether a code is a member of a ValueSet.
+  source_operation: openapi/infoway-fhir-terminology-service-api-openapi.json#getValueSetCodeValidation
+- name: translate_concept
+  description: FHIR $translate — map a code through a ConceptMap.
+  source_operation: openapi/infoway-fhir-terminology-service-api-openapi.json#translateConcept
+- name: find_code_systems
+  description: Search FHIR CodeSystem resources.
+  source_operation: openapi/infoway-fhir-terminology-service-api-openapi.json#findCodeSystems
+- name: find_value_sets
+  description: Search FHIR ValueSet resources.
+  source_operation: openapi/infoway-fhir-terminology-service-api-openapi.json#findValueSets
+- name: get_capability_statement
+  description: Fetch the FHIR CapabilityStatement (anonymous).
+  source_operation: openapi/infoway-fhir-terminology-service-api-openapi.json#getCapabilityStatement
+- name: browse_codesystems
+  description: RESTful browse of Canadian code systems.
+  source_operation: openapi/infoway-terminology-service-api-openapi.json#getCodeSystems
+- name: browse_subsets
+  description: RESTful browse of terminology subsets (value sets).
+  source_operation: openapi/infoway-terminology-service-api-openapi.json#findSubsets
+- name: browse_maps
+  description: RESTful browse of concept maps.
+  source_operation: openapi/infoway-terminology-service-api-openapi.json#getAllMaps
+- name: browse_packages
+  description: RESTful browse of terminology packages.
+  source_operation: openapi/infoway-terminology-service-api-openapi.json#search

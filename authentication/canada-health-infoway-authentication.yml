@@ -1,0 +1,55 @@
+generated: '2026-07-24'
+method: searched
+source: openapi/*-openapi.json parameter descriptions + Accelero developer docs
+docs: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+summary:
+  types: [apiKey, http, session]
+  api_key_in: [query, header]
+  oauth2_flows: []
+  note: >-
+    Canada Health Infoway's Terminology Gateway does not declare OpenAPI securitySchemes
+    (both Swagger 2.0 specs omit securityDefinitions). Authentication is documented inline
+    on nearly every operation and via the RESTful session endpoint. Terminology CONTENT
+    reads are gated behind free account registration + an authenticated session; the FHIR
+    CapabilityStatement (/fhir/v1/metadata) is served anonymously. No OAuth2 / SMART-on-FHIR
+    scopes are used (no /.well-known/smart-configuration is served).
+schemes:
+- name: basic-auth-credentials
+  type: http
+  scheme: basic
+  in: [query, header]
+  credential: username:password Base64-encoded
+  passed_as:
+  - "query parameter: auth (Base64 username:password)"
+  - "HTTP header: Authorization: Basic <base64>"
+  sources: [openapi/infoway-fhir-terminology-service-api-openapi.json, openapi/infoway-terminology-service-api-openapi.json]
+- name: btoken-jwt
+  type: apiKey
+  in: query
+  parameter: btoken
+  scheme: bearer
+  format: JWT
+  description: >-
+    JSON Web Token issued by the session login. Returned as 'btoken' from POST /rest/v1/session
+    and accepted as a bearer/query token on subsequent reads.
+  sources: [openapi/infoway-terminology-service-api-openapi.json]
+- name: ssotoken
+  type: apiKey
+  in: query
+  parameter: ssotoken
+  description: >-
+    Single sign-on token (returned as 'authToken' from session login) for the Infoway SSO
+    at auth-users.infoway-inforoute.ca.
+  sources: [openapi/infoway-terminology-service-api-openapi.json]
+session:
+  login: POST /rest/v1/session
+  logout: DELETE /rest/v1/session
+  accepts: [auth, btoken, ssotoken]
+  returns: [authToken (SSO token), btoken (JWT), profile attributes]
+  operationId: login
+registration:
+  url: https://accelero.infoway-inforoute.ca/en/register
+  login_ui: https://auth-users.infoway-inforoute.ca/auth/UI/Login
+  cost: free
+anonymous_surface:
+- /fhir/v1/metadata (FHIR CapabilityStatement)

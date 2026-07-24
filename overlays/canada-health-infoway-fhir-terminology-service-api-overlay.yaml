@@ -1,0 +1,22 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Infoway FHIR Terminology Service API
+  version: 1.0.0
+extends: openapi/infoway-fhir-terminology-service-api-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: canada-health-infoway
+    x-apievangelist-api-kind: fhir-terminology-service
+    x-apievangelist-fhir-version: 4.0.1
+    x-apievangelist-standards: [hl7-fhir-r4, ca-core-plus, ca-baseline]
+    x-apievangelist-auth: session/token (basic, ssotoken, btoken JWT); CapabilityStatement anonymous
+    x-apievangelist-access: gated (free registration + session login for content)
+- target: $.info
+  update:
+    x-apievangelist-artifacts:
+      authentication: authentication/canada-health-infoway-authentication.yml
+      conventions: conventions/canada-health-infoway-conventions.yml
+      errors: errors/canada-health-infoway-problem-types.yml
+      conformance: conformance/canada-health-infoway-conformance.yml
+      capability_statement: fhir/infoway-terminology-gateway-capabilitystatement.json

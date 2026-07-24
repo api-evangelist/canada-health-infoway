@@ -1,0 +1,41 @@
+generated: '2026-07-24'
+method: derived
+source: mcp/canada-health-infoway-mcp.yml + openapi/*-openapi.json
+description: >-
+  Binds each candidate MCP tool to its backing OpenAPI operation(s). The MCP surface here is
+  a derived candidate (no official hosted server), so every tool is REST-backed 1:1 — there
+  are no MCP-only or GraphQL-only capabilities. Each tool inherits its real inputSchema from
+  the referenced operation's parameters. Remaining REST operations without a proposed tool are
+  listed under rest_only.
+crosswalk:
+- {tool: lookup_concept, category: terminology, rest: [lookupConcept, lookupConceptByCoding], binding: rest, confidence: high}
+- {tool: expand_valueset, category: terminology, rest: [getValueSetExpansion, getValueSetVersionExpansion], binding: rest, confidence: high}
+- {tool: validate_code, category: terminology, rest: [getValueSetCodeValidation, getValueSetVersionCodeValidation], binding: rest, confidence: high}
+- {tool: translate_concept, category: terminology, rest: [translateConcept], binding: rest, confidence: high}
+- {tool: find_code_systems, category: read, rest: [findCodeSystems], binding: rest, confidence: high}
+- {tool: find_value_sets, category: read, rest: [findValueSets], binding: rest, confidence: high}
+- {tool: get_capability_statement, category: read, rest: [getCapabilityStatement], binding: rest, confidence: high}
+- {tool: browse_codesystems, category: read, rest: [getCodeSystems], binding: rest, confidence: high}
+- {tool: browse_subsets, category: read, rest: [findSubsets], binding: rest, confidence: high}
+- {tool: browse_maps, category: read, rest: [getAllMaps], binding: rest, confidence: high}
+- {tool: browse_packages, category: read, rest: [search], binding: rest, confidence: high}
+mcp_only: []
+rest_only:
+- capability: fhir-resource-read
+  operations: [getCodeSystem, getCodeSystemHistory, getCodeSystemVersion, getConceptMap, getConceptMapHistory, getConceptMapVersion, getValueSet, getValueSetHistory, getValueSetVersion, findConceptMaps]
+- capability: rest-content-detail-and-versions
+  operations: [downloadCodeSystems, getCodeSystemVersions, downloadCodeSystem, getCodeSystemVersion, getCodeSystemEntities, getCodeSystemEntity, downloadSubsets, getSubsetVersions, getSubsetVersion, downloadSubset, deltaSubsets, downloadDeltaSubset, getConcepts, getConcept, mapDownload, mapVersions, getMapById, mapDownloadId, mapDelta, mapDeltaDownload, mapLatestVersionTarget, getMapElements]
+- capability: resource-locations-and-packages
+  operations: [searchResourceLocation, downloadResourceLocations, getResourceLocation, downloadPackages, getVersions, getVersion, downloadPackage, delta]
+- capability: session-and-notifications
+  operations: [login, logout, getNotificationsList, addNotifications, cancelNotifications]
+surfaces:
+  openapi: [openapi/infoway-fhir-terminology-service-api-openapi.json, openapi/infoway-terminology-service-api-openapi.json]
+  graphql: null
+  mcp: {url: null, status: candidate, gated: "content tools require authenticated session"}
+coverage:
+  tools_named: 11
+  tools_bound: 11
+  mcp_only: 0
+  rest_ops_total: 60
+  rest_ops_with_tool: 15

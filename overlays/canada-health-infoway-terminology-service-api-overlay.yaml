@@ -1,0 +1,22 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Infoway Terminology Service API (RESTful)
+  version: 1.0.0
+extends: openapi/infoway-terminology-service-api-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: canada-health-infoway
+    x-apievangelist-api-kind: rest-terminology
+    x-apievangelist-auth: session/token via POST /rest/v1/session (basic, ssotoken, btoken JWT)
+    x-apievangelist-access: gated (free registration + session login)
+    x-apievangelist-pagination: page-number (currentPage/totalPages/pageSize/totalRecords)
+    x-apievangelist-webhooks: /notification subscription surface
+- target: $.info
+  update:
+    x-apievangelist-artifacts:
+      authentication: authentication/canada-health-infoway-authentication.yml
+      conventions: conventions/canada-health-infoway-conventions.yml
+      errors: errors/canada-health-infoway-problem-types.yml
+      data_model: data-model/canada-health-infoway-data-model.yml
+      webhooks: asyncapi/canada-health-infoway-notifications-webhooks.yml

@@ -1,0 +1,16 @@
+generated: '2026-07-24'
+method: generated
+source: openapi/*-openapi.json (operationIds verified against the specs)
+skills:
+- file: canada-health-infoway-validate-and-lookup-code.md
+  name: Validate and look up a clinical code (FHIR terminology)
+  api: openapi/infoway-fhir-terminology-service-api-openapi.json
+  operations: [getCapabilityStatement, lookupConcept, findValueSets, getValueSetCodeValidation]
+- file: canada-health-infoway-translate-concept.md
+  name: Translate a code between code systems (FHIR $translate)
+  api: openapi/infoway-fhir-terminology-service-api-openapi.json
+  operations: [findConceptMaps, getConceptMap, translateConcept]
+- file: canada-health-infoway-browse-and-download-terminology.md
+  name: Browse and download Canadian terminology content (RESTful API)
+  api: openapi/infoway-terminology-service-api-openapi.json
+  operations: [login, getCodeSystems, findSubsets, getConcepts, downloadSubset, logout]

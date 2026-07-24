@@ -1,0 +1,41 @@
+generated: '2026-07-24'
+method: derived
+source: openapi/infoway-fhir-terminology-service-api-openapi.json, openapi/infoway-terminology-service-api-openapi.json
+format: fhir-operationoutcome
+note: >-
+  Derived from the 4xx responses declared across both Swagger 2.0 specs. The FHIR service
+  returns HL7 FHIR R4 OperationOutcome resources for errors (not RFC 9457 problem+json);
+  the RESTful service returns plain JSON error bodies. Statuses observed: 400, 403, 404.
+  Content reads without an authenticated session return 403 (REST) or a 500 on the FHIR
+  data endpoints (see review.yml probes).
+problems:
+- status: 400
+  title: Invalid parameters
+  meaning: The request contained invalid or malformed search/operation parameters.
+  fhir_outcome: invalid
+  applies_to: [FHIR terminology service, RESTful terminology service]
+  example_operations: [findCodeSystems, findValueSets, getValueSetExpansion, translateConcept]
+- status: 403
+  title: Missing or invalid credentials
+  meaning: >-
+    The caller is not authenticated (no valid session/token) or lacks access to gated
+    terminology content. Register for a free account and establish a session via
+    POST /rest/v1/session.
+  fhir_outcome: security
+  remediation: Authenticate via POST /rest/v1/session (auth / btoken / ssotoken) then retry.
+  applies_to: [FHIR terminology service, RESTful terminology service]
+  example_operations: [getCodeSystems, findCodeSystems, getConcepts]
+- status: 404
+  title: Resource not found
+  meaning: The requested resource (CodeSystem, ValueSet, ConceptMap by id/version) does not exist.
+  fhir_outcome: not-found
+  applies_to: [FHIR terminology service]
+  example_operations: [getCodeSystem, getValueSet, getConceptMap, getValueSetVersion]
+envelope:
+  fhir: OperationOutcome (issue[].severity, issue[].code, issue[].diagnostics)
+  rest: JSON error body
+gated_behaviour:
+  note: >-
+    Unauthenticated terminology-content requests are gated. The RESTful /codesystems read
+    returned 403 and the FHIR /CodeSystem search returned 500 without a session; only the
+    FHIR CapabilityStatement (/metadata) is anonymously reachable.
