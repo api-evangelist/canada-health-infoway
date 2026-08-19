@@ -1,0 +1,2067 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Terminology API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "codesystems",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves a list of codesystems",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/codesystems",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "returns only codesystems matching the given name. The name filter can use a regular expression format."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number used for pagination"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "page size used for pagination"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of codesystems matching the provided search criteria."
+        },
+        {
+          "info": {
+            "name": "Returns a downloadable list containing all codesystems.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/codesystems/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Generates a full list containing all codesystems. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set."
+        },
+        {
+          "info": {
+            "name": "Returns metadata for all versions of a codesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/codesystem/:codesystemid/versions",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "codesystemid",
+                "value": "",
+                "type": "path",
+                "description": "codesystem identifier"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              },
+              {
+                "name": "variant",
+                "value": "",
+                "type": "query",
+                "description": "SNOMED CT Variant. Required for SNOMED CT."
+              }
+            ]
+          },
+          "docs": "Returns the metadata associated to all codesystem version."
+        },
+        {
+          "info": {
+            "name": "Returns metadata for a single codesystem version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/codesystem/:codesystemid/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "security key required to access the web service"
+              },
+              {
+                "name": "codesystemid",
+                "value": "",
+                "type": "path",
+                "description": "codesystem identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "codesystem version, latest version if not provided"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "variant",
+                "value": "",
+                "type": "query",
+                "description": "SNOMED CT Variant. Required for SNOMED CT."
+              }
+            ]
+          },
+          "docs": "Returns downloadable metadata for a single codesystem version."
+        },
+        {
+          "info": {
+            "name": "Returns metadata for a single codesystem version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/codesystem/:codesystemid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "codesystemid",
+                "value": "",
+                "type": "path",
+                "description": "codesystem identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "codesystem version, latest version if not provided"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              },
+              {
+                "name": "variant",
+                "value": "",
+                "type": "query",
+                "description": "SNOMED CT Variant. Required for SNOMED CT."
+              }
+            ]
+          },
+          "docs": "Returns the metadata associated to a single codesystem version."
+        },
+        {
+          "info": {
+            "name": "Retrieves the list of entities that are part of a codesystem version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/codesystem/:codesystemid/entities",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "codesystemid",
+                "value": "",
+                "type": "path",
+                "description": "codesystem identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "codesystem version, latest version if not provided"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "returns only entities matching the given name. The name filter can use a regular expression format"
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number used for pagination"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "page size used for pagination"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Retrieves a full list of entities that are part of a codesystem version."
+        },
+        {
+          "info": {
+            "name": "Retrieves a single entity associated with a codesystem.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/codesystem/:codesystemid/entity/:entityid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "codesystemid",
+                "value": "",
+                "type": "path",
+                "description": "codesystem identifier"
+              },
+              {
+                "name": "entityid",
+                "value": "",
+                "type": "path",
+                "description": "codesystem identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "codesystem version, latest version if not provided"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Retrieves a single entity associated with a codesystem."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "subsets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves a list of subsets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subsets",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "active",
+                "value": "",
+                "type": "query",
+                "description": "returns active or inactive subsets if specified, all subsets if this parameter is absent"
+              },
+              {
+                "name": "reflang",
+                "value": "",
+                "type": "query",
+                "description": "returns only subsets for the specified language. The language identifier must be provided in ISO639-1 format"
+              },
+              {
+                "name": "startdate",
+                "value": "",
+                "type": "query",
+                "description": "returns only subsets that were active on or after the given start date. The date must be specified as yyyyMMdd"
+              },
+              {
+                "name": "enddate",
+                "value": "",
+                "type": "query",
+                "description": "returns only subsets that were active on or before the given end date. The date must be specified as yyyyMMdd"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "returns only subsets matching the given name. The name filter can use a regular expression format"
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number used for pagination"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "page size used for pagination"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "describes a specific category of subsets that this subset belongs to"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of subsets matching the provided search criteria."
+        },
+        {
+          "info": {
+            "name": "Returns a downloadable list containing all subsets.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subsets/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "describes a specific category of subsets that this subset belongs to"
+              }
+            ]
+          },
+          "docs": "Generates a full list containing all subsets. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set."
+        },
+        {
+          "info": {
+            "name": "Returns metadata for all versions of a subset.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subset/:subsetid/versions",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "subsetid",
+                "value": "",
+                "type": "path",
+                "description": "subset identifier"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Returns the metadata associated to all subset version."
+        },
+        {
+          "info": {
+            "name": "Returns metadata for a single subset version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subset/:subsetid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "subsetid",
+                "value": "",
+                "type": "path",
+                "description": "subset identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "subset version, latest version if not provided"
+              },
+              {
+                "name": "reflang",
+                "value": "",
+                "type": "query",
+                "description": "returns the subset version for the specified language. The language identifier must be provided in ISO639-1 format"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Returns the metadata associated to a single subset version."
+        },
+        {
+          "info": {
+            "name": "Downloads the data associated to a subset version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subset/:subsetid/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "subsetid",
+                "value": "",
+                "type": "path",
+                "description": "subset identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "subset version, latest version if not provided"
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              },
+              {
+                "name": "lang",
+                "value": "",
+                "type": "query",
+                "description": "returns the output in the specified language. Only supported for excel outputs. The language identifier must be provided in ISO639-1 format"
+              }
+            ]
+          },
+          "docs": "Downloads the data associated to a subset version. This includes all concepts that are part of the subset. The data is returned as an attachment to the HTTP response."
+        },
+        {
+          "info": {
+            "name": "Retrieves the delta between two subset versions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subset/:subsetid/delta",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "subsetid",
+                "value": "",
+                "type": "path",
+                "description": "subset identifier"
+              },
+              {
+                "name": "fromversion",
+                "value": "",
+                "type": "query",
+                "description": "id of the first subset version to be compared. The initial subset version will be used if this parameter isn't specified."
+              },
+              {
+                "name": "toversion",
+                "value": "",
+                "type": "query",
+                "description": "id of the second subset version to be compared. The most recent subset version will be used if this parameter isn't specified."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Generates a list of differences between two subset versions. The differeces might include changes in the subset metadata or their concept list. The versions that are being compared don't necessarily have to be consecutive."
+        },
+        {
+          "info": {
+            "name": "Downloads the delta between two subset versions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subset/:subsetid/delta/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "subsetid",
+                "value": "",
+                "type": "path",
+                "description": "subset identifier"
+              },
+              {
+                "name": "fromversion",
+                "value": "",
+                "type": "query",
+                "description": "id of the first subset version to be compared. The initial subset version will be used if this parameter isn't specified."
+              },
+              {
+                "name": "toversion",
+                "value": "",
+                "type": "query",
+                "description": "id of the second subset version to be compared. The most recent subset version will be used if this parameter isn't specified."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Downloads a list of differences between two subset versions. The differences might include changes in the subset metadata or their concept list. The versions that are being compared don't necessarily have to be consecutive."
+        },
+        {
+          "info": {
+            "name": "Retrieves the list of concepts that are part of a subset version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subset/:subsetid/concepts",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "subsetid",
+                "value": "",
+                "type": "path",
+                "description": "subset identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "subset version, latest version if not provided"
+              },
+              {
+                "name": "active",
+                "value": "",
+                "type": "query",
+                "description": "returns active or inactive concepts if specified, all concepts if this parameter is absent"
+              },
+              {
+                "name": "reflang",
+                "value": "",
+                "type": "query",
+                "description": "returns concepts for the specified language. The language identifier must be provided in ISO639-1 format"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "returns only concepts matching the given name. The name filter can use a regular expression format"
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number used for pagination"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "page size used for pagination"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Retrieves a full list of concepts that are part of a subset version."
+        },
+        {
+          "info": {
+            "name": "Retrieves the matching concept within the subset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subset/:subsetid/concepts/:conceptid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "subsetid",
+                "value": "",
+                "type": "path",
+                "description": "subset identifier"
+              },
+              {
+                "name": "conceptid",
+                "value": "",
+                "type": "path",
+                "description": "concept identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "version identifier for the subset"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Retrieves the concept details that matches the supplied concept identifier within the matching subset."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "maps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves a list of maps.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/maps",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "returns only maps matching the given name. The name filter supports globbing."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "returns only maps that has the given tag(s). Can search multiple tags by comma separating."
+              },
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": "returns only maps matching the given domain(s). Can search multiple domains by comma separating."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "returns only maps owned by the the specified owner."
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number used for pagination"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "page size used for pagination"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of maps matching the provided search criteria."
+        },
+        {
+          "info": {
+            "name": "Returns a downloadable list containing all maps.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/maps/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction. Only relevant if the sortby parameter is also specified."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Generates a full list containing all maps. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set."
+        },
+        {
+          "info": {
+            "name": "Returns metadata for all versions of a map.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/map/:mapid/versions",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "mapid",
+                "value": "",
+                "type": "path",
+                "description": "map identifier"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Returns the metadata associated to all map version."
+        },
+        {
+          "info": {
+            "name": "Returns metadata for a single map version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/map/:mapid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "mapid",
+                "value": "",
+                "type": "path",
+                "description": "map identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "map version identifer"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Returns the metadata associated to a single map version. Chooses the latest map version if versionid is not provided."
+        },
+        {
+          "info": {
+            "name": "Downloads the data associated to a map version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/map/:mapid/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "mapid",
+                "value": "",
+                "type": "path",
+                "description": "map identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "map version identifer"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Downloads the data associated to a map version. This includes all map elements that are part of this map. The data is returned as an attachement to the HTTP response."
+        },
+        {
+          "info": {
+            "name": "Retrieves the delta between two map versions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/map/:mapid/delta",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "mapid",
+                "value": "",
+                "type": "path",
+                "description": "map identifier"
+              },
+              {
+                "name": "fromversion",
+                "value": "",
+                "type": "query",
+                "description": "from map version identifer"
+              },
+              {
+                "name": "toversion",
+                "value": "",
+                "type": "query",
+                "description": "to map version identifer"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Generates a list of differences between two map versiosn. The differences might include changes in the map metadata or their map elements list. The versions that are being compared don't necessarily have to be consecutive."
+        },
+        {
+          "info": {
+            "name": "Downloads the delta between two map versions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/map/:mapid/delta/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "mapid",
+                "value": "",
+                "type": "path",
+                "description": "map identifier"
+              },
+              {
+                "name": "fromversion",
+                "value": "",
+                "type": "query",
+                "description": "from map version identifer"
+              },
+              {
+                "name": "toversion",
+                "value": "",
+                "type": "query",
+                "description": "to map version identifer"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Downloads a list of differences between two map versions. The differences might include changes in the map metadata or their map elements list. The versions that are being compared don't necessarily have to be consecutive."
+        },
+        {
+          "info": {
+            "name": "Retrieves a list of map elements for the supplied map version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/map/:mapid/targets",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "mapid",
+                "value": "",
+                "type": "path",
+                "description": "map identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "map version identifier"
+              },
+              {
+                "name": "src",
+                "value": "",
+                "type": "query",
+                "description": "concept codes, comma separate for multiple"
+              },
+              {
+                "name": "subset",
+                "value": "",
+                "type": "query",
+                "description": "subset identifier"
+              },
+              {
+                "name": "subsetver",
+                "value": "",
+                "type": "query",
+                "description": "subset version identifier"
+              },
+              {
+                "name": "reverse",
+                "value": "",
+                "type": "query",
+                "description": "boolean to reverse map element's source and target concepts for reverse lookup"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number used for pagination"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "page size used for pagination"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of map elements from a supplied version of a map matching the provided search criteria. Gets latest map version if versionid is not supplied"
+        },
+        {
+          "info": {
+            "name": "Retrieves elements belonging to a map.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/map/:mapid/concepts",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "mapid",
+                "value": "",
+                "type": "path",
+                "description": "map identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "map version identifier"
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "sorts the result set by the specified field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "sorting direction."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number used for pagination"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "page size used for pagination"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Retrieves all map elements belonging to a map."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "resourcelocations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves a list of resource locations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ResourceLocation",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Name of the resource"
+              },
+              {
+                "name": "publisher",
+                "value": "",
+                "type": "query",
+                "description": "Publisher of the resource"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Resource tags"
+              },
+              {
+                "name": "meta",
+                "value": "",
+                "type": "query",
+                "description": "Metadata associated with the resource"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number used for pagination"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "page size used for pagination"
+              }
+            ]
+          },
+          "docs": "Retrives a list of resource locations that matches the supplied parameters."
+        },
+        {
+          "info": {
+            "name": "Retrieves a list of all resource locations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ResourceLocation/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "output format"
+              }
+            ]
+          },
+          "docs": "Retrives a list of all resource locations in the specified format"
+        },
+        {
+          "info": {
+            "name": "Retrieves a resource location.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ResourceLocation/:id",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "resource identifier"
+              }
+            ]
+          },
+          "docs": "Retrives a resource location with the matching identifier."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "notification",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all notifications.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/notification",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "query",
+                "description": "Username for the subscriptions. Must match the currently logged in user or match the username from other credentials provided."
+              }
+            ]
+          },
+          "docs": "Get all notifications for the currently logged user."
+        },
+        {
+          "info": {
+            "name": "Subscribe to a resource.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/notification",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              }
+            ]
+          },
+          "docs": "Subscribe to a resource. Must provide a request body with the field target and an optional field username, which must match the logged user's username or username from other credentials."
+        },
+        {
+          "info": {
+            "name": "Deletes a subscription to a resource.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/notification",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              }
+            ]
+          },
+          "docs": "Deletes a subscription to a resource. Must provide a request body."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "session",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Login in with basic authorization credentials, single sign on token or JSON web token.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/session",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              }
+            ]
+          },
+          "docs": "Explicitly login programmatically. Returns a JSON with your username, single sign on token named 'authToken', JSON web token named 'btoken' and miscellaenous profile attributes."
+        },
+        {
+          "info": {
+            "name": "Explicitly logout programtically.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/session",
+            "params": [
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              }
+            ]
+          },
+          "docs": "Logout explicitly using your single sign on token. Your single sign on token will be expired after executing this call. You will be logged out from all Canada Health Infoway web services."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "packages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search for packages.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/packages",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              },
+              {
+                "name": "active",
+                "value": "",
+                "type": "query",
+                "description": "Search packages by their status"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Search packages by their name. Supports globs."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Search packages by their associated tags."
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Search packages by their maintaining organization."
+              },
+              {
+                "name": "domains",
+                "value": "",
+                "type": "query",
+                "description": "Search packages by their associated domains."
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "Sort search results by a field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "Sorting direction for the search results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number of the paginated search results."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "Page size of the paginated search results."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format for the search results."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of packages that matches the search criteria."
+        },
+        {
+          "info": {
+            "name": "Download a list of all packages.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/packages/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              },
+              {
+                "name": "sortby",
+                "value": "",
+                "type": "query",
+                "description": "Sort search results by a field."
+              },
+              {
+                "name": "sortdir",
+                "value": "",
+                "type": "query",
+                "description": "Sorting direction for the search results."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format for the data."
+              }
+            ]
+          },
+          "docs": "Download a list of all packages as an HTTP attachment."
+        },
+        {
+          "info": {
+            "name": "Return all versions of a package.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/package/:packageid/versions",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              },
+              {
+                "name": "packageid",
+                "value": "",
+                "type": "path",
+                "description": "Package identifier"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format for the data."
+              }
+            ]
+          },
+          "docs": "Returns all the versions for a given package, including the list of artifacts."
+        },
+        {
+          "info": {
+            "name": "Return a single version of a package.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/package/:packageid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              },
+              {
+                "name": "packageid",
+                "value": "",
+                "type": "path",
+                "description": "Package identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "Package version identifier. Defaults to latest version if not provided."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format for the data."
+              }
+            ]
+          },
+          "docs": "Returns a single version for a given package, including the list of artifacts."
+        },
+        {
+          "info": {
+            "name": "Downloads the data for a package.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/package/:packageid/download",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              },
+              {
+                "name": "packageid",
+                "value": "",
+                "type": "path",
+                "description": "Package identifier"
+              },
+              {
+                "name": "versionid",
+                "value": "",
+                "type": "query",
+                "description": "Package version identifier. Defaults to latest version if not provided."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Download format."
+              }
+            ]
+          },
+          "docs": "Downloads the data for a given package, either for a single version or all versions, including the list of artifacts."
+        },
+        {
+          "info": {
+            "name": "Gets the change log between two versions of a package.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/package/:packageid/delta",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "btoken",
+                "value": "",
+                "type": "query",
+                "description": "JSON web token. This token can alternatively be passed in the 'Authorization: Bearer' HTTP header."
+              },
+              {
+                "name": "ssotoken",
+                "value": "",
+                "type": "query",
+                "description": "Single sign on token, provided by OpenAM login server."
+              },
+              {
+                "name": "packageid",
+                "value": "",
+                "type": "path",
+                "description": "Package identifier"
+              },
+              {
+                "name": "fromversion",
+                "value": "",
+                "type": "query",
+                "description": "Version of the package to generate change logs to. Defaults to latest version if not provided."
+              },
+              {
+                "name": "cascade",
+                "value": "",
+                "type": "query",
+                "description": "Cascade to package artifact change log."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Format to get results in."
+              }
+            ]
+          },
+          "docs": "Diffs the content of two versions of the package and cascades to the artifacts if requested."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -2,12 +2,10 @@ generated: '2026-07-24'
 method: derived
 status: candidate
 source: openapi/infoway-fhir-terminology-service-api-openapi.json, openapi/infoway-terminology-service-api-openapi.json
-description: >-
-  Candidate MCP server derived from the Terminology Gateway OpenAPI operations. Canada
-  Health Infoway does not publish an official hosted MCP server; this is a proposed tool
-  surface an integrator could stand up over the read/terminology operations. Each tool
-  inherits its input contract from the backing OpenAPI operation. All content tools require
-  an authenticated Infoway session (see authentication/).
+description: Candidate MCP server derived from the Terminology Gateway OpenAPI operations. Canada Health
+  Infoway does not publish an official hosted MCP server; this is a proposed tool surface an integrator
+  could stand up over the read/terminology operations. Each tool inherits its input contract from the
+  backing OpenAPI operation. All content tools require an authenticated Infoway session (see authentication/).
 server:
   name: canada-health-infoway-terminology
   transport: http
@@ -47,3 +45,9 @@ tools:
 - name: browse_packages
   description: RESTful browse of terminology packages.
   source_operation: openapi/infoway-terminology-service-api-openapi.json#search
+deployment:
+  mode: none
+  verified: derived
+  tools: 11
+  checked: '2026-08-12'
+  source: catalog MCP census

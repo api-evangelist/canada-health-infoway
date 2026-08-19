@@ -1,0 +1,885 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Terminology FHIR API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CodeSystem",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves a list of code systems",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/CodeSystem",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the code system. By default, this filter matches a code system if its name equals or starts with the supplied parameter value.  Also supports the <a href='http://www.hl7.org/fhir/search.html#string'><code>:contains</code> and <code>:exact</code> modifiers</a>."
+              },
+              {
+                "name": "_sort",
+                "value": "",
+                "type": "query",
+                "description": "Indicates which order to return the results. Terminology Gateway currently only supports sorting on a single field, not chained sort rules."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of code systems matching the provided search criteria."
+        },
+        {
+          "info": {
+            "name": "Retrieves a single code system by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/CodeSystem/:id",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The code system identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "_summary",
+                "value": "",
+                "type": "query",
+                "description": "Requests that the server return a subset of the resource.  Code System concepts are omitted if set to true."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a single code system corresponding to the provided id."
+        },
+        {
+          "info": {
+            "name": "Retrieves the history of a particular code system",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/CodeSystem/:id/_history",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The code system identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves the specified version history, sorted with oldest versions last"
+        },
+        {
+          "info": {
+            "name": "Retrieves a single code system by id and version id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/CodeSystem/:id/_history/:vid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The code system identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "vid",
+                "value": "",
+                "type": "path",
+                "description": "The code system version identifier."
+              },
+              {
+                "name": "_summary",
+                "value": "",
+                "type": "query",
+                "description": "Requests that the server return a subset of the resource.  Code System concepts are omitted if set to true."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a single code system corresponding to the provided id and version id."
+        },
+        {
+          "info": {
+            "name": "Retrieves a single concept from a code system",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/CodeSystem/$lookup",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "code",
+                "value": "",
+                "type": "query",
+                "description": "The code that is to be located."
+              },
+              {
+                "name": "system",
+                "value": "",
+                "type": "query",
+                "description": "The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "The version of the code system."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Given a code and a code system, get additional details about the concept, including definition, status, designations, and properties."
+        },
+        {
+          "info": {
+            "name": "Retrieves a single concept from a code system",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/CodeSystem/$lookup",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              }
+            ]
+          },
+          "docs": "Given a Coding, get additional details about the concept, including definition, status, designations, and properties."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ConceptMap",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves a list of concept maps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ConceptMap",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the concept map. By default, this filter matches a concept map if its name equals or starts with the supplied parameter value.  Also supports the <a href='http://www.hl7.org/fhir/search.html#string'><code>:contains</code> and <code>:exact</code> modifiers</a>."
+              },
+              {
+                "name": "_sort",
+                "value": "",
+                "type": "query",
+                "description": "Indicates which order to return the results. Terminology Gateway currently only supports sorting on a single field, not chained sort rules."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of concept maps matching the provided search criteria."
+        },
+        {
+          "info": {
+            "name": "Retrieves a single concept map by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ConceptMap/:id",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The concept map identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a single concept map corresponding to the provided id."
+        },
+        {
+          "info": {
+            "name": "Retrieves the history of a particular concept map",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ConceptMap/:id/_history",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The concept map identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves the specified version history, sorted with oldest versions last"
+        },
+        {
+          "info": {
+            "name": "Retrieves a single concept map by id and version id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ConceptMap/:id/_history/:vid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The concept map identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "vid",
+                "value": "",
+                "type": "path",
+                "description": "The concept map version identifier."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a single concept map corresponding to the provided id and version id."
+        },
+        {
+          "info": {
+            "name": "Translate a code from one value set to another, based on the existing value set and concept maps resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ConceptMap/:id/$translate",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The concept map identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "code",
+                "value": "",
+                "type": "query",
+                "description": "The code that is to be translated."
+              },
+              {
+                "name": "system",
+                "value": "",
+                "type": "query",
+                "description": "The system for the code that is to be translated"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "The version of the system, if one was provided in the source data"
+              },
+              {
+                "name": "reverse",
+                "value": "",
+                "type": "query",
+                "description": "if this is true, then the operation should return all the codes that might be mapped to this code."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "The operation returns a set of parameters including a 'result' for whether there is an acceptable match."
+        },
+        {
+          "info": {
+            "name": "Translate a code from one value set to another, based on the existing value set and concept maps resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/ConceptMap/:id/$translate",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The concept map identifier. Either the OID or the name are considered valid identifiers."
+              }
+            ]
+          },
+          "docs": "The operation returns a set of parameters including a 'result' for whether there is an acceptable match."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ValueSet",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves a list of value sets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ValueSet",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the value set. Regular expression format is allowed for this parameter."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "The value set publication date. The expected format is 'yyyy-MM-dd'."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the value set."
+              },
+              {
+                "name": "_sort",
+                "value": "",
+                "type": "query",
+                "description": "Indicates which order to return the results. Terminology Gateway currently only supports sorting on a single field, not chained sort rules."
+              },
+              {
+                "name": "_count",
+                "value": "",
+                "type": "query",
+                "description": "Enables pagination by providing a hint to the server regarding how many resources should be returned in a single page."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of value sets matching the provided search criteria."
+        },
+        {
+          "info": {
+            "name": "Retrieves a single value set by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ValueSet/:id",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "value set identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a single value set corresponding to the provided id."
+        },
+        {
+          "info": {
+            "name": "Retrieves the history of a particular value set",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ValueSet/:id/_history",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "value set identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "_since",
+                "value": "",
+                "type": "query",
+                "description": "Only include resource versions that were created at or after the given instant in time. The expected format is 'yyyy-MM-dd'."
+              },
+              {
+                "name": "_at",
+                "value": "",
+                "type": "query",
+                "description": "Only include resource versions that were current at some point during the time period. The expected format is 'yyyy-MM-dd'."
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves the specified version history, sorted with oldest versions last"
+        },
+        {
+          "info": {
+            "name": "Retrieves a single value set by id and version id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ValueSet/:id/_history/:vid",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "value set identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "vid",
+                "value": "",
+                "type": "path",
+                "description": "value set version identifier"
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a single value set corresponding to the provided id and version id."
+        },
+        {
+          "info": {
+            "name": "Retrieves a single value set by id including all active concepts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ValueSet/:id/$expand",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "value set identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "A text filter that is applied to restrict the names of the codes that are returned. Regular expression format is allowed for this parameter."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "The date for which the expansion should be generated. The expected format is 'yyyy-MM-dd'."
+              },
+              {
+                "name": "displayLanguage",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the language to be used for description in the expansions i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)"
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a single value set corresponding to the provided id. The value set is expanded, and includes all active concepts."
+        },
+        {
+          "info": {
+            "name": "Retrieves a single value set by id and version id including all active concepts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ValueSet/:id/_history/:vid/$expand",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "value set identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "vid",
+                "value": "",
+                "type": "path",
+                "description": "value set version identifier"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "A text filter that is applied to restrict the names of the codes that are returned. Regular expression format is allowed for this parameter."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "The date for which the expansion should be generated. The expected format is 'yyyy-MM-dd'."
+              },
+              {
+                "name": "displayLanguage",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the language to be used for description in the expansions i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)"
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves a single value set corresponding to the provided id and version id. The value set is expanded, and includes all active concepts."
+        },
+        {
+          "info": {
+            "name": "Validates that a single code is a member of a value set",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ValueSet/:id/$validate-code",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "value set identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "code",
+                "value": "",
+                "type": "query",
+                "description": "The code that is to be validated."
+              },
+              {
+                "name": "system",
+                "value": "",
+                "type": "query",
+                "description": "The code system id for the code that is to be validated."
+              },
+              {
+                "name": "display",
+                "value": "",
+                "type": "query",
+                "description": "The display associated with the code, if provided."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "The date for which the validation should be checked. Normally, this is the current conditions (which is the default values) but under some circumstances, systems need to validate that a correct code was used at some point in the past. The expected format is 'yyyy-MM-dd'."
+              },
+              {
+                "name": "displayLanguage",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter. Specifies the language to be used for description in the validation i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)"
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Validates that a single code is a member of a value set"
+        },
+        {
+          "info": {
+            "name": "Validates that a single code is a member of a given version of a value set",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ValueSet/:id/_history/:vid/$validate-code",
+            "params": [
+              {
+                "name": "auth",
+                "value": "",
+                "type": "query",
+                "description": "basic access authentication credentials, specified as username:password and encoded using <a href='https://www.base64encode.org/' target='_blank'><b>Base64</b></a> encoding. These credentials can alternatively be passed in the 'Authorization: Basic' HTTP header."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "value set identifier. Either the OID or the name are considered valid identifiers."
+              },
+              {
+                "name": "vid",
+                "value": "",
+                "type": "path",
+                "description": "value set version identifier"
+              },
+              {
+                "name": "code",
+                "value": "",
+                "type": "query",
+                "description": "The code that is to be validated."
+              },
+              {
+                "name": "system",
+                "value": "",
+                "type": "query",
+                "description": "The code system id for the code that is to be validated."
+              },
+              {
+                "name": "display",
+                "value": "",
+                "type": "query",
+                "description": "The display associated with the code, if provided."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "The date for which the validation should be checked. Normally, this is the current conditions (which is the default values) but under some circumstances, systems need to validate that a correct code was used at some point in the past. The expected format is 'yyyy-MM-dd'."
+              },
+              {
+                "name": "displayLanguage",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter. Specifies the language to be used for description in the validation i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)"
+              },
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Validates that a single code is a member of a given version of a value set"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "CapabilityStatement",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves the server's capability statement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metadata",
+            "params": [
+              {
+                "name": "_pretty",
+                "value": "",
+                "type": "query",
+                "description": "Non-standard parameter to request that responses be pretty-printed."
+              }
+            ]
+          },
+          "docs": "Retrieves the server's capability statement"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
