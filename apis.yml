@@ -43,7 +43,7 @@ tags:
 - CA Core
 created: '2026-07-24'
 modified: '2026-07-24'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: canada-health-infoway:infoway-fhir-terminology-service-api
   name: Infoway FHIR Terminology Service API
