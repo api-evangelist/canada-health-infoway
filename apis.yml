@@ -45,50 +45,205 @@ created: '2026-07-24'
 modified: '2026-07-24'
 specificationVersion: '0.23'
 apis:
-- aid: canada-health-infoway:infoway-fhir-terminology-service-api
-  name: Infoway FHIR Terminology Service API
+- aid: canada-health-infoway:canada-health-infoway-capabilitystatement-api
+  name: Canada Health Infoway Capability Statement API
   description: >-
-    HL7 FHIR R4 (4.0.1) terminology service from Canada Health Infoway's Terminology Gateway
-    (HAPI FHIR), exposing CodeSystem, ValueSet, ConceptMap, and OperationDefinition resources
-    with read/vread/history/search plus the $lookup, $expand, $translate, and $validate-code
-    terminology operations. A live FHIR CapabilityStatement is served at the base URL's
-    /metadata endpoint.
+    The CapabilityStatement API from Canada Health Infoway — 1 operation(s) for capabilitystatement.
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
-  - FHIR
-  - Terminology
-  - Healthcare
-  - Interoperability
+  - CapabilityStatement
   properties:
   - type: OpenAPI
-    url: openapi/infoway-fhir-terminology-service-api-openapi.json
+    url: openapi/canada-health-infoway-capabilitystatement-api-openapi.yml
   - type: CapabilityStatement
     url: fhir/infoway-terminology-gateway-capabilitystatement.json
   - type: APIReference
     url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   - type: Documentation
     url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
-- aid: canada-health-infoway:infoway-terminology-service-api
-  name: Infoway Terminology Service API
-  description: >-
-    RESTful (non-FHIR) terminology API from Canada Health Infoway for browsing and downloading
-    Canadian terminology content - code systems, subsets (value sets), maps, resource locations,
-    and packages - with delta/versioning, session login (basic credentials, SSO token, or JWT),
-    and webhook-style notification subscriptions.
-  humanURL: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
-  baseURL: https://termapi.infoway-inforoute.ca/rest/v1
-  tags:
-  - Terminology
-  - Healthcare
-  - REST
-  properties:
-  - type: OpenAPI
-    url: openapi/infoway-terminology-service-api-openapi.json
   - type: APIReference
     url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-codesystem-api
+  name: Canada Health Infoway Code System API
+  description: The CodeSystem API from Canada Health Infoway — 5 operation(s) for codesystem.
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - CodeSystem
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-codesystem-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   - type: Documentation
     url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-codesystems-api
+  name: Canada Health Infoway Codesystems API
+  description: APIs for accessing code system data
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - codesystems
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-codesystems-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-conceptmap-api
+  name: Canada Health Infoway Concept Map API
+  description: The ConceptMap API from Canada Health Infoway — 5 operation(s) for conceptmap.
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - ConceptMap
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-conceptmap-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-maps-api
+  name: Canada Health Infoway Maps API
+  description: APIs for accessing map data
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - maps
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-maps-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-notification-api
+  name: Canada Health Infoway Notification API
+  description: APIs for accessing user notifications
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - notification
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-notification-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-packages-api
+  name: Canada Health Infoway Packages API
+  description: APIs for accessing package data
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - packages
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-packages-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-resourcelocations-api
+  name: Canada Health Infoway Resourcelocations API
+  description: APIs for accessing resource location data
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - resourcelocations
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-resourcelocations-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-session-api
+  name: Canada Health Infoway Session API
+  description: APIs for programmatically logging in
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - session
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-session-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-subsets-api
+  name: Canada Health Infoway Subsets API
+  description: APIs for terminology subsets
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - subsets
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-subsets-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
+- aid: canada-health-infoway:canada-health-infoway-valueset-api
+  name: Canada Health Infoway Value Set API
+  description: The ValueSet API from Canada Health Infoway — 8 operation(s) for valueset.
+  humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
+  tags:
+  - ValueSet
+  properties:
+  - type: OpenAPI
+    url: openapi/canada-health-infoway-valueset-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/infoway-terminology-gateway-capabilitystatement.json
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
+  - type: Documentation
+    url: https://accelero.infoway-inforoute.ca/en/tools/developer-tools/terminology-service-api
+  - type: APIReference
+    url: https://termapi.infoway-inforoute.ca/schema/v1/swaggerui/index.html
 common:
 - type: DomainSecurity
   url: security/canada-health-infoway-domain-security.yml
