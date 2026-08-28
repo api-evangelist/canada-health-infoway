@@ -17,6 +17,18 @@ description: >-
   market rather than a commercial clinical-data platform; the terminology content APIs are
   gated behind free registration and a session/token login, while the FHIR CapabilityStatement
   is served anonymously.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: registration
