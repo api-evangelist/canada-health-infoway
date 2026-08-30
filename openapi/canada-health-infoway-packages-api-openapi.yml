@@ -1,0 +1,554 @@
+openapi: 3.2.0
+info:
+  description: RESTful web services used to browse terminology data.
+  version: 1.0.0
+  title: Terminology Packages API
+  termsOfService: http://swagger.io/terms/
+servers:
+- url: /rest/v1
+tags:
+- name: packages
+  description: APIs for accessing package data
+paths:
+  /packages:
+    get:
+      tags:
+      - packages
+      summary: Search for packages.
+      description: Retrieve a list of packages that matches the search criteria.
+      operationId: search
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      - name: active
+        description: Search packages by their status
+        in: query
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+      - name: name
+        description: Search packages by their name. Supports globs.
+        in: query
+        schema:
+          type: string
+      - name: tags
+        description: Search packages by their associated tags.
+        in: query
+        schema:
+          type: string
+      - name: owner
+        description: Search packages by their maintaining organization.
+        in: query
+        schema:
+          type: string
+      - name: domains
+        description: Search packages by their associated domains.
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: Sort search results by a field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - owner
+      - name: sortdir
+        description: Sorting direction for the search results.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+          default: ascending
+      - name: page
+        description: Page number of the paginated search results.
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: Page size of the paginated search results.
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      - name: format
+        description: Format for the search results.
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Packages'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Packages'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /packages/download:
+    get:
+      tags:
+      - packages
+      summary: Download a list of all packages.
+      description: Download a list of all packages as an HTTP attachment.
+      operationId: downloadPackages
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: Sort search results by a field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+      - name: sortdir
+        description: Sorting direction for the search results.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+          default: ascending
+      - name: format
+        description: Format for the data.
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /package/{packageid}/versions:
+    get:
+      tags:
+      - packages
+      summary: Return all versions of a package.
+      description: Returns all the versions for a given package, including the list of artifacts.
+      operationId: getVersions
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      - name: packageid
+        description: Package identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: format
+        description: Format for the data.
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /package/{packageid}:
+    get:
+      tags:
+      - packages
+      summary: Return a single version of a package.
+      description: Returns a single version for a given package, including the list of artifacts.
+      operationId: getVersion
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      - name: packageid
+        description: Package identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: versionid
+        description: Package version identifier. Defaults to latest version if not provided.
+        in: query
+        schema:
+          type: string
+      - name: format
+        description: Format for the data.
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersion'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersion'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /package/{packageid}/download:
+    get:
+      tags:
+      - packages
+      summary: Downloads the data for a package.
+      description: Downloads the data for a given package, either for a single version or all versions, including the list of artifacts.
+      operationId: downloadPackage
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      - name: packageid
+        description: Package identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: versionid
+        description: Package version identifier. Defaults to latest version if not provided.
+        in: query
+        schema:
+          type: string
+      - name: format
+        description: Download format.
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - pack
+          - zip
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+            application/zip:
+              schema:
+                type: string
+                format: binary
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /package/{packageid}/delta:
+    get:
+      tags:
+      - packages
+      summary: Gets the change log between two versions of a package.
+      description: Diffs the content of two versions of the package and cascades to the artifacts if requested.
+      operationId: delta
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      - name: packageid
+        description: Package identifier
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: fromversion
+        description: Version of the package to generate change logs to. Defaults to latest version if not provided.
+        in: query
+        schema:
+          type: string
+      - name: cascade
+        description: Cascade to package artifact change log.
+        in: query
+        schema:
+          type: boolean
+          default: 'false'
+      - name: format
+        description: Format to get results in.
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - excel
+          default: json
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+components:
+  schemas:
+    PackageVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: package identifier
+        name:
+          type: string
+          description: package name
+        versionId:
+          type: string
+          description: version identifier
+        effectiveDate:
+          type: string
+          description: date when package version was added in yyyyMMdd format
+        description:
+          type: string
+          description: description of the package version
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageArtifact'
+          description: composition of the package
+        releaseNotes:
+          type: string
+          description: description of the package version
+    Packages:
+      type: object
+      properties:
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Package'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Package:
+      type: object
+      properties:
+        id:
+          type: string
+          description: package identifier
+        name:
+          type: string
+          description: package name
+        url:
+          type: string
+          description: package url
+        latestVersion:
+          type: string
+          description: latest version of the package
+        status:
+          type: string
+          description: package status
+        viewer:
+          type: string
+          description: hint for the viewer for package to be rendered in
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageVersion'
+          description: versions of the package
+        tags:
+          type: string
+          description: tags associated with the package
+        properties:
+          type: object
+          description: additional properties
+        owner:
+          type: string
+          description: maintaining organization of the package
+        domains:
+          type: array
+          items:
+            type: string
+          description: domains the package belongs to
+    PackageArtifact:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'type of the artifact: subset, codesystem or map'
+        id:
+          type: string
+          description: identifier of the package artifact
+        name:
+          type: string
+          description: name of the package artifact
+        description:
+          type: string
+          description: description of the package artifact
+        versionId:
+          type: string
+          description: version identifier of the package artifact
+        visibility:
+          type: string
+          description: ''
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned

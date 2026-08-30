@@ -1,0 +1,244 @@
+openapi: 3.2.0
+info:
+  description: RESTful web services used to browse terminology data.
+  version: 1.0.0
+  title: Terminology Resourcelocations API
+  termsOfService: http://swagger.io/terms/
+servers:
+- url: /rest/v1
+tags:
+- name: resourcelocations
+  description: APIs for accessing resource location data
+paths:
+  /ResourceLocation:
+    get:
+      tags:
+      - resourcelocations
+      summary: Retrieves a list of resource locations.
+      description: Retrives a list of resource locations that matches the supplied parameters.
+      operationId: searchResourceLocation
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: name
+        description: Name of the resource
+        in: query
+        schema:
+          type: string
+      - name: publisher
+        description: Publisher of the resource
+        in: query
+        schema:
+          type: string
+      - name: tags
+        description: Resource tags
+        in: query
+        schema:
+          type: string
+      - name: meta
+        description: Metadata associated with the resource
+        in: query
+        schema:
+          type: string
+      - name: page
+        description: page number used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: page size used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResourceLocations'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ResourceLocation/download:
+    get:
+      tags:
+      - resourcelocations
+      summary: Retrieves a list of all resource locations.
+      description: Retrives a list of all resource locations in the specified format
+      operationId: downloadResourceLocations
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: output format
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - excel
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ResourceLocation/{id}:
+    get:
+      tags:
+      - resourcelocations
+      summary: Retrieves a resource location.
+      description: Retrives a resource location with the matching identifier.
+      operationId: getResourceLocation
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: resource identifier
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceLocation'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+components:
+  schemas:
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned
+    ResourceLocations:
+      type: object
+      properties:
+        resourceLocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceLocation'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    ResourceLocation:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of the resource
+        canonical:
+          type: string
+          description: canonical url of the resource
+        id:
+          type: string
+          description: resource identifier
+        url:
+          type: string
+          description: url of the resource
+        description:
+          type: string
+          description: resource description
+        status:
+          type: string
+          description: resource status
+          enum:
+          - new
+          - curated
+          - public
+          - retired
+        domain:
+          type: string
+          description: resource domain
+        interface:
+          type: string
+          description: resource interface
+        type:
+          type: array
+          description: type of the resource
+          items:
+            type: string
+        publisher:
+          type: object
+          description: resource publisher(s)
+        tags:
+          type: array
+          description: tags associated with resource
+          items:
+            type: string
+        metadata:
+          type: object
+          description: metadata associated with resource

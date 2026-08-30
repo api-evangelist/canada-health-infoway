@@ -1,0 +1,135 @@
+openapi: 3.2.0
+info:
+  description: RESTful web services used to browse terminology data.
+  version: 1.0.0
+  title: Terminology Notification API
+  termsOfService: http://swagger.io/terms/
+servers:
+- url: /rest/v1
+tags:
+- name: notification
+  description: APIs for accessing user notifications
+paths:
+  /notification:
+    get:
+      tags:
+      - notification
+      summary: Get all notifications.
+      description: Get all notifications for the currently logged user.
+      operationId: getNotificationsList
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      - name: username
+        description: Username for the subscriptions. Must match the currently logged in user or match the username from other credentials provided.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+    post:
+      tags:
+      - notification
+      summary: Subscribe to a resource.
+      description: Subscribe to a resource. Must provide a request body with the field target and an optional field username, which must match the logged user's username or username from other credentials.
+      operationId: addNotifications
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Notification'
+        description: A 'target' field is required, which consists of mandatory field 'type' and either of 'id' or 'name' of the resource, comma-separated for multiple. Globbing is supported for resource names. 'Username' field is optional but must match the logged user's username or username from other credentials.
+        required: true
+    delete:
+      tags:
+      - notification
+      summary: Deletes a subscription to a resource.
+      description: Deletes a subscription to a resource. Must provide a request body.
+      operationId: cancelNotifications
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Notification'
+        description: A 'target' field is required, which consists of mandatory field 'type' and either of 'id' or 'name' of the resource, comma-separated for multiple. Globbing is supported for resource names. 'Username' field is optional but must match the logged user's username or username from other credentials.
+        required: true
+components:
+  schemas:
+    Notification:
+      type: object
+      properties:
+        username:
+          type: string
+        target:
+          type: object
+          properties:
+            name:
+              type: string
+            type:
+              type: string

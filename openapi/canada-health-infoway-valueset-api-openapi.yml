@@ -1,0 +1,627 @@
+openapi: 3.2.0
+info:
+  description: FHIR web services used to access terminology data.
+  version: 1.0.0
+  title: Terminology FHIR Value Set API
+  termsOfService: https://ic.infoway-inforoute.ca/en/about/tou?title=8_UserReferencesAndSupports/Terms_And_License_Agreements
+servers:
+- url: /fhir/v1
+tags:
+- name: ValueSet
+paths:
+  /ValueSet:
+    get:
+      tags:
+      - ValueSet
+      summary: Retrieves a list of value sets
+      description: Retrieves a list of value sets matching the provided search criteria.
+      operationId: findValueSets
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: name
+        description: The name of the value set. Regular expression format is allowed for this parameter.
+        in: query
+        schema:
+          type: string
+      - name: date
+        description: The value set publication date. The expected format is 'yyyy-MM-dd'.
+        in: query
+        schema:
+          type: string
+      - name: status
+        description: The status of the value set.
+        in: query
+        schema:
+          type: string
+          enum:
+          - active
+          - draft
+          - retired
+      - name: _sort
+        description: Indicates which order to return the results. Terminology Gateway currently only supports sorting on a single field, not chained sort rules.
+        in: query
+        schema:
+          type: string
+          enum:
+          - _id
+          - -_id
+          - name
+          - -name
+          - status
+          - -status
+      - name: _count
+        description: Enables pagination by providing a hint to the server regarding how many resources should be returned in a single page.
+        in: query
+        schema:
+          type: string
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleOfValueSets'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ValueSet/{id}:
+    get:
+      tags:
+      - ValueSet
+      summary: Retrieves a single value set by id
+      description: Retrieves a single value set corresponding to the provided id.
+      operationId: getValueSet
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: value set identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValueSet'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ValueSet/{id}/_history:
+    get:
+      tags:
+      - ValueSet
+      summary: Retrieves the history of a particular value set
+      description: Retrieves the specified version history, sorted with oldest versions last
+      operationId: getValueSetHistory
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: value set identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: _since
+        description: Only include resource versions that were created at or after the given instant in time. The expected format is 'yyyy-MM-dd'.
+        in: query
+        schema:
+          type: string
+      - name: _at
+        description: Only include resource versions that were current at some point during the time period. The expected format is 'yyyy-MM-dd'.
+        in: query
+        schema:
+          type: string
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleOfValueSets'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ValueSet/{id}/_history/{vid}:
+    get:
+      tags:
+      - ValueSet
+      summary: Retrieves a single value set by id and version id
+      description: Retrieves a single value set corresponding to the provided id and version id.
+      operationId: getValueSetVersion
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: value set identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: vid
+        required: true
+        description: value set version identifier
+        in: path
+        schema:
+          type: string
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValueSet'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ValueSet/{id}/$expand:
+    get:
+      tags:
+      - ValueSet
+      summary: Retrieves a single value set by id including all active concepts
+      description: Retrieves a single value set corresponding to the provided id. The value set is expanded, and includes all active concepts.
+      operationId: getValueSetExpansion
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: value set identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: filter
+        description: A text filter that is applied to restrict the names of the codes that are returned. Regular expression format is allowed for this parameter.
+        in: query
+        schema:
+          type: string
+      - name: date
+        description: The date for which the expansion should be generated. The expected format is 'yyyy-MM-dd'.
+        in: query
+        schema:
+          type: string
+      - name: displayLanguage
+        description: Specifies the language to be used for description in the expansions i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+          - fr
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpandedValueSet'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ValueSet/{id}/_history/{vid}/$expand:
+    get:
+      tags:
+      - ValueSet
+      summary: Retrieves a single value set by id and version id including all active concepts
+      description: Retrieves a single value set corresponding to the provided id and version id. The value set is expanded, and includes all active concepts.
+      operationId: getValueSetVersionExpansion
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: value set identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: vid
+        required: true
+        description: value set version identifier
+        in: path
+        schema:
+          type: string
+      - name: filter
+        description: A text filter that is applied to restrict the names of the codes that are returned. Regular expression format is allowed for this parameter.
+        in: query
+        schema:
+          type: string
+      - name: date
+        description: The date for which the expansion should be generated. The expected format is 'yyyy-MM-dd'.
+        in: query
+        schema:
+          type: string
+      - name: displayLanguage
+        description: Specifies the language to be used for description in the expansions i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+          - fr
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpandedValueSet'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ValueSet/{id}/$validate-code:
+    get:
+      tags:
+      - ValueSet
+      summary: Validates that a single code is a member of a value set
+      description: Validates that a single code is a member of a value set
+      operationId: getValueSetCodeValidation
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: value set identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: code
+        required: true
+        description: The code that is to be validated.
+        in: query
+        schema:
+          type: string
+      - name: system
+        required: true
+        description: The code system id for the code that is to be validated.
+        in: query
+        schema:
+          type: string
+      - name: display
+        description: The display associated with the code, if provided.
+        in: query
+        schema:
+          type: string
+      - name: date
+        description: The date for which the validation should be checked. Normally, this is the current conditions (which is the default values) but under some circumstances, systems need to validate that a correct code was used at some point in the past. The expected format is 'yyyy-MM-dd'.
+        in: query
+        schema:
+          type: string
+      - name: displayLanguage
+        description: Non-standard parameter. Specifies the language to be used for description in the validation i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+          - fr
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parameters'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ValueSet/{id}/_history/{vid}/$validate-code:
+    get:
+      tags:
+      - ValueSet
+      summary: Validates that a single code is a member of a given version of a value set
+      description: Validates that a single code is a member of a given version of a value set
+      operationId: getValueSetVersionCodeValidation
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: value set identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: vid
+        required: true
+        description: value set version identifier
+        in: path
+        schema:
+          type: string
+      - name: code
+        required: true
+        description: The code that is to be validated.
+        in: query
+        schema:
+          type: string
+      - name: system
+        required: true
+        description: The code system id for the code that is to be validated.
+        in: query
+        schema:
+          type: string
+      - name: display
+        description: The display associated with the code, if provided.
+        in: query
+        schema:
+          type: string
+      - name: date
+        description: The date for which the validation should be checked. Normally, this is the current conditions (which is the default values) but under some circumstances, systems need to validate that a correct code was used at some point in the past. The expected format is 'yyyy-MM-dd'.
+        in: query
+        schema:
+          type: string
+      - name: displayLanguage
+        description: Non-standard parameter. Specifies the language to be used for description in the validation i.e. the language to be used for ValueSet.expansion.contains.display. (default = en)
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+          - fr
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parameters'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+components:
+  schemas:
+    BundleOfValueSets:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Bundle
+        id:
+          type: string
+          description: local identifier of the bundle as assigned by the server
+        meta:
+          type: object
+          properties:
+            lastUpdated:
+              type: string
+              format: date-time
+              description: when the resource last changed
+          description: metadata about the bundle
+        type:
+          type: string
+          enum:
+          - searchset
+          description: indicates the purpose of this bundle
+        total:
+          type: integer
+          format: int32
+          description: the total number of matches for the search
+        link:
+          type: array
+          items:
+            type: object
+            properties:
+              relation:
+                type: string
+                description: a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]
+              url:
+                type: string
+                description: the reference details for the link
+          description: a series of links that provide context to this bundle
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              fullUrl:
+                type: string
+                description: the absolute URL for the resource
+              resource:
+                $ref: '#/components/schemas/ValueSet'
+    Parameters:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Parameters
+        parameter:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the parameter
+              valueBoolean:
+                type: boolean
+                description: The value of the parameter, represented as a boolean
+              valueString:
+                type: string
+                description: The value of the parameter, represented as a string
+    ValueSet:
+      type: object
+      required:
+      - status
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - ValueSet
+        id:
+          type: string
+          description: local identifier of the value set as assigned by the server
+        identifier:
+          $ref: '#/components/schemas/OID'
+        version:
+          type: string
+          description: id of this version of the value set
+        name:
+          type: string
+          description: informal name for this value set
+        status:
+          type: string
+          enum:
+          - active
+          - draft
+          - retired
+          description: status of this version of the value set
+        description:
+          type: string
+          description: Human language description of the value set
+    OID:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    ExpandedValueSet:
+      type: object
+      required:
+      - status
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - ValueSet
+        id:
+          type: string
+          description: local identifier of the value set as assigned by the server
+        identifier:
+          $ref: '#/components/schemas/OID'
+        version:
+          type: string
+          description: id of this version of the value set
+        name:
+          type: string
+          description: informal name for this value set
+        status:
+          type: string
+          enum:
+          - active
+          - draft
+          - retired
+          description: status of this version of the value set
+        description:
+          type: string
+          description: Human language description of the value set
+        expansion:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: Time ValueSet expansion happened
+              total:
+                type: integer
+                format: int32
+                description: Total number of codes in the expansion
+              contains:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    system:
+                      $ref: '#/components/schemas/OID'
+                    abstract:
+                      type: boolean
+                      description: If user cannot select this entry
+                    version:
+                      type: string
+                      description: Version in which this code/display is defined
+                    code:
+                      type: string
+                      description: Code - if blank, this is not a selectable code
+                    display:
+                      type: string
+                      description: User display for the concept
+externalDocs:
+  description: Find out more
+  url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway

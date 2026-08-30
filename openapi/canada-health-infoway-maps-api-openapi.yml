@@ -1,0 +1,864 @@
+openapi: 3.2.0
+info:
+  description: RESTful web services used to browse terminology data.
+  version: 1.0.0
+  title: Terminology Maps API
+  termsOfService: http://swagger.io/terms/
+servers:
+- url: /rest/v1
+tags:
+- name: maps
+  description: APIs for accessing map data
+paths:
+  /maps:
+    get:
+      tags:
+      - maps
+      summary: Retrieves a list of maps.
+      description: Retrieves a list of maps matching the provided search criteria.
+      operationId: getAllMaps
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: name
+        description: returns only maps matching the given name. The name filter supports globbing.
+        in: query
+        schema:
+          type: string
+      - name: tags
+        description: returns only maps that has the given tag(s). Can search multiple tags by comma separating.
+        in: query
+        schema:
+          type: string
+      - name: domain
+        description: returns only maps matching the given domain(s). Can search multiple domains by comma separating.
+        in: query
+        schema:
+          type: string
+      - name: owner
+        description: returns only maps owned by the the specified owner.
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: page
+        description: page number used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: page size used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Maps'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Maps'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /maps/download:
+    get:
+      tags:
+      - maps
+      summary: Returns a downloadable list containing all maps.
+      description: Generates a full list containing all maps. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set.
+      operationId: mapDownload
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /map/{mapid}/versions:
+    get:
+      tags:
+      - maps
+      summary: Returns metadata for all versions of a map.
+      description: Returns the metadata associated to all map version.
+      operationId: mapVersions
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: mapid
+        required: true
+        description: map identifier
+        in: path
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MapVersion'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MapVersion'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /map/{mapid}:
+    get:
+      tags:
+      - maps
+      summary: Returns metadata for a single map version.
+      description: Returns the metadata associated to a single map version. Chooses the latest map version if versionid is not provided.
+      operationId: getMapById
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: mapid
+        required: true
+        description: map identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: map version identifer
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Map'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Map'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /map/{mapid}/download:
+    get:
+      tags:
+      - maps
+      summary: Downloads the data associated to a map version.
+      description: Downloads the data associated to a map version. This includes all map elements that are part of this map. The data is returned as an attachement to the HTTP response.
+      operationId: mapDownloadId
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: mapid
+        required: true
+        description: map identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: map version identifer
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /map/{mapid}/delta:
+    get:
+      tags:
+      - maps
+      summary: Retrieves the delta between two map versions.
+      description: Generates a list of differences between two map versiosn. The differences might include changes in the map metadata or their map elements list. The versions that are being compared don't necessarily have to be consecutive.
+      operationId: mapDelta
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: mapid
+        required: true
+        description: map identifier
+        in: path
+        schema:
+          type: string
+      - name: fromversion
+        description: from map version identifer
+        in: query
+        schema:
+          type: string
+      - name: toversion
+        description: to map version identifer
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MapDelta'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MapDelta'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /map/{mapid}/delta/download:
+    get:
+      tags:
+      - maps
+      summary: Downloads the delta between two map versions.
+      description: Downloads a list of differences between two map versions. The differences might include changes in the map metadata or their map elements list. The versions that are being compared don't necessarily have to be consecutive.
+      operationId: mapDeltaDownload
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: mapid
+        required: true
+        description: map identifier
+        in: path
+        schema:
+          type: string
+      - name: fromversion
+        description: from map version identifer
+        in: query
+        schema:
+          type: string
+      - name: toversion
+        description: to map version identifer
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /map/{mapid}/targets:
+    get:
+      tags:
+      - maps
+      summary: Retrieves a list of map elements for the supplied map version.
+      description: Retrieves a list of map elements from a supplied version of a map matching the provided search criteria. Gets latest map version if versionid is not supplied
+      operationId: mapLatestVersionTarget
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: mapid
+        required: true
+        description: map identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: map version identifier
+        in: query
+        schema:
+          type: string
+      - name: src
+        description: concept codes, comma separate for multiple
+        in: query
+        schema:
+          type: string
+      - name: subset
+        description: subset identifier
+        in: query
+        schema:
+          type: string
+      - name: subsetver
+        description: subset version identifier
+        in: query
+        schema:
+          type: string
+      - name: reverse
+        description: boolean to reverse map element's source and target concepts for reverse lookup
+        in: query
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: page
+        description: page number used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: page size used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MapElements'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MapElements'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /map/{mapid}/concepts:
+    get:
+      tags:
+      - maps
+      summary: Retrieves elements belonging to a map.
+      description: Retrieves all map elements belonging to a map.
+      operationId: getMapElements
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: mapid
+        required: true
+        description: map identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: map version identifier
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+      - name: sortdir
+        description: sorting direction.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: page
+        description: page number used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: page size used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      - name: format
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MapElements'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+components:
+  schemas:
+    MapDelta:
+      type: object
+      properties:
+        fromVersionId:
+          type: string
+          description: version identifier of map being compared from
+        toVersionId:
+          type: string
+          description: version identifier of map being compared to
+        type:
+          type: string
+          enum:
+          - Map created
+          - Map metadata updated
+          - Map inactivated
+          - Element added
+          - Element updated
+          - Element removed
+          description: type of change between two map versions
+        change:
+          type: string
+          description: type of change between two map versions
+        effectiveDate:
+          type: string
+          description: effective date of the change
+        fromVersion:
+          $ref: '#/components/schemas/MapVersion'
+        toVersion:
+          $ref: '#/components/schemas/MapVersion'
+        fromElement:
+          $ref: '#/components/schemas/MapElement'
+        toElement:
+          $ref: '#/components/schemas/MapElement'
+        updatedFields:
+          type: array
+          items:
+            type: string
+          description: updated properties between two map versions
+    SubsetVersionReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: date when the subset was added, in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset status: active or inactive'
+    Maps:
+      type: object
+      properties:
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Map'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Concept:
+      type: object
+      properties:
+        id:
+          type: string
+          description: concept id
+        name:
+          type: string
+          description: concept name
+        codeSystemId:
+          type: string
+          description: code system id
+        codeSystemName:
+          type: string
+          description: code system name
+        enDisplayName:
+          type: string
+          description: English display name
+        enDisplayNameSecondary:
+          type: string
+          description: secondary English display name
+        enAbbr:
+          type: string
+          description: English name abbreviation
+        frDisplayName:
+          type: string
+          description: French display name
+        frDisplayNameSecondary:
+          type: string
+          description: secondary French display name
+        frAbbr:
+          type: string
+          description: French name abbreviation
+        description:
+          type: string
+          description: full concept description
+        effectiveDate:
+          type: string
+          description: date when the concept was added to the concept or last modified in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'concept status: active or inactive'
+        comment:
+          type: string
+          description: additional comment
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubsetVersionReference'
+        properties:
+          type: object
+          description: additional properties
+    MapElement:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/Concept'
+        target:
+          $ref: '#/components/schemas/Concept'
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned
+    MapVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: map id
+        versionId:
+          type: string
+          description: version id of the map version
+        date:
+          type: string
+          description: effective date of the map version
+          default: '20170101'
+        metadata:
+          type: object
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - curated
+          - public
+          - retired
+        type:
+          type: string
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        defaultElement:
+          $ref: '#/components/schemas/Concept'
+    Map:
+      type: object
+      properties:
+        id:
+          type: string
+          description: map id
+        name:
+          type: string
+          description: map name
+        url:
+          type: string
+          description: url to map
+        fhirUri:
+          type: string
+          description: FHIR URI of the map
+        latestVersion:
+          type: string
+          description: id of the most recent map version
+        owner:
+          type: string
+          description: organization owning the map
+        metadata:
+          type: object
+          description: map of extra data
+        viewer:
+          type: string
+          description: hint for the viewer to be used for rendering
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+        domains:
+          type: array
+          items:
+            type: string
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MapVersion'
+    MapElements:
+      type: object
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/MapElement'
+        pagination:
+          $ref: '#/components/schemas/Pagination'

@@ -1,0 +1,658 @@
+openapi: 3.2.0
+info:
+  description: RESTful web services used to browse terminology data.
+  version: 1.0.0
+  title: Terminology Codesystems API
+  termsOfService: http://swagger.io/terms/
+servers:
+- url: /rest/v1
+tags:
+- name: codesystems
+  description: APIs for accessing code system data
+paths:
+  /codesystems:
+    get:
+      tags:
+      - codesystems
+      summary: Retrieves a list of codesystems
+      description: Retrieves a list of codesystems matching the provided search criteria.
+      operationId: getCodeSystems
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: name
+        description: returns only codesystems matching the given name. The name filter can use a regular expression format.
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - versionid
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: page
+        description: page number used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: page size used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeSystems'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeSystems'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /codesystems/download:
+    get:
+      tags:
+      - codesystems
+      summary: Returns a downloadable list containing all codesystems.
+      description: Generates a full list containing all codesystems. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set.
+      operationId: downloadCodeSystems
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - versionid
+          - effectivedate
+          - active
+          - language
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /codesystem/{codesystemid}/versions:
+    get:
+      tags:
+      - codesystems
+      summary: Returns metadata for all versions of a codesystem.
+      description: Returns the metadata associated to all codesystem version.
+      operationId: getCodeSystemVersions
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: codesystemid
+        required: true
+        description: codesystem identifier
+        in: path
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: variant
+        description: SNOMED CT Variant. Required for SNOMED CT.
+        in: query
+        schema:
+          type: string
+          enum:
+          - core
+          - canadian
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeSystem'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeSystem'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /codesystem/{codesystemid}/download:
+    get:
+      tags:
+      - codesystems
+      summary: Returns metadata for a single codesystem version.
+      description: Returns downloadable metadata for a single codesystem version.
+      operationId: downloadCodeSystem
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: apikey
+        required: true
+        description: security key required to access the web service
+        in: query
+        schema:
+          type: string
+          default: AB3
+      - name: codesystemid
+        required: true
+        description: codesystem identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: codesystem version, latest version if not provided
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - excel
+          - rf2
+          - access
+          default: json
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - active
+          - language
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: variant
+        description: SNOMED CT Variant. Required for SNOMED CT.
+        in: query
+        schema:
+          type: string
+          enum:
+          - core
+          - canadian
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid apikey
+  /codesystem/{codesystemid}:
+    get:
+      tags:
+      - codesystems
+      summary: Returns metadata for a single codesystem version.
+      description: Returns the metadata associated to a single codesystem version.
+      operationId: getCodeSystemVersion
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: codesystemid
+        required: true
+        description: codesystem identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: codesystem version, latest version if not provided
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: variant
+        description: SNOMED CT Variant. Required for SNOMED CT.
+        in: query
+        schema:
+          type: string
+          enum:
+          - core
+          - canadian
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeSystemVersion'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeSystemVersion'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /codesystem/{codesystemid}/entities:
+    get:
+      tags:
+      - codesystems
+      summary: Retrieves the list of entities that are part of a codesystem version.
+      description: Retrieves a full list of entities that are part of a codesystem version.
+      operationId: getCodeSystemEntities
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: codesystemid
+        required: true
+        description: codesystem identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: codesystem version, latest version if not provided
+        in: query
+        schema:
+          type: string
+      - name: name
+        description: returns only entities matching the given name. The name filter can use a regular expression format
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - versionid
+          - effectivedate
+          - active
+          - language
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: page
+        description: page number used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: page size used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entities'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entities'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /codesystem/{codesystemid}/entity/{entityid}:
+    get:
+      tags:
+      - codesystems
+      summary: Retrieves a single entity associated with a codesystem.
+      description: Retrieves a single entity associated with a codesystem.
+      operationId: getCodeSystemEntity
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: codesystemid
+        required: true
+        description: codesystem identifier
+        in: path
+        schema:
+          type: string
+      - name: entityid
+        required: true
+        description: codesystem identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: codesystem version, latest version if not provided
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entity'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entity'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+components:
+  schemas:
+    Entities:
+      type: object
+      properties:
+        codesystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entity'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    CodeSystems:
+      type: object
+      properties:
+        codesystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystem'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    CodeSystemVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: codesystem id
+        name:
+          type: string
+          description: codesystem name
+        versionId:
+          type: string
+          description: codesystem version id
+        defaultLanguage:
+          type: string
+          enum:
+          - en
+          description: codesystem version language in ISO639-1 format
+        supportedLanguage:
+          type: string
+          description: codesystem version language in ISO639-1 format
+        propertyNames:
+          type: object
+          description: map of the property names to their abbreviated form
+        propertyCodes:
+          type: object
+          description: map of the abbreviated property names to their long form
+    Entity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: entity id
+        name:
+          type: string
+          description: entity name
+        definition:
+          type: string
+          description: some definition
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned
+    CodeSystem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: codesystem id
+        name:
+          type: string
+          description: code system name
+        businessName:
+          type: string
+          description: code system business name
+        url:
+          type: string
+          description: code system URL
+        version:
+          type: string
+          description: code system version
+        organization:
+          type: string
+          description: organization owning the code system
+        latestVersion:
+          type: string
+          description: id of the most recent codesystem version
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystemVersion'

@@ -1,0 +1,61 @@
+openapi: 3.2.0
+info:
+  description: RESTful web services used to browse terminology data.
+  version: 1.0.0
+  title: Terminology Session API
+  termsOfService: http://swagger.io/terms/
+servers:
+- url: /rest/v1
+tags:
+- name: session
+  description: APIs for programmatically logging in
+paths:
+  /session:
+    post:
+      tags:
+      - session
+      summary: Login in with basic authorization credentials, single sign on token or JSON web token.
+      description: Explicitly login programmatically. Returns a JSON with your username, single sign on token named 'authToken', JSON web token named 'btoken' and miscellaenous profile attributes.
+      operationId: login
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+    delete:
+      tags:
+      - session
+      summary: Explicitly logout programtically.
+      description: Logout explicitly using your single sign on token. Your single sign on token will be expired after executing this call. You will be logged out from all Canada Health Infoway web services.
+      operationId: logout
+      parameters:
+      - name: ssotoken
+        description: Single sign on token, provided by OpenAM login server.
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials

@@ -1,0 +1,475 @@
+openapi: 3.2.0
+info:
+  description: FHIR web services used to access terminology data.
+  version: 1.0.0
+  title: Terminology FHIR Concept Map API
+  termsOfService: https://ic.infoway-inforoute.ca/en/about/tou?title=8_UserReferencesAndSupports/Terms_And_License_Agreements
+servers:
+- url: /fhir/v1
+tags:
+- name: ConceptMap
+paths:
+  /ConceptMap:
+    get:
+      tags:
+      - ConceptMap
+      summary: Retrieves a list of concept maps
+      description: Retrieves a list of concept maps matching the provided search criteria.
+      operationId: findConceptMaps
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: name
+        description: The name of the concept map. By default, this filter matches a concept map if its name equals or starts with the supplied parameter value.  Also supports the <a href='http://www.hl7.org/fhir/search.html#string'><code>:contains</code> and <code>:exact</code> modifiers</a>.
+        in: query
+        schema:
+          type: string
+      - name: _sort
+        description: Indicates which order to return the results. Terminology Gateway currently only supports sorting on a single field, not chained sort rules.
+        in: query
+        schema:
+          type: string
+          enum:
+          - _id
+          - -_id
+          - identifier
+          - -identifier
+          - name
+          - -name
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleOfConceptMaps'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /ConceptMap/{id}:
+    get:
+      tags:
+      - ConceptMap
+      summary: Retrieves a single concept map by id
+      description: Retrieves a single concept map corresponding to the provided id.
+      operationId: getConceptMap
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: The concept map identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptMap'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+        '404':
+          description: Unknown concept map identifier
+  /ConceptMap/{id}/_history:
+    get:
+      tags:
+      - ConceptMap
+      summary: Retrieves the history of a particular concept map
+      description: Retrieves the specified version history, sorted with oldest versions last
+      operationId: getConceptMapHistory
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: The concept map identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleOfConceptMaps'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+        '404':
+          description: Unknown concept map identifier
+  /ConceptMap/{id}/_history/{vid}:
+    get:
+      tags:
+      - ConceptMap
+      summary: Retrieves a single concept map by id and version id
+      description: Retrieves a single concept map corresponding to the provided id and version id.
+      operationId: getConceptMapVersion
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: The concept map identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: vid
+        required: true
+        description: The concept map version identifier.
+        in: path
+        schema:
+          type: string
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptMap'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+        '404':
+          description: Unknown concept map identifier
+  /ConceptMap/{id}/$translate:
+    get:
+      tags:
+      - ConceptMap
+      summary: Translate a code from one value set to another, based on the existing value set and concept maps resources
+      description: The operation returns a set of parameters including a 'result' for whether there is an acceptable match.
+      operationId: translateConcept
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: The concept map identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      - name: code
+        description: The code that is to be translated.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: system
+        description: The system for the code that is to be translated
+        in: query
+        schema:
+          type: string
+      - name: version
+        description: The version of the system, if one was provided in the source data
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: reverse
+        description: if this is true, then the operation should return all the codes that might be mapped to this code.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parameters'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+        '404':
+          description: Unknown code, code system identifier, or code system version.
+    post:
+      tags:
+      - ConceptMap
+      summary: Translate a code from one value set to another, based on the existing value set and concept maps resources
+      description: The operation returns a set of parameters including a 'result' for whether there is an acceptable match.
+      operationId: translateConcept
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: id
+        required: true
+        description: The concept map identifier. Either the OID or the name are considered valid identifiers.
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parameters'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+        '404':
+          description: Unknown code, code system identifier, or code system version.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConceptMapTranslateInParameter'
+        description: The Parameters resource containing a Coding or a CodeableConcept for the desired concept.
+        required: true
+components:
+  schemas:
+    Parameters:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Parameters
+        parameter:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the parameter
+              valueBoolean:
+                type: boolean
+                description: The value of the parameter, represented as a boolean
+              valueString:
+                type: string
+                description: The value of the parameter, represented as a string
+    ConceptMap:
+      type: object
+      required:
+      - status
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - ConceptMap
+        id:
+          type: string
+          description: Identifier of the concept map as assigned by the server, in this case, an OID.
+        identifier:
+          $ref: '#/components/schemas/OID'
+        version:
+          type: string
+          description: Business version of the concept map
+        name:
+          type: string
+          description: Name for this concept map
+        status:
+          type: string
+          enum:
+          - active
+          - draft
+          - retired
+          description: Status of this version of the concept map
+        publisher:
+          type: string
+          description: Publisher for this concept map
+        group:
+          type: array
+          items:
+            properties:
+              element:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: The code for the source concept
+                  display:
+                    type: string
+                    description: The preferred display for the source concept
+                  target:
+                    type: array
+                    items:
+                      properties:
+                        code:
+                          type: string
+                          description: The code for the source concept
+                        display:
+                          type: string
+                          description: The preferred display for the source concept
+    OID:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    BundleOfConceptMaps:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Bundle
+        id:
+          type: string
+          description: local identifier of the bundle as assigned by the server
+        meta:
+          type: object
+          properties:
+            lastUpdated:
+              type: string
+              format: date-time
+              description: when the resource last changed
+          description: metadata about the bundle
+        type:
+          type: string
+          enum:
+          - searchset
+          description: indicates the purpose of this bundle
+        total:
+          type: integer
+          format: int32
+          description: the total number of matches for the search
+        link:
+          type: array
+          items:
+            type: object
+            properties:
+              relation:
+                type: string
+                description: a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]
+              url:
+                type: string
+                description: the reference details for the link
+          description: a series of links that provide context to this bundle
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              fullUrl:
+                type: string
+                description: the absolute URL for the resource
+              resource:
+                $ref: '#/components/schemas/ConceptMap'
+    ConceptMapTranslateInParameter:
+      type: object
+      required:
+      - parameter
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Parameters
+        parameter:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            - valueCoding
+            properties:
+              name:
+                type: string
+                enum:
+                - coding
+                - codeableConcept
+                - reverse
+              valueCoding:
+                type: object
+                required:
+                - system
+                - code
+                properties:
+                  system:
+                    type: string
+                    description: The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]
+                  code:
+                    type: string
+                    description: The code that is to be located.
+                  version:
+                    type: string
+                    description: The version of the code system.
+              valueCodeableConcept:
+                type: object
+                properties:
+                  coding:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - system
+                      - code
+                      properties:
+                        system:
+                          type: string
+                          description: The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]
+                        code:
+                          type: string
+                          description: The code that is to be located.
+                        version:
+                          type: string
+                          description: The version of the code system.
+              valueBoolean:
+                type: boolean
+                enum:
+                - 'true'
+                - 'false'
+externalDocs:
+  description: Find out more
+  url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway

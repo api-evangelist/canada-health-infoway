@@ -1,0 +1,155 @@
+openapi: 3.2.0
+info:
+  description: FHIR web services used to access terminology data.
+  version: 1.0.0
+  title: Terminology FHIR Capability Statement API
+  termsOfService: https://ic.infoway-inforoute.ca/en/about/tou?title=8_UserReferencesAndSupports/Terms_And_License_Agreements
+servers:
+- url: /fhir/v1
+tags:
+- name: CapabilityStatement
+paths:
+  /metadata:
+    get:
+      tags:
+      - CapabilityStatement
+      summary: Retrieves the server's capability statement
+      description: Retrieves the server's capability statement
+      operationId: getCapabilityStatement
+      parameters:
+      - name: _pretty
+        description: Non-standard parameter to request that responses be pretty-printed.
+        in: query
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapabilityStatement'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+components:
+  schemas:
+    CapabilityStatement:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - CapabilityStatement
+        status:
+          type: string
+          enum:
+          - active
+          - draft
+          - retired
+          description: status of this version of the capability statement
+        date:
+          type: string
+          format: date-time
+          description: Publication Date
+        publisher:
+          type: string
+          description: Name of the publisher
+        kind:
+          type: string
+          enum:
+          - instance
+          - capability
+          - requirements
+          description: the kind of conformance profile this statement represents
+        software:
+          type: object
+          properties:
+            name:
+              type: string
+              description: A name the software is known by
+            version:
+              type: string
+              description: Version covered by this statement
+        fhirVersion:
+          type: string
+          description: FHIR Version the system uses
+        acceptUnknown:
+          type: string
+          enum:
+          - 'no'
+          - extensions
+          - elements
+          - both
+          description: A code that indicates whether an application accepts unknown elements or extensions when reading resources.
+        format:
+          type: array
+          items:
+            type: string
+            description: Mime types supported
+        rest:
+          type: array
+          items:
+            type: object
+            properties:
+              mode:
+                type: string
+                enum:
+                - client
+                - server
+                description: The mode of a RESTful conformance statement.
+              resource:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: A resource type that is supported
+                    profile:
+                      type: object
+                      properties:
+                        reference:
+                          type: string
+                          description: Relative, internal or absolute URL reference
+                    interaction:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            description: Operations supported by REST at the type or instance level.
+                    searchParam:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: Name of search parameter
+                          type:
+                            type: string
+                            description: Data types allowed to be used for search parameters.
+                          documentation:
+                            type: string
+                            description: Server-specific usage
+              operation:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Name by which the operation/query is invoked
+                    definition:
+                      type: object
+                      properties:
+                        reference:
+                          type: string
+                          description: Relative, internal or absolute URL reference
+externalDocs:
+  description: Find out more
+  url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway

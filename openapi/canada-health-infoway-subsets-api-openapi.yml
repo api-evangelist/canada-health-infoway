@@ -1,0 +1,996 @@
+openapi: 3.2.0
+info:
+  description: RESTful web services used to browse terminology data.
+  version: 1.0.0
+  title: Terminology Subsets API
+  termsOfService: http://swagger.io/terms/
+servers:
+- url: /rest/v1
+tags:
+- name: subsets
+  description: APIs for terminology subsets
+  externalDocs:
+    description: Find out more
+    url: https://infocentral.infoway-inforoute.ca
+paths:
+  /subsets:
+    get:
+      tags:
+      - subsets
+      summary: Retrieves a list of subsets
+      description: Retrieves a list of subsets matching the provided search criteria.
+      operationId: findSubsets
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: active
+        description: returns active or inactive subsets if specified, all subsets if this parameter is absent
+        in: query
+        schema:
+          type: boolean
+      - name: reflang
+        description: returns only subsets for the specified language. The language identifier must be provided in ISO639-1 format
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+      - name: startdate
+        description: returns only subsets that were active on or after the given start date. The date must be specified as yyyyMMdd
+        in: query
+        schema:
+          type: string
+      - name: enddate
+        description: returns only subsets that were active on or before the given end date. The date must be specified as yyyyMMdd
+        in: query
+        schema:
+          type: string
+      - name: name
+        description: returns only subsets matching the given name. The name filter can use a regular expression format
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - active
+          - language
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: page
+        description: page number used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: page size used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: tags
+        description: describes a specific category of subsets that this subset belongs to
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subsets'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subsets'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /subsets/download:
+    get:
+      tags:
+      - subsets
+      summary: Returns a downloadable list containing all subsets.
+      description: Generates a full list containing all subsets. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set.
+      operationId: downloadSubsets
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - active
+          - language
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: tags
+        description: describes a specific category of subsets that this subset belongs to
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /subset/{subsetid}/versions:
+    get:
+      tags:
+      - subsets
+      summary: Returns metadata for all versions of a subset.
+      description: Returns the metadata associated to all subset version.
+      operationId: getSubsetVersions
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: subsetid
+        required: true
+        description: subset identifier
+        in: path
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subset'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subset'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /subset/{subsetid}:
+    get:
+      tags:
+      - subsets
+      summary: Returns metadata for a single subset version.
+      description: Returns the metadata associated to a single subset version.
+      operationId: getSubsetVersion
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: subsetid
+        required: true
+        description: subset identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: subset version, latest version if not provided
+        in: query
+        schema:
+          type: string
+      - name: reflang
+        description: returns the subset version for the specified language. The language identifier must be provided in ISO639-1 format
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubsetVersion'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubsetVersion'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /subset/{subsetid}/download:
+    get:
+      tags:
+      - subsets
+      summary: Downloads the data associated to a subset version.
+      description: Downloads the data associated to a subset version. This includes all concepts that are part of the subset. The data is returned as an attachment to the HTTP response.
+      operationId: downloadSubset
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: subsetid
+        required: true
+        description: subset identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: subset version, latest version if not provided
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - active
+          - language
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - excel
+          default: json
+      - name: lang
+        description: returns the output in the specified language. Only supported for excel outputs. The language identifier must be provided in ISO639-1 format
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+          - fr
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/xml:
+              schema:
+                type: string
+                format: binary
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /subset/{subsetid}/delta:
+    get:
+      tags:
+      - subsets
+      summary: Retrieves the delta between two subset versions.
+      description: Generates a list of differences between two subset versions. The differeces might include changes in the subset metadata or their concept list. The versions that are being compared don't necessarily have to be consecutive.
+      operationId: deltaSubsets
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: subsetid
+        required: true
+        description: subset identifier
+        in: path
+        schema:
+          type: string
+      - name: fromversion
+        description: id of the first subset version to be compared. The initial subset version will be used if this parameter isn't specified.
+        in: query
+        schema:
+          type: string
+      - name: toversion
+        description: id of the second subset version to be compared. The most recent subset version will be used if this parameter isn't specified.
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Delta'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Delta'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /subset/{subsetid}/delta/download:
+    get:
+      tags:
+      - subsets
+      summary: Downloads the delta between two subset versions.
+      description: Downloads a list of differences between two subset versions. The differences might include changes in the subset metadata or their concept list. The versions that are being compared don't necessarily have to be consecutive.
+      operationId: downloadDeltaSubset
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: subsetid
+        required: true
+        description: subset identifier
+        in: path
+        schema:
+          type: string
+      - name: fromversion
+        description: id of the first subset version to be compared. The initial subset version will be used if this parameter isn't specified.
+        in: query
+        schema:
+          type: string
+      - name: toversion
+        description: id of the second subset version to be compared. The most recent subset version will be used if this parameter isn't specified.
+        in: query
+        schema:
+          type: string
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - excel
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: string
+                format: binary
+            application/excel:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /subset/{subsetid}/concepts:
+    get:
+      tags:
+      - subsets
+      summary: Retrieves the list of concepts that are part of a subset version.
+      description: Retrieves a full list of concepts that are part of a subset version.
+      operationId: getConcepts
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: subsetid
+        required: true
+        description: subset identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: subset version, latest version if not provided
+        in: query
+        schema:
+          type: string
+      - name: active
+        description: returns active or inactive concepts if specified, all concepts if this parameter is absent
+        in: query
+        schema:
+          type: boolean
+      - name: reflang
+        description: returns concepts for the specified language. The language identifier must be provided in ISO639-1 format
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+      - name: name
+        description: returns only concepts matching the given name. The name filter can use a regular expression format
+        in: query
+        schema:
+          type: string
+      - name: sortby
+        description: sorts the result set by the specified field.
+        in: query
+        schema:
+          type: string
+          enum:
+          - id
+          - name
+          - term
+          - effectivedate
+          - active
+      - name: sortdir
+        description: sorting direction. Only relevant if the sortby parameter is also specified.
+        in: query
+        schema:
+          type: string
+          enum:
+          - ascending
+          - descending
+      - name: page
+        description: page number used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1'
+      - name: size
+        description: page size used for pagination
+        in: query
+        schema:
+          type: integer
+          default: '1000'
+      - name: format
+        required: false
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Concepts'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Concepts'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+  /subset/{subsetid}/concepts/{conceptid}:
+    get:
+      tags:
+      - subsets
+      summary: Retrieves the matching concept within the subset
+      description: Retrieves the concept details that matches the supplied concept identifier within the matching subset.
+      operationId: getConcept
+      parameters:
+      - name: auth
+        description: 'basic access authentication credentials, specified as username:password and encoded using <a href=''https://www.base64encode.org/'' target=''_blank''><b>Base64</b></a> encoding. These credentials can alternatively be passed in the ''Authorization: Basic'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: btoken
+        description: 'JSON web token. This token can alternatively be passed in the ''Authorization: Bearer'' HTTP header.'
+        in: query
+        schema:
+          type: string
+      - name: subsetid
+        required: true
+        description: subset identifier
+        in: path
+        schema:
+          type: string
+      - name: conceptid
+        required: true
+        description: concept identifier
+        in: path
+        schema:
+          type: string
+      - name: versionid
+        description: version identifier for the subset
+        in: query
+        schema:
+          type: string
+      - name: format
+        description: output format
+        in: query
+        schema:
+          type: string
+          enum:
+          - xml
+          - json
+          default: json
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Concept'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Concept'
+        '400':
+          description: Invalid parameters
+        '403':
+          description: Missing or invalid credentials
+components:
+  schemas:
+    SubsetVersionReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: date when the subset was added, in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset status: active or inactive'
+    CodeSystemVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: codesystem id
+        name:
+          type: string
+          description: codesystem name
+        versionId:
+          type: string
+          description: codesystem version id
+        defaultLanguage:
+          type: string
+          enum:
+          - en
+          description: codesystem version language in ISO639-1 format
+        supportedLanguage:
+          type: string
+          description: codesystem version language in ISO639-1 format
+        propertyNames:
+          type: object
+          description: map of the property names to their abbreviated form
+        propertyCodes:
+          type: object
+          description: map of the abbreviated property names to their long form
+    Concept:
+      type: object
+      properties:
+        id:
+          type: string
+          description: concept id
+        name:
+          type: string
+          description: concept name
+        codeSystemId:
+          type: string
+          description: code system id
+        codeSystemName:
+          type: string
+          description: code system name
+        enDisplayName:
+          type: string
+          description: English display name
+        enDisplayNameSecondary:
+          type: string
+          description: secondary English display name
+        enAbbr:
+          type: string
+          description: English name abbreviation
+        frDisplayName:
+          type: string
+          description: French display name
+        frDisplayNameSecondary:
+          type: string
+          description: secondary French display name
+        frAbbr:
+          type: string
+          description: French name abbreviation
+        description:
+          type: string
+          description: full concept description
+        effectiveDate:
+          type: string
+          description: date when the concept was added to the concept or last modified in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'concept status: active or inactive'
+        comment:
+          type: string
+          description: additional comment
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubsetVersionReference'
+        properties:
+          type: object
+          description: additional properties
+    Concepts:
+      type: object
+      properties:
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Delta:
+      type: object
+      properties:
+        fromVersionId:
+          type: string
+          description: previous version including data that has been modified
+        toVersionId:
+          type: string
+          description: version where the change has been introduced
+        type:
+          type: string
+          description: type of change
+          enum:
+          - SUBSET_ADDED
+          - SUBSET_INACTIVATED
+          - SUBSET_METADATA_UPDATED
+          - CONCEPT_ADDED
+          - CONCEPT_UPDATED
+          - CONCEPT_INACTIVATED
+          - CONCEPT_REMOVED
+          - RELATIONSHIP_ADDED
+          - RELATIONSHIP_REMOVED
+          - RELATIONSHIP_MOVED
+          - RELATIONSHIP_TYPE_CHANGED
+        change:
+          type: string
+          description: textual description of the change
+        effectiveDate:
+          type: string
+          description: date when the change has been introduced
+        subsetMetadata:
+          $ref: '#/components/schemas/SubsetVersion'
+        concept:
+          $ref: '#/components/schemas/Concept'
+        relationship:
+          $ref: '#/components/schemas/Relationship'
+        comments:
+          type: string
+          description: additional comments
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned
+    Relationship:
+      type: object
+      properties:
+        fromConceptParent:
+          $ref: '#/components/schemas/Concept'
+        toConceptParent:
+          $ref: '#/components/schemas/Concept'
+        fromConcept:
+          $ref: '#/components/schemas/Concept'
+        toConcept:
+          $ref: '#/components/schemas/Concept'
+        fromAssociationGroup:
+          type: string
+          description: old value of concept's associationGroup
+        toAssociationGroup:
+          type: string
+          description: new value of concept's associationGroup
+        fromAssociationType:
+          type: string
+          description: old value of concept's associationType
+        toAssociationType:
+          type: string
+          description: new value of concept's associationType
+    Subsets:
+      type: object
+      properties:
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subset'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    CodeSystem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: codesystem id
+        name:
+          type: string
+          description: code system name
+        businessName:
+          type: string
+          description: code system business name
+        url:
+          type: string
+          description: code system URL
+        version:
+          type: string
+          description: code system version
+        organization:
+          type: string
+          description: organization owning the code system
+        latestVersion:
+          type: string
+          description: id of the most recent codesystem version
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystemVersion'
+    Subset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        url:
+          type: string
+          description: defining URL of the subset
+        fhirUri:
+          type: string
+          description: FHIR URI of the subset
+        latestVersion:
+          type: string
+          description: id of the most recent subset version
+        viewer:
+          type: string
+          description: hint for the viewer to be used for rendering
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubsetVersion'
+    SubsetVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        url:
+          type: string
+          description: subset url
+        fhirUri:
+          type: string
+          description: FHIR URI of the subset
+        name:
+          type: string
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: version date in yyyyMMdd format
+        description:
+          type: string
+          description: subset version description
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset version status: active or inactive'
+        status:
+          type: string
+          enum:
+          - FINAL
+          - DRAFT
+          description: subset version status on whether metadata is a draft or finalized
+        language:
+          type: string
+          enum:
+          - en
+          description: subset version language in ISO639-1 format
+        comment:
+          type: string
+          description: release comment associated to the subset version
+        codeSystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystem'
