@@ -100,6 +100,8 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
+  - code-systems
+  tags_raw:
   - codesystems
   properties:
   - type: OpenAPI
@@ -136,6 +138,8 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
+  - Maps
+  tags_raw:
   - maps
   properties:
   - type: OpenAPI
@@ -154,6 +158,8 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
+  - Notification
+  tags_raw:
   - notification
   properties:
   - type: OpenAPI
@@ -172,6 +178,8 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
+  - Packages
+  tags_raw:
   - packages
   properties:
   - type: OpenAPI
@@ -190,6 +198,8 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
+  - Resource Locations
+  tags_raw:
   - resourcelocations
   properties:
   - type: OpenAPI
@@ -208,6 +218,8 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
+  - Session
+  tags_raw:
   - session
   properties:
   - type: OpenAPI
