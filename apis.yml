@@ -159,7 +159,7 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
-  - Session
+  - Sessions
   tags_raw:
   - session
   properties:
@@ -216,6 +216,8 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
+  - CapabilityStatement
+  tags_raw:
   - Capability Statement
   properties:
   - type: OpenAPI
@@ -234,6 +236,8 @@ apis:
   humanURL: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger-ui
   baseURL: https://termapi.infoway-inforoute.ca/fhir/v1
   tags:
+  - code-systems
+  tags_raw:
   - code systems
   properties:
   - type: OpenAPI
