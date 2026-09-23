@@ -125,7 +125,7 @@ paths:
     get:
       tags:
       - subsets
-      summary: Returns a downloadable list containing all subsets.
+      summary: Returns a downloadable list containing all subsets
       description: Generates a full list containing all subsets. The list is returned as an attachment to the HTTP response. This API doesn't apply any pagination to the result set.
       operationId: downloadSubsets
       parameters:
@@ -192,7 +192,7 @@ paths:
     get:
       tags:
       - subsets
-      summary: Returns metadata for all versions of a subset.
+      summary: Returns metadata for all versions of a subset
       description: Returns the metadata associated to all subset version.
       operationId: getSubsetVersions
       parameters:
@@ -244,7 +244,7 @@ paths:
     get:
       tags:
       - subsets
-      summary: Returns metadata for a single subset version.
+      summary: Returns metadata for a single subset version
       description: Returns the metadata associated to a single subset version.
       operationId: getSubsetVersion
       parameters:
@@ -308,7 +308,7 @@ paths:
     get:
       tags:
       - subsets
-      summary: Downloads the data associated to a subset version.
+      summary: Downloads the data associated to a subset version
       description: Downloads the data associated to a subset version. This includes all concepts that are part of the subset. The data is returned as an attachment to the HTTP response.
       operationId: downloadSubset
       parameters:
@@ -394,7 +394,7 @@ paths:
     get:
       tags:
       - subsets
-      summary: Retrieves the delta between two subset versions.
+      summary: Retrieves the delta between two subset versions
       description: Generates a list of differences between two subset versions. The differeces might include changes in the subset metadata or their concept list. The versions that are being compared don't necessarily have to be consecutive.
       operationId: deltaSubsets
       parameters:
@@ -456,7 +456,7 @@ paths:
     get:
       tags:
       - subsets
-      summary: Downloads the delta between two subset versions.
+      summary: Downloads the delta between two subset versions
       description: Downloads a list of differences between two subset versions. The differences might include changes in the subset metadata or their concept list. The versions that are being compared don't necessarily have to be consecutive.
       operationId: downloadDeltaSubset
       parameters:
@@ -521,7 +521,7 @@ paths:
     get:
       tags:
       - subsets
-      summary: Retrieves the list of concepts that are part of a subset version.
+      summary: Retrieves the list of concepts that are part of a subset version
       description: Retrieves a full list of concepts that are part of a subset version.
       operationId: getConcepts
       parameters:
@@ -682,12 +682,18 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
-    SubsetVersionReference:
+    SubsetVersion:
       type: object
       properties:
         id:
           type: string
           description: subset id
+        url:
+          type: string
+          description: subset url
+        fhirUri:
+          type: string
+          description: FHIR URI of the subset
         name:
           type: string
           description: subset name
@@ -696,40 +702,34 @@ components:
           description: subset version id
         effectiveDate:
           type: string
-          description: date when the subset was added, in yyyyMMdd format
-          default: '20170101'
+          description: version date in yyyyMMdd format
+        description:
+          type: string
+          description: subset version description
         active:
           type: string
           enum:
           - 'true'
           - 'false'
-          description: 'subset status: active or inactive'
-    CodeSystemVersion:
-      type: object
-      properties:
-        id:
+          description: 'subset version status: active or inactive'
+        status:
           type: string
-          description: codesystem id
-        name:
-          type: string
-          description: codesystem name
-        versionId:
-          type: string
-          description: codesystem version id
-        defaultLanguage:
+          enum:
+          - FINAL
+          - DRAFT
+          description: subset version status on whether metadata is a draft or finalized
+        language:
           type: string
           enum:
           - en
-          description: codesystem version language in ISO639-1 format
-        supportedLanguage:
+          description: subset version language in ISO639-1 format
+        comment:
           type: string
-          description: codesystem version language in ISO639-1 format
-        propertyNames:
-          type: object
-          description: map of the property names to their abbreviated form
-        propertyCodes:
-          type: object
-          description: map of the abbreviated property names to their long form
+          description: release comment associated to the subset version
+        codeSystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystem'
     Concept:
       type: object
       properties:
@@ -786,15 +786,6 @@ components:
         properties:
           type: object
           description: additional properties
-    Concepts:
-      type: object
-      properties:
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     Delta:
       type: object
       properties:
@@ -834,6 +825,31 @@ components:
         comments:
           type: string
           description: additional comments
+    Subset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        url:
+          type: string
+          description: defining URL of the subset
+        fhirUri:
+          type: string
+          description: FHIR URI of the subset
+        latestVersion:
+          type: string
+          description: id of the most recent subset version
+        viewer:
+          type: string
+          description: hint for the viewer to be used for rendering
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubsetVersion'
     Pagination:
       type: object
       properties:
@@ -861,6 +877,63 @@ components:
         nextRecord:
           type: integer
           description: next record in the result set or -1 if there are no more records to be returned
+    Concepts:
+      type: object
+      properties:
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    SubsetVersionReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: date when the subset was added, in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset status: active or inactive'
+    CodeSystemVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: codesystem id
+        name:
+          type: string
+          description: codesystem name
+        versionId:
+          type: string
+          description: codesystem version id
+        defaultLanguage:
+          type: string
+          enum:
+          - en
+          description: codesystem version language in ISO639-1 format
+        supportedLanguage:
+          type: string
+          description: codesystem version language in ISO639-1 format
+        propertyNames:
+          type: object
+          description: map of the property names to their abbreviated form
+        propertyCodes:
+          type: object
+          description: map of the abbreviated property names to their long form
     Relationship:
       type: object
       properties:
@@ -884,15 +957,6 @@ components:
         toAssociationType:
           type: string
           description: new value of concept's associationType
-    Subsets:
-      type: object
-      properties:
-        subsets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Subset'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     CodeSystem:
       type: object
       properties:
@@ -921,76 +985,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CodeSystemVersion'
-    Subset:
+    Subsets:
       type: object
       properties:
-        id:
-          type: string
-          description: subset id
-        name:
-          type: string
-          description: subset name
-        url:
-          type: string
-          description: defining URL of the subset
-        fhirUri:
-          type: string
-          description: FHIR URI of the subset
-        latestVersion:
-          type: string
-          description: id of the most recent subset version
-        viewer:
-          type: string
-          description: hint for the viewer to be used for rendering
-        versions:
+        subsets:
           type: array
           items:
-            $ref: '#/components/schemas/SubsetVersion'
-    SubsetVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          description: subset id
-        url:
-          type: string
-          description: subset url
-        fhirUri:
-          type: string
-          description: FHIR URI of the subset
-        name:
-          type: string
-          description: subset name
-        versionId:
-          type: string
-          description: subset version id
-        effectiveDate:
-          type: string
-          description: version date in yyyyMMdd format
-        description:
-          type: string
-          description: subset version description
-        active:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: 'subset version status: active or inactive'
-        status:
-          type: string
-          enum:
-          - FINAL
-          - DRAFT
-          description: subset version status on whether metadata is a draft or finalized
-        language:
-          type: string
-          enum:
-          - en
-          description: subset version language in ISO639-1 format
-        comment:
-          type: string
-          description: release comment associated to the subset version
-        codeSystems:
-          type: array
-          items:
-            $ref: '#/components/schemas/CodeSystem'
+            $ref: '#/components/schemas/Subset'
+        pagination:
+          $ref: '#/components/schemas/Pagination'

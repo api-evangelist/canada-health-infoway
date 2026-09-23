@@ -7,14 +7,14 @@ info:
 servers:
 - url: /rest/v1
 tags:
-- name: notification
+- name: Notification
   description: APIs for accessing user notifications
 paths:
   /notification:
     get:
       tags:
-      - notification
-      summary: Get all notifications.
+      - Notification
+      summary: Get all notifications
       description: Get all notifications for the currently logged user.
       operationId: getNotificationsList
       parameters:
@@ -47,8 +47,8 @@ paths:
           description: Missing or invalid credentials
     post:
       tags:
-      - notification
-      summary: Subscribe to a resource.
+      - Notification
+      summary: Subscribe to a resource
       description: Subscribe to a resource. Must provide a request body with the field target and an optional field username, which must match the logged user's username or username from other credentials.
       operationId: addNotifications
       parameters:
@@ -84,8 +84,8 @@ paths:
         required: true
     delete:
       tags:
-      - notification
-      summary: Deletes a subscription to a resource.
+      - Notification
+      summary: Deletes a subscription to a resource
       description: Deletes a subscription to a resource. Must provide a request body.
       operationId: cancelNotifications
       parameters:

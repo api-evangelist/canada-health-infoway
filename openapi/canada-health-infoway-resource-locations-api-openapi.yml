@@ -7,14 +7,14 @@ info:
 servers:
 - url: /rest/v1
 tags:
-- name: resourcelocations
+- name: Resource Locations
   description: APIs for accessing resource location data
 paths:
   /ResourceLocation:
     get:
       tags:
-      - resourcelocations
-      summary: Retrieves a list of resource locations.
+      - Resource Locations
+      summary: Retrieves a list of resource locations
       description: Retrives a list of resource locations that matches the supplied parameters.
       operationId: searchResourceLocation
       parameters:
@@ -76,8 +76,8 @@ paths:
   /ResourceLocation/download:
     get:
       tags:
-      - resourcelocations
-      summary: Retrieves a list of all resource locations.
+      - Resource Locations
+      summary: Retrieves a list of all resource locations
       description: Retrives a list of all resource locations in the specified format
       operationId: downloadResourceLocations
       parameters:
@@ -124,8 +124,8 @@ paths:
   /ResourceLocation/{id}:
     get:
       tags:
-      - resourcelocations
-      summary: Retrieves a resource location.
+      - Resource Locations
+      summary: Retrieves a resource location
       description: Retrives a resource location with the matching identifier.
       operationId: getResourceLocation
       parameters:
@@ -158,42 +158,6 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
-    Pagination:
-      type: object
-      properties:
-        currentPage:
-          type: integer
-          description: currently returned page
-        totalPages:
-          type: integer
-          description: total number of pages required to displayed the entire result set
-        pageSize:
-          type: integer
-          description: page size
-        totalRecords:
-          type: integer
-          description: total number of records in the result set
-        firstRecord:
-          type: integer
-          description: first record returned by the current page
-        lastRecord:
-          type: integer
-          description: last record returned by the current page
-        nextPage:
-          type: integer
-          description: next page in the result set or -1 if this is the last page
-        nextRecord:
-          type: integer
-          description: next record in the result set or -1 if there are no more records to be returned
-    ResourceLocations:
-      type: object
-      properties:
-        resourceLocations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceLocation'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     ResourceLocation:
       type: object
       properties:
@@ -242,3 +206,39 @@ components:
         metadata:
           type: object
           description: metadata associated with resource
+    ResourceLocations:
+      type: object
+      properties:
+        resourceLocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceLocation'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned

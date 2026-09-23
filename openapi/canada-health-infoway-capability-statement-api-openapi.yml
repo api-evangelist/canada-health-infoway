@@ -7,14 +7,13 @@ info:
 servers:
 - url: /fhir/v1
 tags:
-- name: CapabilityStatement
+- name: Capability Statement
 paths:
   /metadata:
     get:
       tags:
-      - CapabilityStatement
+      - Capability Statement
       summary: Retrieves the server's capability statement
-      description: Retrieves the server's capability statement
       operationId: getCapabilityStatement
       parameters:
       - name: _pretty

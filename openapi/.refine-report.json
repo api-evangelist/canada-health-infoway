@@ -1,0 +1,49 @@
+{
+  "provider": "canada-health-infoway",
+  "sources": [
+    "_original/infoway-fhir-terminology-service-api-openapi.json",
+    "_original/infoway-terminology-service-api-openapi.json"
+  ],
+  "outputs": [
+    "canada-health-infoway-capabilitystatement-api-openapi.yml",
+    "canada-health-infoway-codesystem-api-openapi.yml",
+    "canada-health-infoway-conceptmap-api-openapi.yml",
+    "canada-health-infoway-valueset-api-openapi.yml",
+    "canada-health-infoway-codesystems-api-openapi.yml",
+    "canada-health-infoway-maps-api-openapi.yml",
+    "canada-health-infoway-notification-api-openapi.yml",
+    "canada-health-infoway-packages-api-openapi.yml",
+    "canada-health-infoway-resourcelocations-api-openapi.yml",
+    "canada-health-infoway-session-api-openapi.yml",
+    "canada-health-infoway-subsets-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 3 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "infoway-fhir-terminology-service-api-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "infoway-fhir-terminology-service-api-openapi.json: declared missing tag: CapabilityStatement",
+    "infoway-fhir-terminology-service-api-openapi.json: declared missing tag: CodeSystem",
+    "infoway-fhir-terminology-service-api-openapi.json: declared missing tag: ConceptMap",
+    "infoway-fhir-terminology-service-api-openapi.json: declared missing tag: ValueSet",
+    "infoway-terminology-service-api-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "superseded outputs removed: canada-health-infoway-capability-statement-api-openapi.yml, canada-health-infoway-code-systems-api-openapi.yml, canada-health-infoway-resource-locations-api-openapi.yml",
+    "apis.yml register: written (+3 apis, 11 total)"
+  ],
+  "skipped": [
+    "canada-health-infoway-capability-statement-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-code-systems-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-codesystem-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-conceptmap-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-maps-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-notification-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-packages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-resource-locations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-session-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-subsets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canada-health-infoway-valueset-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

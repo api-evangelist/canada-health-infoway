@@ -272,6 +272,33 @@ paths:
         required: true
 components:
   schemas:
+    ConceptLookupResponseParameter:
+      type: object
+      required:
+      - resourceType
+      - parameter
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Parameters
+        parameter:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            properties:
+              name:
+                type: string
+                description: The name of the response parameter.
+                enum:
+                - name
+                - version
+                - display
+              valueString:
+                type: string
+                description: The value of the response parameter.
     CodingParameter:
       type: object
       required:
@@ -315,33 +342,55 @@ components:
       properties:
         id:
           type: string
-    ConceptLookupResponseParameter:
+    BundleOfCodeSystems:
       type: object
-      required:
-      - resourceType
-      - parameter
       properties:
         resourceType:
           type: string
           enum:
-          - Parameters
-        parameter:
+          - Bundle
+        id:
+          type: string
+          description: local identifier of the bundle as assigned by the server
+        meta:
+          type: object
+          properties:
+            lastUpdated:
+              type: string
+              format: date-time
+              description: when the resource last changed
+          description: metadata about the bundle
+        type:
+          type: string
+          enum:
+          - searchset
+          description: indicates the purpose of this bundle
+        total:
+          type: integer
+          format: int32
+          description: the total number of matches for the search
+        link:
           type: array
           items:
             type: object
-            required:
-            - name
             properties:
-              name:
+              relation:
                 type: string
-                description: The name of the response parameter.
-                enum:
-                - name
-                - version
-                - display
-              valueString:
+                description: a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]
+              url:
                 type: string
-                description: The value of the response parameter.
+                description: the reference details for the link
+          description: a series of links that provide context to this bundle
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              fullUrl:
+                type: string
+                description: the absolute URL for the resource
+              resource:
+                $ref: '#/components/schemas/CodeSystem'
     CodeSystem:
       type: object
       required:
@@ -433,55 +482,6 @@ components:
                     value:
                       type: string
                       description: The value of the property returned
-    BundleOfCodeSystems:
-      type: object
-      properties:
-        resourceType:
-          type: string
-          enum:
-          - Bundle
-        id:
-          type: string
-          description: local identifier of the bundle as assigned by the server
-        meta:
-          type: object
-          properties:
-            lastUpdated:
-              type: string
-              format: date-time
-              description: when the resource last changed
-          description: metadata about the bundle
-        type:
-          type: string
-          enum:
-          - searchset
-          description: indicates the purpose of this bundle
-        total:
-          type: integer
-          format: int32
-          description: the total number of matches for the search
-        link:
-          type: array
-          items:
-            type: object
-            properties:
-              relation:
-                type: string
-                description: a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]
-              url:
-                type: string
-                description: the reference details for the link
-          description: a series of links that provide context to this bundle
-        entry:
-          type: array
-          items:
-            type: object
-            properties:
-              fullUrl:
-                type: string
-                description: the absolute URL for the resource
-              resource:
-                $ref: '#/components/schemas/CodeSystem'
 externalDocs:
   description: Find out more
   url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway
