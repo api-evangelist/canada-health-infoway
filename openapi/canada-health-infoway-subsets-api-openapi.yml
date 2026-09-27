@@ -682,54 +682,6 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
-    SubsetVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          description: subset id
-        url:
-          type: string
-          description: subset url
-        fhirUri:
-          type: string
-          description: FHIR URI of the subset
-        name:
-          type: string
-          description: subset name
-        versionId:
-          type: string
-          description: subset version id
-        effectiveDate:
-          type: string
-          description: version date in yyyyMMdd format
-        description:
-          type: string
-          description: subset version description
-        active:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: 'subset version status: active or inactive'
-        status:
-          type: string
-          enum:
-          - FINAL
-          - DRAFT
-          description: subset version status on whether metadata is a draft or finalized
-        language:
-          type: string
-          enum:
-          - en
-          description: subset version language in ISO639-1 format
-        comment:
-          type: string
-          description: release comment associated to the subset version
-        codeSystems:
-          type: array
-          items:
-            $ref: '#/components/schemas/CodeSystem'
     Concept:
       type: object
       properties:
@@ -825,89 +777,38 @@ components:
         comments:
           type: string
           description: additional comments
-    Subset:
+    Relationship:
       type: object
       properties:
-        id:
+        fromConceptParent:
+          $ref: '#/components/schemas/Concept'
+        toConceptParent:
+          $ref: '#/components/schemas/Concept'
+        fromConcept:
+          $ref: '#/components/schemas/Concept'
+        toConcept:
+          $ref: '#/components/schemas/Concept'
+        fromAssociationGroup:
           type: string
-          description: subset id
-        name:
+          description: old value of concept's associationGroup
+        toAssociationGroup:
           type: string
-          description: subset name
-        url:
+          description: new value of concept's associationGroup
+        fromAssociationType:
           type: string
-          description: defining URL of the subset
-        fhirUri:
+          description: old value of concept's associationType
+        toAssociationType:
           type: string
-          description: FHIR URI of the subset
-        latestVersion:
-          type: string
-          description: id of the most recent subset version
-        viewer:
-          type: string
-          description: hint for the viewer to be used for rendering
-        versions:
+          description: new value of concept's associationType
+    Subsets:
+      type: object
+      properties:
+        subsets:
           type: array
           items:
-            $ref: '#/components/schemas/SubsetVersion'
-    Pagination:
-      type: object
-      properties:
-        currentPage:
-          type: integer
-          description: currently returned page
-        totalPages:
-          type: integer
-          description: total number of pages required to displayed the entire result set
-        pageSize:
-          type: integer
-          description: page size
-        totalRecords:
-          type: integer
-          description: total number of records in the result set
-        firstRecord:
-          type: integer
-          description: first record returned by the current page
-        lastRecord:
-          type: integer
-          description: last record returned by the current page
-        nextPage:
-          type: integer
-          description: next page in the result set or -1 if this is the last page
-        nextRecord:
-          type: integer
-          description: next record in the result set or -1 if there are no more records to be returned
-    Concepts:
-      type: object
-      properties:
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
+            $ref: '#/components/schemas/Subset'
         pagination:
           $ref: '#/components/schemas/Pagination'
-    SubsetVersionReference:
-      type: object
-      properties:
-        id:
-          type: string
-          description: subset id
-        name:
-          type: string
-          description: subset name
-        versionId:
-          type: string
-          description: subset version id
-        effectiveDate:
-          type: string
-          description: date when the subset was added, in yyyyMMdd format
-          default: '20170101'
-        active:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: 'subset status: active or inactive'
     CodeSystemVersion:
       type: object
       properties:
@@ -934,29 +835,54 @@ components:
         propertyCodes:
           type: object
           description: map of the abbreviated property names to their long form
-    Relationship:
+    SubsetVersion:
       type: object
       properties:
-        fromConceptParent:
-          $ref: '#/components/schemas/Concept'
-        toConceptParent:
-          $ref: '#/components/schemas/Concept'
-        fromConcept:
-          $ref: '#/components/schemas/Concept'
-        toConcept:
-          $ref: '#/components/schemas/Concept'
-        fromAssociationGroup:
+        id:
           type: string
-          description: old value of concept's associationGroup
-        toAssociationGroup:
+          description: subset id
+        url:
           type: string
-          description: new value of concept's associationGroup
-        fromAssociationType:
+          description: subset url
+        fhirUri:
           type: string
-          description: old value of concept's associationType
-        toAssociationType:
+          description: FHIR URI of the subset
+        name:
           type: string
-          description: new value of concept's associationType
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: version date in yyyyMMdd format
+        description:
+          type: string
+          description: subset version description
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset version status: active or inactive'
+        status:
+          type: string
+          enum:
+          - FINAL
+          - DRAFT
+          description: subset version status on whether metadata is a draft or finalized
+        language:
+          type: string
+          enum:
+          - en
+          description: subset version language in ISO639-1 format
+        comment:
+          type: string
+          description: release comment associated to the subset version
+        codeSystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystem'
     CodeSystem:
       type: object
       properties:
@@ -985,12 +911,86 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CodeSystemVersion'
-    Subsets:
+    Pagination:
       type: object
       properties:
-        subsets:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned
+    Subset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        url:
+          type: string
+          description: defining URL of the subset
+        fhirUri:
+          type: string
+          description: FHIR URI of the subset
+        latestVersion:
+          type: string
+          description: id of the most recent subset version
+        viewer:
+          type: string
+          description: hint for the viewer to be used for rendering
+        versions:
           type: array
           items:
-            $ref: '#/components/schemas/Subset'
+            $ref: '#/components/schemas/SubsetVersion'
+    SubsetVersionReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: date when the subset was added, in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset status: active or inactive'
+    Concepts:
+      type: object
+      properties:
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
         pagination:
           $ref: '#/components/schemas/Pagination'

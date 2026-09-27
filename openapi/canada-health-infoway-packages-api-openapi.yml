@@ -429,6 +429,41 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
+    Packages:
+      type: object
+      properties:
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Package'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    PackageVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: package identifier
+        name:
+          type: string
+          description: package name
+        versionId:
+          type: string
+          description: version identifier
+        effectiveDate:
+          type: string
+          description: date when package version was added in yyyyMMdd format
+        description:
+          type: string
+          description: description of the package version
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageArtifact'
+          description: composition of the package
+        releaseNotes:
+          type: string
+          description: description of the package version
     Pagination:
       type: object
       properties:
@@ -517,38 +552,3 @@ components:
         visibility:
           type: string
           description: ''
-    Packages:
-      type: object
-      properties:
-        packages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Package'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    PackageVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          description: package identifier
-        name:
-          type: string
-          description: package name
-        versionId:
-          type: string
-          description: version identifier
-        effectiveDate:
-          type: string
-          description: date when package version was added in yyyyMMdd format
-        description:
-          type: string
-          description: description of the package version
-        artifacts:
-          type: array
-          items:
-            $ref: '#/components/schemas/PackageArtifact'
-          description: composition of the package
-        releaseNotes:
-          type: string
-          description: description of the package version

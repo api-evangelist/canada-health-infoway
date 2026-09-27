@@ -621,6 +621,15 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
+    MapElements:
+      type: object
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/MapElement'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Concept:
       type: object
       properties:
@@ -677,103 +686,6 @@ components:
         properties:
           type: object
           description: additional properties
-    MapVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          description: map id
-        versionId:
-          type: string
-          description: version id of the map version
-        date:
-          type: string
-          description: effective date of the map version
-          default: '20170101'
-        metadata:
-          type: object
-        description:
-          type: string
-        status:
-          type: string
-          enum:
-          - active
-          - curated
-          - public
-          - retired
-        type:
-          type: string
-        elements:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        defaultElement:
-          $ref: '#/components/schemas/Concept'
-    MapElements:
-      type: object
-      properties:
-        elements:
-          type: array
-          items:
-            $ref: '#/components/schemas/MapElement'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    SubsetVersionReference:
-      type: object
-      properties:
-        id:
-          type: string
-          description: subset id
-        name:
-          type: string
-          description: subset name
-        versionId:
-          type: string
-          description: subset version id
-        effectiveDate:
-          type: string
-          description: date when the subset was added, in yyyyMMdd format
-          default: '20170101'
-        active:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: 'subset status: active or inactive'
-    Pagination:
-      type: object
-      properties:
-        currentPage:
-          type: integer
-          description: currently returned page
-        totalPages:
-          type: integer
-          description: total number of pages required to displayed the entire result set
-        pageSize:
-          type: integer
-          description: page size
-        totalRecords:
-          type: integer
-          description: total number of records in the result set
-        firstRecord:
-          type: integer
-          description: first record returned by the current page
-        lastRecord:
-          type: integer
-          description: last record returned by the current page
-        nextPage:
-          type: integer
-          description: next page in the result set or -1 if this is the last page
-        nextRecord:
-          type: integer
-          description: next record in the result set or -1 if there are no more records to be returned
-    MapElement:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/Concept'
-        target:
-          $ref: '#/components/schemas/Concept'
     Maps:
       type: object
       properties:
@@ -783,6 +695,13 @@ components:
             $ref: '#/components/schemas/Map'
         pagination:
           $ref: '#/components/schemas/Pagination'
+    MapElement:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/Concept'
+        target:
+          $ref: '#/components/schemas/Concept'
     MapDelta:
       type: object
       properties:
@@ -821,6 +740,55 @@ components:
           items:
             type: string
           description: updated properties between two map versions
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned
+    SubsetVersionReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: date when the subset was added, in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset status: active or inactive'
     Map:
       type: object
       properties:
@@ -862,3 +830,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MapVersion'
+    MapVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: map id
+        versionId:
+          type: string
+          description: version id of the map version
+        date:
+          type: string
+          description: effective date of the map version
+          default: '20170101'
+        metadata:
+          type: object
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - curated
+          - public
+          - retired
+        type:
+          type: string
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        defaultElement:
+          $ref: '#/components/schemas/Concept'
