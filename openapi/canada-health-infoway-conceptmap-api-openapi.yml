@@ -279,6 +279,66 @@ paths:
       x-operation-id-original: translateConcept
 components:
   schemas:
+    ConceptMap:
+      type: object
+      required:
+      - status
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - ConceptMap
+        id:
+          type: string
+          description: Identifier of the concept map as assigned by the server, in this case, an OID.
+        identifier:
+          $ref: '#/components/schemas/OID'
+        version:
+          type: string
+          description: Business version of the concept map
+        name:
+          type: string
+          description: Name for this concept map
+        status:
+          type: string
+          enum:
+          - active
+          - draft
+          - retired
+          description: Status of this version of the concept map
+        publisher:
+          type: string
+          description: Publisher for this concept map
+        group:
+          type: array
+          items:
+            properties:
+              element:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: The code for the source concept
+                  display:
+                    type: string
+                    description: The preferred display for the source concept
+                  target:
+                    type: array
+                    items:
+                      properties:
+                        code:
+                          type: string
+                          description: The code for the source concept
+                        display:
+                          type: string
+                          description: The preferred display for the source concept
+    OID:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
     Parameters:
       type: object
       properties:
@@ -412,66 +472,6 @@ components:
                 description: the absolute URL for the resource
               resource:
                 $ref: '#/components/schemas/ConceptMap'
-    ConceptMap:
-      type: object
-      required:
-      - status
-      properties:
-        resourceType:
-          type: string
-          enum:
-          - ConceptMap
-        id:
-          type: string
-          description: Identifier of the concept map as assigned by the server, in this case, an OID.
-        identifier:
-          $ref: '#/components/schemas/OID'
-        version:
-          type: string
-          description: Business version of the concept map
-        name:
-          type: string
-          description: Name for this concept map
-        status:
-          type: string
-          enum:
-          - active
-          - draft
-          - retired
-          description: Status of this version of the concept map
-        publisher:
-          type: string
-          description: Publisher for this concept map
-        group:
-          type: array
-          items:
-            properties:
-              element:
-                type: object
-                properties:
-                  code:
-                    type: string
-                    description: The code for the source concept
-                  display:
-                    type: string
-                    description: The preferred display for the source concept
-                  target:
-                    type: array
-                    items:
-                      properties:
-                        code:
-                          type: string
-                          description: The code for the source concept
-                        display:
-                          type: string
-                          description: The preferred display for the source concept
-    OID:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
 externalDocs:
   description: Find out more
   url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway

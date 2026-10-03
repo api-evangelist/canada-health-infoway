@@ -682,133 +682,6 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
-    Concept:
-      type: object
-      properties:
-        id:
-          type: string
-          description: concept id
-        name:
-          type: string
-          description: concept name
-        codeSystemId:
-          type: string
-          description: code system id
-        codeSystemName:
-          type: string
-          description: code system name
-        enDisplayName:
-          type: string
-          description: English display name
-        enDisplayNameSecondary:
-          type: string
-          description: secondary English display name
-        enAbbr:
-          type: string
-          description: English name abbreviation
-        frDisplayName:
-          type: string
-          description: French display name
-        frDisplayNameSecondary:
-          type: string
-          description: secondary French display name
-        frAbbr:
-          type: string
-          description: French name abbreviation
-        description:
-          type: string
-          description: full concept description
-        effectiveDate:
-          type: string
-          description: date when the concept was added to the concept or last modified in yyyyMMdd format
-          default: '20170101'
-        active:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: 'concept status: active or inactive'
-        comment:
-          type: string
-          description: additional comment
-        subsets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubsetVersionReference'
-        properties:
-          type: object
-          description: additional properties
-    Delta:
-      type: object
-      properties:
-        fromVersionId:
-          type: string
-          description: previous version including data that has been modified
-        toVersionId:
-          type: string
-          description: version where the change has been introduced
-        type:
-          type: string
-          description: type of change
-          enum:
-          - SUBSET_ADDED
-          - SUBSET_INACTIVATED
-          - SUBSET_METADATA_UPDATED
-          - CONCEPT_ADDED
-          - CONCEPT_UPDATED
-          - CONCEPT_INACTIVATED
-          - CONCEPT_REMOVED
-          - RELATIONSHIP_ADDED
-          - RELATIONSHIP_REMOVED
-          - RELATIONSHIP_MOVED
-          - RELATIONSHIP_TYPE_CHANGED
-        change:
-          type: string
-          description: textual description of the change
-        effectiveDate:
-          type: string
-          description: date when the change has been introduced
-        subsetMetadata:
-          $ref: '#/components/schemas/SubsetVersion'
-        concept:
-          $ref: '#/components/schemas/Concept'
-        relationship:
-          $ref: '#/components/schemas/Relationship'
-        comments:
-          type: string
-          description: additional comments
-    Relationship:
-      type: object
-      properties:
-        fromConceptParent:
-          $ref: '#/components/schemas/Concept'
-        toConceptParent:
-          $ref: '#/components/schemas/Concept'
-        fromConcept:
-          $ref: '#/components/schemas/Concept'
-        toConcept:
-          $ref: '#/components/schemas/Concept'
-        fromAssociationGroup:
-          type: string
-          description: old value of concept's associationGroup
-        toAssociationGroup:
-          type: string
-          description: new value of concept's associationGroup
-        fromAssociationType:
-          type: string
-          description: old value of concept's associationType
-        toAssociationType:
-          type: string
-          description: new value of concept's associationType
-    Subsets:
-      type: object
-      properties:
-        subsets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Subset'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     CodeSystemVersion:
       type: object
       properties:
@@ -883,6 +756,54 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CodeSystem'
+    Subsets:
+      type: object
+      properties:
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subset'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Delta:
+      type: object
+      properties:
+        fromVersionId:
+          type: string
+          description: previous version including data that has been modified
+        toVersionId:
+          type: string
+          description: version where the change has been introduced
+        type:
+          type: string
+          description: type of change
+          enum:
+          - SUBSET_ADDED
+          - SUBSET_INACTIVATED
+          - SUBSET_METADATA_UPDATED
+          - CONCEPT_ADDED
+          - CONCEPT_UPDATED
+          - CONCEPT_INACTIVATED
+          - CONCEPT_REMOVED
+          - RELATIONSHIP_ADDED
+          - RELATIONSHIP_REMOVED
+          - RELATIONSHIP_MOVED
+          - RELATIONSHIP_TYPE_CHANGED
+        change:
+          type: string
+          description: textual description of the change
+        effectiveDate:
+          type: string
+          description: date when the change has been introduced
+        subsetMetadata:
+          $ref: '#/components/schemas/SubsetVersion'
+        concept:
+          $ref: '#/components/schemas/Concept'
+        relationship:
+          $ref: '#/components/schemas/Relationship'
+        comments:
+          type: string
+          description: additional comments
     CodeSystem:
       type: object
       properties:
@@ -938,6 +859,107 @@ components:
         nextRecord:
           type: integer
           description: next record in the result set or -1 if there are no more records to be returned
+    Concept:
+      type: object
+      properties:
+        id:
+          type: string
+          description: concept id
+        name:
+          type: string
+          description: concept name
+        codeSystemId:
+          type: string
+          description: code system id
+        codeSystemName:
+          type: string
+          description: code system name
+        enDisplayName:
+          type: string
+          description: English display name
+        enDisplayNameSecondary:
+          type: string
+          description: secondary English display name
+        enAbbr:
+          type: string
+          description: English name abbreviation
+        frDisplayName:
+          type: string
+          description: French display name
+        frDisplayNameSecondary:
+          type: string
+          description: secondary French display name
+        frAbbr:
+          type: string
+          description: French name abbreviation
+        description:
+          type: string
+          description: full concept description
+        effectiveDate:
+          type: string
+          description: date when the concept was added to the concept or last modified in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'concept status: active or inactive'
+        comment:
+          type: string
+          description: additional comment
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubsetVersionReference'
+        properties:
+          type: object
+          description: additional properties
+    SubsetVersionReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: date when the subset was added, in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset status: active or inactive'
+    Relationship:
+      type: object
+      properties:
+        fromConceptParent:
+          $ref: '#/components/schemas/Concept'
+        toConceptParent:
+          $ref: '#/components/schemas/Concept'
+        fromConcept:
+          $ref: '#/components/schemas/Concept'
+        toConcept:
+          $ref: '#/components/schemas/Concept'
+        fromAssociationGroup:
+          type: string
+          description: old value of concept's associationGroup
+        toAssociationGroup:
+          type: string
+          description: new value of concept's associationGroup
+        fromAssociationType:
+          type: string
+          description: old value of concept's associationType
+        toAssociationType:
+          type: string
+          description: new value of concept's associationType
     Subset:
       type: object
       properties:
@@ -963,28 +985,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubsetVersion'
-    SubsetVersionReference:
-      type: object
-      properties:
-        id:
-          type: string
-          description: subset id
-        name:
-          type: string
-          description: subset name
-        versionId:
-          type: string
-          description: subset version id
-        effectiveDate:
-          type: string
-          description: date when the subset was added, in yyyyMMdd format
-          default: '20170101'
-        active:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: 'subset status: active or inactive'
     Concepts:
       type: object
       properties:

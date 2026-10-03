@@ -272,10 +272,9 @@ paths:
         required: true
 components:
   schemas:
-    ConceptLookupResponseParameter:
+    CodingParameter:
       type: object
       required:
-      - resourceType
       - parameter
       properties:
         resourceType:
@@ -288,17 +287,34 @@ components:
             type: object
             required:
             - name
+            - valueCoding
             properties:
               name:
                 type: string
-                description: The name of the response parameter.
                 enum:
-                - name
-                - version
-                - display
-              valueString:
-                type: string
-                description: The value of the response parameter.
+                - coding
+              valueCoding:
+                type: object
+                required:
+                - system
+                - code
+                properties:
+                  system:
+                    type: string
+                    description: The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]
+                  code:
+                    type: string
+                    description: The code that is to be located.
+                  version:
+                    type: string
+                    description: The version of the code system.
+    OID:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
     CodeSystem:
       type: object
       required:
@@ -390,13 +406,6 @@ components:
                     value:
                       type: string
                       description: The value of the property returned
-    OID:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
     BundleOfCodeSystems:
       type: object
       properties:
@@ -446,9 +455,10 @@ components:
                 description: the absolute URL for the resource
               resource:
                 $ref: '#/components/schemas/CodeSystem'
-    CodingParameter:
+    ConceptLookupResponseParameter:
       type: object
       required:
+      - resourceType
       - parameter
       properties:
         resourceType:
@@ -461,27 +471,17 @@ components:
             type: object
             required:
             - name
-            - valueCoding
             properties:
               name:
                 type: string
+                description: The name of the response parameter.
                 enum:
-                - coding
-              valueCoding:
-                type: object
-                required:
-                - system
-                - code
-                properties:
-                  system:
-                    type: string
-                    description: The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]
-                  code:
-                    type: string
-                    description: The code that is to be located.
-                  version:
-                    type: string
-                    description: The version of the code system.
+                - name
+                - version
+                - display
+              valueString:
+                type: string
+                description: The value of the response parameter.
 externalDocs:
   description: Find out more
   url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway

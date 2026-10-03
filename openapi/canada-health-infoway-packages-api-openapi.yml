@@ -429,15 +429,27 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
-    Packages:
+    PackageArtifact:
       type: object
       properties:
-        packages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Package'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
+        type:
+          type: string
+          description: 'type of the artifact: subset, codesystem or map'
+        id:
+          type: string
+          description: identifier of the package artifact
+        name:
+          type: string
+          description: name of the package artifact
+        description:
+          type: string
+          description: description of the package artifact
+        versionId:
+          type: string
+          description: version identifier of the package artifact
+        visibility:
+          type: string
+          description: ''
     PackageVersion:
       type: object
       properties:
@@ -464,33 +476,6 @@ components:
         releaseNotes:
           type: string
           description: description of the package version
-    Pagination:
-      type: object
-      properties:
-        currentPage:
-          type: integer
-          description: currently returned page
-        totalPages:
-          type: integer
-          description: total number of pages required to displayed the entire result set
-        pageSize:
-          type: integer
-          description: page size
-        totalRecords:
-          type: integer
-          description: total number of records in the result set
-        firstRecord:
-          type: integer
-          description: first record returned by the current page
-        lastRecord:
-          type: integer
-          description: last record returned by the current page
-        nextPage:
-          type: integer
-          description: next page in the result set or -1 if this is the last page
-        nextRecord:
-          type: integer
-          description: next record in the result set or -1 if there are no more records to be returned
     Package:
       type: object
       properties:
@@ -531,24 +516,39 @@ components:
           items:
             type: string
           description: domains the package belongs to
-    PackageArtifact:
+    Packages:
       type: object
       properties:
-        type:
-          type: string
-          description: 'type of the artifact: subset, codesystem or map'
-        id:
-          type: string
-          description: identifier of the package artifact
-        name:
-          type: string
-          description: name of the package artifact
-        description:
-          type: string
-          description: description of the package artifact
-        versionId:
-          type: string
-          description: version identifier of the package artifact
-        visibility:
-          type: string
-          description: ''
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Package'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned

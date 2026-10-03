@@ -621,6 +621,38 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
+    MapVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: map id
+        versionId:
+          type: string
+          description: version id of the map version
+        date:
+          type: string
+          description: effective date of the map version
+          default: '20170101'
+        metadata:
+          type: object
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - curated
+          - public
+          - retired
+        type:
+          type: string
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        defaultElement:
+          $ref: '#/components/schemas/Concept'
     MapElements:
       type: object
       properties:
@@ -630,71 +662,47 @@ components:
             $ref: '#/components/schemas/MapElement'
         pagination:
           $ref: '#/components/schemas/Pagination'
-    Concept:
+    Map:
       type: object
       properties:
         id:
           type: string
-          description: concept id
+          description: map id
         name:
           type: string
-          description: concept name
-        codeSystemId:
+          description: map name
+        url:
           type: string
-          description: code system id
-        codeSystemName:
+          description: url to map
+        fhirUri:
           type: string
-          description: code system name
-        enDisplayName:
+          description: FHIR URI of the map
+        latestVersion:
           type: string
-          description: English display name
-        enDisplayNameSecondary:
+          description: id of the most recent map version
+        owner:
           type: string
-          description: secondary English display name
-        enAbbr:
+          description: organization owning the map
+        metadata:
+          type: object
+          description: map of extra data
+        viewer:
           type: string
-          description: English name abbreviation
-        frDisplayName:
-          type: string
-          description: French display name
-        frDisplayNameSecondary:
-          type: string
-          description: secondary French display name
-        frAbbr:
-          type: string
-          description: French name abbreviation
-        description:
-          type: string
-          description: full concept description
-        effectiveDate:
-          type: string
-          description: date when the concept was added to the concept or last modified in yyyyMMdd format
-          default: '20170101'
-        active:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: 'concept status: active or inactive'
-        comment:
-          type: string
-          description: additional comment
-        subsets:
+          description: hint for the viewer to be used for rendering
+        tags:
           type: array
           items:
-            $ref: '#/components/schemas/SubsetVersionReference'
+            type: string
         properties:
           type: object
-          description: additional properties
-    Maps:
-      type: object
-      properties:
-        subsets:
+        domains:
           type: array
           items:
-            $ref: '#/components/schemas/Map'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
+            type: string
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MapVersion'
     MapElement:
       type: object
       properties:
@@ -767,6 +775,62 @@ components:
         nextRecord:
           type: integer
           description: next record in the result set or -1 if there are no more records to be returned
+    Concept:
+      type: object
+      properties:
+        id:
+          type: string
+          description: concept id
+        name:
+          type: string
+          description: concept name
+        codeSystemId:
+          type: string
+          description: code system id
+        codeSystemName:
+          type: string
+          description: code system name
+        enDisplayName:
+          type: string
+          description: English display name
+        enDisplayNameSecondary:
+          type: string
+          description: secondary English display name
+        enAbbr:
+          type: string
+          description: English name abbreviation
+        frDisplayName:
+          type: string
+          description: French display name
+        frDisplayNameSecondary:
+          type: string
+          description: secondary French display name
+        frAbbr:
+          type: string
+          description: French name abbreviation
+        description:
+          type: string
+          description: full concept description
+        effectiveDate:
+          type: string
+          description: date when the concept was added to the concept or last modified in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'concept status: active or inactive'
+        comment:
+          type: string
+          description: additional comment
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubsetVersionReference'
+        properties:
+          type: object
+          description: additional properties
     SubsetVersionReference:
       type: object
       properties:
@@ -789,76 +853,12 @@ components:
           - 'true'
           - 'false'
           description: 'subset status: active or inactive'
-    Map:
+    Maps:
       type: object
       properties:
-        id:
-          type: string
-          description: map id
-        name:
-          type: string
-          description: map name
-        url:
-          type: string
-          description: url to map
-        fhirUri:
-          type: string
-          description: FHIR URI of the map
-        latestVersion:
-          type: string
-          description: id of the most recent map version
-        owner:
-          type: string
-          description: organization owning the map
-        metadata:
-          type: object
-          description: map of extra data
-        viewer:
-          type: string
-          description: hint for the viewer to be used for rendering
-        tags:
+        subsets:
           type: array
           items:
-            type: string
-        properties:
-          type: object
-        domains:
-          type: array
-          items:
-            type: string
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/MapVersion'
-    MapVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          description: map id
-        versionId:
-          type: string
-          description: version id of the map version
-        date:
-          type: string
-          description: effective date of the map version
-          default: '20170101'
-        metadata:
-          type: object
-        description:
-          type: string
-        status:
-          type: string
-          enum:
-          - active
-          - curated
-          - public
-          - retired
-        type:
-          type: string
-        elements:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        defaultElement:
-          $ref: '#/components/schemas/Concept'
+            $ref: '#/components/schemas/Map'
+        pagination:
+          $ref: '#/components/schemas/Pagination'

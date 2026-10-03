@@ -541,6 +541,24 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
+    Entities:
+      type: object
+      properties:
+        codesystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entity'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    CodeSystems:
+      type: object
+      properties:
+        codesystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystem'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Entity:
       type: object
       properties:
@@ -611,15 +629,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CodeSystemVersion'
-    Entities:
-      type: object
-      properties:
-        codesystems:
-          type: array
-          items:
-            $ref: '#/components/schemas/Entity'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     Pagination:
       type: object
       properties:
@@ -647,12 +656,3 @@ components:
         nextRecord:
           type: integer
           description: next record in the result set or -1 if there are no more records to be returned
-    CodeSystems:
-      type: object
-      properties:
-        codesystems:
-          type: array
-          items:
-            $ref: '#/components/schemas/CodeSystem'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
