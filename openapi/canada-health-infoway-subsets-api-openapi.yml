@@ -682,6 +682,43 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
+    CodeSystem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: codesystem id
+        name:
+          type: string
+          description: code system name
+        businessName:
+          type: string
+          description: code system business name
+        url:
+          type: string
+          description: code system URL
+        version:
+          type: string
+          description: code system version
+        organization:
+          type: string
+          description: organization owning the code system
+        latestVersion:
+          type: string
+          description: id of the most recent codesystem version
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystemVersion'
+    Subsets:
+      type: object
+      properties:
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subset'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     CodeSystemVersion:
       type: object
       properties:
@@ -708,6 +745,81 @@ components:
         propertyCodes:
           type: object
           description: map of the abbreviated property names to their long form
+    Relationship:
+      type: object
+      properties:
+        fromConceptParent:
+          $ref: '#/components/schemas/Concept'
+        toConceptParent:
+          $ref: '#/components/schemas/Concept'
+        fromConcept:
+          $ref: '#/components/schemas/Concept'
+        toConcept:
+          $ref: '#/components/schemas/Concept'
+        fromAssociationGroup:
+          type: string
+          description: old value of concept's associationGroup
+        toAssociationGroup:
+          type: string
+          description: new value of concept's associationGroup
+        fromAssociationType:
+          type: string
+          description: old value of concept's associationType
+        toAssociationType:
+          type: string
+          description: new value of concept's associationType
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned
+    Subset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        url:
+          type: string
+          description: defining URL of the subset
+        fhirUri:
+          type: string
+          description: FHIR URI of the subset
+        latestVersion:
+          type: string
+          description: id of the most recent subset version
+        viewer:
+          type: string
+          description: hint for the viewer to be used for rendering
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubsetVersion'
     SubsetVersion:
       type: object
       properties:
@@ -756,109 +868,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CodeSystem'
-    Subsets:
-      type: object
-      properties:
-        subsets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Subset'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    Delta:
-      type: object
-      properties:
-        fromVersionId:
-          type: string
-          description: previous version including data that has been modified
-        toVersionId:
-          type: string
-          description: version where the change has been introduced
-        type:
-          type: string
-          description: type of change
-          enum:
-          - SUBSET_ADDED
-          - SUBSET_INACTIVATED
-          - SUBSET_METADATA_UPDATED
-          - CONCEPT_ADDED
-          - CONCEPT_UPDATED
-          - CONCEPT_INACTIVATED
-          - CONCEPT_REMOVED
-          - RELATIONSHIP_ADDED
-          - RELATIONSHIP_REMOVED
-          - RELATIONSHIP_MOVED
-          - RELATIONSHIP_TYPE_CHANGED
-        change:
-          type: string
-          description: textual description of the change
-        effectiveDate:
-          type: string
-          description: date when the change has been introduced
-        subsetMetadata:
-          $ref: '#/components/schemas/SubsetVersion'
-        concept:
-          $ref: '#/components/schemas/Concept'
-        relationship:
-          $ref: '#/components/schemas/Relationship'
-        comments:
-          type: string
-          description: additional comments
-    CodeSystem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: codesystem id
-        name:
-          type: string
-          description: code system name
-        businessName:
-          type: string
-          description: code system business name
-        url:
-          type: string
-          description: code system URL
-        version:
-          type: string
-          description: code system version
-        organization:
-          type: string
-          description: organization owning the code system
-        latestVersion:
-          type: string
-          description: id of the most recent codesystem version
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/CodeSystemVersion'
-    Pagination:
-      type: object
-      properties:
-        currentPage:
-          type: integer
-          description: currently returned page
-        totalPages:
-          type: integer
-          description: total number of pages required to displayed the entire result set
-        pageSize:
-          type: integer
-          description: page size
-        totalRecords:
-          type: integer
-          description: total number of records in the result set
-        firstRecord:
-          type: integer
-          description: first record returned by the current page
-        lastRecord:
-          type: integer
-          description: last record returned by the current page
-        nextPage:
-          type: integer
-          description: next page in the result set or -1 if this is the last page
-        nextRecord:
-          type: integer
-          description: next record in the result set or -1 if there are no more records to be returned
     Concept:
       type: object
       properties:
@@ -915,6 +924,54 @@ components:
         properties:
           type: object
           description: additional properties
+    Delta:
+      type: object
+      properties:
+        fromVersionId:
+          type: string
+          description: previous version including data that has been modified
+        toVersionId:
+          type: string
+          description: version where the change has been introduced
+        type:
+          type: string
+          description: type of change
+          enum:
+          - SUBSET_ADDED
+          - SUBSET_INACTIVATED
+          - SUBSET_METADATA_UPDATED
+          - CONCEPT_ADDED
+          - CONCEPT_UPDATED
+          - CONCEPT_INACTIVATED
+          - CONCEPT_REMOVED
+          - RELATIONSHIP_ADDED
+          - RELATIONSHIP_REMOVED
+          - RELATIONSHIP_MOVED
+          - RELATIONSHIP_TYPE_CHANGED
+        change:
+          type: string
+          description: textual description of the change
+        effectiveDate:
+          type: string
+          description: date when the change has been introduced
+        subsetMetadata:
+          $ref: '#/components/schemas/SubsetVersion'
+        concept:
+          $ref: '#/components/schemas/Concept'
+        relationship:
+          $ref: '#/components/schemas/Relationship'
+        comments:
+          type: string
+          description: additional comments
+    Concepts:
+      type: object
+      properties:
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     SubsetVersionReference:
       type: object
       properties:
@@ -937,60 +994,3 @@ components:
           - 'true'
           - 'false'
           description: 'subset status: active or inactive'
-    Relationship:
-      type: object
-      properties:
-        fromConceptParent:
-          $ref: '#/components/schemas/Concept'
-        toConceptParent:
-          $ref: '#/components/schemas/Concept'
-        fromConcept:
-          $ref: '#/components/schemas/Concept'
-        toConcept:
-          $ref: '#/components/schemas/Concept'
-        fromAssociationGroup:
-          type: string
-          description: old value of concept's associationGroup
-        toAssociationGroup:
-          type: string
-          description: new value of concept's associationGroup
-        fromAssociationType:
-          type: string
-          description: old value of concept's associationType
-        toAssociationType:
-          type: string
-          description: new value of concept's associationType
-    Subset:
-      type: object
-      properties:
-        id:
-          type: string
-          description: subset id
-        name:
-          type: string
-          description: subset name
-        url:
-          type: string
-          description: defining URL of the subset
-        fhirUri:
-          type: string
-          description: FHIR URI of the subset
-        latestVersion:
-          type: string
-          description: id of the most recent subset version
-        viewer:
-          type: string
-          description: hint for the viewer to be used for rendering
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubsetVersion'
-    Concepts:
-      type: object
-      properties:
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        pagination:
-          $ref: '#/components/schemas/Pagination'

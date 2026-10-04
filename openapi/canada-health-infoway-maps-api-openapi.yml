@@ -621,95 +621,6 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
-    MapVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          description: map id
-        versionId:
-          type: string
-          description: version id of the map version
-        date:
-          type: string
-          description: effective date of the map version
-          default: '20170101'
-        metadata:
-          type: object
-        description:
-          type: string
-        status:
-          type: string
-          enum:
-          - active
-          - curated
-          - public
-          - retired
-        type:
-          type: string
-        elements:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        defaultElement:
-          $ref: '#/components/schemas/Concept'
-    MapElements:
-      type: object
-      properties:
-        elements:
-          type: array
-          items:
-            $ref: '#/components/schemas/MapElement'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    Map:
-      type: object
-      properties:
-        id:
-          type: string
-          description: map id
-        name:
-          type: string
-          description: map name
-        url:
-          type: string
-          description: url to map
-        fhirUri:
-          type: string
-          description: FHIR URI of the map
-        latestVersion:
-          type: string
-          description: id of the most recent map version
-        owner:
-          type: string
-          description: organization owning the map
-        metadata:
-          type: object
-          description: map of extra data
-        viewer:
-          type: string
-          description: hint for the viewer to be used for rendering
-        tags:
-          type: array
-          items:
-            type: string
-        properties:
-          type: object
-        domains:
-          type: array
-          items:
-            type: string
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/MapVersion'
-    MapElement:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/Concept'
-        target:
-          $ref: '#/components/schemas/Concept'
     MapDelta:
       type: object
       properties:
@@ -748,6 +659,24 @@ components:
           items:
             type: string
           description: updated properties between two map versions
+    MapElements:
+      type: object
+      properties:
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/MapElement'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Maps:
+      type: object
+      properties:
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Map'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Pagination:
       type: object
       properties:
@@ -831,6 +760,86 @@ components:
         properties:
           type: object
           description: additional properties
+    MapVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: map id
+        versionId:
+          type: string
+          description: version id of the map version
+        date:
+          type: string
+          description: effective date of the map version
+          default: '20170101'
+        metadata:
+          type: object
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - curated
+          - public
+          - retired
+        type:
+          type: string
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        defaultElement:
+          $ref: '#/components/schemas/Concept'
+    Map:
+      type: object
+      properties:
+        id:
+          type: string
+          description: map id
+        name:
+          type: string
+          description: map name
+        url:
+          type: string
+          description: url to map
+        fhirUri:
+          type: string
+          description: FHIR URI of the map
+        latestVersion:
+          type: string
+          description: id of the most recent map version
+        owner:
+          type: string
+          description: organization owning the map
+        metadata:
+          type: object
+          description: map of extra data
+        viewer:
+          type: string
+          description: hint for the viewer to be used for rendering
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+        domains:
+          type: array
+          items:
+            type: string
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MapVersion'
+    MapElement:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/Concept'
+        target:
+          $ref: '#/components/schemas/Concept'
     SubsetVersionReference:
       type: object
       properties:
@@ -853,12 +862,3 @@ components:
           - 'true'
           - 'false'
           description: 'subset status: active or inactive'
-    Maps:
-      type: object
-      properties:
-        subsets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Map'
-        pagination:
-          $ref: '#/components/schemas/Pagination'

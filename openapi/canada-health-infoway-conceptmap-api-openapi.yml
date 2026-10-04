@@ -279,6 +279,55 @@ paths:
       x-operation-id-original: translateConcept
 components:
   schemas:
+    BundleOfConceptMaps:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Bundle
+        id:
+          type: string
+          description: local identifier of the bundle as assigned by the server
+        meta:
+          type: object
+          properties:
+            lastUpdated:
+              type: string
+              format: date-time
+              description: when the resource last changed
+          description: metadata about the bundle
+        type:
+          type: string
+          enum:
+          - searchset
+          description: indicates the purpose of this bundle
+        total:
+          type: integer
+          format: int32
+          description: the total number of matches for the search
+        link:
+          type: array
+          items:
+            type: object
+            properties:
+              relation:
+                type: string
+                description: a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]
+              url:
+                type: string
+                description: the reference details for the link
+          description: a series of links that provide context to this bundle
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              fullUrl:
+                type: string
+                description: the absolute URL for the resource
+              resource:
+                $ref: '#/components/schemas/ConceptMap'
     ConceptMap:
       type: object
       required:
@@ -332,13 +381,6 @@ components:
                         display:
                           type: string
                           description: The preferred display for the source concept
-    OID:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
     Parameters:
       type: object
       properties:
@@ -360,6 +402,13 @@ components:
               valueString:
                 type: string
                 description: The value of the parameter, represented as a string
+    OID:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
     ConceptMapTranslateInParameter:
       type: object
       required:
@@ -423,55 +472,6 @@ components:
                 enum:
                 - 'true'
                 - 'false'
-    BundleOfConceptMaps:
-      type: object
-      properties:
-        resourceType:
-          type: string
-          enum:
-          - Bundle
-        id:
-          type: string
-          description: local identifier of the bundle as assigned by the server
-        meta:
-          type: object
-          properties:
-            lastUpdated:
-              type: string
-              format: date-time
-              description: when the resource last changed
-          description: metadata about the bundle
-        type:
-          type: string
-          enum:
-          - searchset
-          description: indicates the purpose of this bundle
-        total:
-          type: integer
-          format: int32
-          description: the total number of matches for the search
-        link:
-          type: array
-          items:
-            type: object
-            properties:
-              relation:
-                type: string
-                description: a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]
-              url:
-                type: string
-                description: the reference details for the link
-          description: a series of links that provide context to this bundle
-        entry:
-          type: array
-          items:
-            type: object
-            properties:
-              fullUrl:
-                type: string
-                description: the absolute URL for the resource
-              resource:
-                $ref: '#/components/schemas/ConceptMap'
 externalDocs:
   description: Find out more
   url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway

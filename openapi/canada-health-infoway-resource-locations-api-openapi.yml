@@ -185,15 +185,6 @@ components:
         nextRecord:
           type: integer
           description: next record in the result set or -1 if there are no more records to be returned
-    ResourceLocations:
-      type: object
-      properties:
-        resourceLocations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceLocation'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     ResourceLocation:
       type: object
       properties:
@@ -242,3 +233,12 @@ components:
         metadata:
           type: object
           description: metadata associated with resource
+    ResourceLocations:
+      type: object
+      properties:
+        resourceLocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceLocation'
+        pagination:
+          $ref: '#/components/schemas/Pagination'

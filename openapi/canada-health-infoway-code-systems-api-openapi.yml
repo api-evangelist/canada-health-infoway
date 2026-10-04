@@ -541,66 +541,6 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
-    Entities:
-      type: object
-      properties:
-        codesystems:
-          type: array
-          items:
-            $ref: '#/components/schemas/Entity'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    CodeSystems:
-      type: object
-      properties:
-        codesystems:
-          type: array
-          items:
-            $ref: '#/components/schemas/CodeSystem'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    Entity:
-      type: object
-      properties:
-        id:
-          type: string
-          description: entity id
-        name:
-          type: string
-          description: entity name
-        definition:
-          type: string
-          description: some definition
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-    CodeSystemVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          description: codesystem id
-        name:
-          type: string
-          description: codesystem name
-        versionId:
-          type: string
-          description: codesystem version id
-        defaultLanguage:
-          type: string
-          enum:
-          - en
-          description: codesystem version language in ISO639-1 format
-        supportedLanguage:
-          type: string
-          description: codesystem version language in ISO639-1 format
-        propertyNames:
-          type: object
-          description: map of the property names to their abbreviated form
-        propertyCodes:
-          type: object
-          description: map of the abbreviated property names to their long form
     CodeSystem:
       type: object
       properties:
@@ -629,6 +569,57 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CodeSystemVersion'
+    CodeSystemVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: codesystem id
+        name:
+          type: string
+          description: codesystem name
+        versionId:
+          type: string
+          description: codesystem version id
+        defaultLanguage:
+          type: string
+          enum:
+          - en
+          description: codesystem version language in ISO639-1 format
+        supportedLanguage:
+          type: string
+          description: codesystem version language in ISO639-1 format
+        propertyNames:
+          type: object
+          description: map of the property names to their abbreviated form
+        propertyCodes:
+          type: object
+          description: map of the abbreviated property names to their long form
+    Entity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: entity id
+        name:
+          type: string
+          description: entity name
+        definition:
+          type: string
+          description: some definition
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    Entities:
+      type: object
+      properties:
+        codesystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entity'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Pagination:
       type: object
       properties:
@@ -656,3 +647,12 @@ components:
         nextRecord:
           type: integer
           description: next record in the result set or -1 if there are no more records to be returned
+    CodeSystems:
+      type: object
+      properties:
+        codesystems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeSystem'
+        pagination:
+          $ref: '#/components/schemas/Pagination'

@@ -451,36 +451,76 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
-    ValueSet:
+    BundleOfValueSets:
       type: object
-      required:
-      - status
       properties:
         resourceType:
           type: string
           enum:
-          - ValueSet
+          - Bundle
         id:
           type: string
-          description: local identifier of the value set as assigned by the server
-        identifier:
-          $ref: '#/components/schemas/OID'
-        version:
-          type: string
-          description: id of this version of the value set
-        name:
-          type: string
-          description: informal name for this value set
-        status:
+          description: local identifier of the bundle as assigned by the server
+        meta:
+          type: object
+          properties:
+            lastUpdated:
+              type: string
+              format: date-time
+              description: when the resource last changed
+          description: metadata about the bundle
+        type:
           type: string
           enum:
-          - active
-          - draft
-          - retired
-          description: status of this version of the value set
-        description:
+          - searchset
+          description: indicates the purpose of this bundle
+        total:
+          type: integer
+          format: int32
+          description: the total number of matches for the search
+        link:
+          type: array
+          items:
+            type: object
+            properties:
+              relation:
+                type: string
+                description: a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]
+              url:
+                type: string
+                description: the reference details for the link
+          description: a series of links that provide context to this bundle
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              fullUrl:
+                type: string
+                description: the absolute URL for the resource
+              resource:
+                $ref: '#/components/schemas/ValueSet'
+    Parameters:
+      type: object
+      properties:
+        resourceType:
           type: string
-          description: Human language description of the value set
+          enum:
+          - Parameters
+        parameter:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the parameter
+              valueBoolean:
+                type: boolean
+                description: The value of the parameter, represented as a boolean
+              valueString:
+                type: string
+                description: The value of the parameter, represented as a string
     ExpandedValueSet:
       type: object
       required:
@@ -550,76 +590,36 @@ components:
       properties:
         id:
           type: string
-    Parameters:
+    ValueSet:
       type: object
+      required:
+      - status
       properties:
         resourceType:
           type: string
           enum:
-          - Parameters
-        parameter:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The name of the parameter
-              valueBoolean:
-                type: boolean
-                description: The value of the parameter, represented as a boolean
-              valueString:
-                type: string
-                description: The value of the parameter, represented as a string
-    BundleOfValueSets:
-      type: object
-      properties:
-        resourceType:
-          type: string
-          enum:
-          - Bundle
+          - ValueSet
         id:
           type: string
-          description: local identifier of the bundle as assigned by the server
-        meta:
-          type: object
-          properties:
-            lastUpdated:
-              type: string
-              format: date-time
-              description: when the resource last changed
-          description: metadata about the bundle
-        type:
+          description: local identifier of the value set as assigned by the server
+        identifier:
+          $ref: '#/components/schemas/OID'
+        version:
+          type: string
+          description: id of this version of the value set
+        name:
+          type: string
+          description: informal name for this value set
+        status:
           type: string
           enum:
-          - searchset
-          description: indicates the purpose of this bundle
-        total:
-          type: integer
-          format: int32
-          description: the total number of matches for the search
-        link:
-          type: array
-          items:
-            type: object
-            properties:
-              relation:
-                type: string
-                description: a name which details the functional use for this link - see [[http://www.iana.org/assignments/link-relations/link-relations.xhtml]]
-              url:
-                type: string
-                description: the reference details for the link
-          description: a series of links that provide context to this bundle
-        entry:
-          type: array
-          items:
-            type: object
-            properties:
-              fullUrl:
-                type: string
-                description: the absolute URL for the resource
-              resource:
-                $ref: '#/components/schemas/ValueSet'
+          - active
+          - draft
+          - retired
+          description: status of this version of the value set
+        description:
+          type: string
+          description: Human language description of the value set
 externalDocs:
   description: Find out more
   url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway
