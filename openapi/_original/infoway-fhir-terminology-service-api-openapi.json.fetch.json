@@ -1,0 +1,12 @@
+{
+ "url": "https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger.json",
+ "requested_url": "https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 97511,
+ "sha256": "2d9e03f689a820f3c6cf08b9bc4ba80c5bc9adb7788d11d2f79a285c06bebd70",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
