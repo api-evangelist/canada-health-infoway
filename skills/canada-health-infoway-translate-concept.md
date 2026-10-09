@@ -2,7 +2,7 @@
 name: Translate a code between code systems (FHIR $translate)
 description: Find the relevant ConceptMap and translate a source code to its target code(s) on the Infoway Terminology Gateway.
 api: openapi/infoway-fhir-terminology-service-api-openapi.json
-operations: [findConceptMaps, getConceptMap, translateConcept]
+operations: [findConceptMaps, getConceptMap, postConceptMapById$translate]
 ---
 
 # Translate a concept through a ConceptMap
