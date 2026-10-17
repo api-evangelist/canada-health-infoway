@@ -279,6 +279,97 @@ paths:
       x-operation-id-original: translateConcept
 components:
   schemas:
+    OID:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    Parameters:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Parameters
+        parameter:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the parameter
+              valueBoolean:
+                type: boolean
+                description: The value of the parameter, represented as a boolean
+              valueString:
+                type: string
+                description: The value of the parameter, represented as a string
+    ConceptMapTranslateInParameter:
+      type: object
+      required:
+      - parameter
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Parameters
+        parameter:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            - valueCoding
+            properties:
+              name:
+                type: string
+                enum:
+                - coding
+                - codeableConcept
+                - reverse
+              valueCoding:
+                type: object
+                required:
+                - system
+                - code
+                properties:
+                  system:
+                    type: string
+                    description: The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]
+                  code:
+                    type: string
+                    description: The code that is to be located.
+                  version:
+                    type: string
+                    description: The version of the code system.
+              valueCodeableConcept:
+                type: object
+                properties:
+                  coding:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - system
+                      - code
+                      properties:
+                        system:
+                          type: string
+                          description: The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]
+                        code:
+                          type: string
+                          description: The code that is to be located.
+                        version:
+                          type: string
+                          description: The version of the code system.
+              valueBoolean:
+                type: boolean
+                enum:
+                - 'true'
+                - 'false'
     BundleOfConceptMaps:
       type: object
       properties:
@@ -381,97 +472,6 @@ components:
                         display:
                           type: string
                           description: The preferred display for the source concept
-    Parameters:
-      type: object
-      properties:
-        resourceType:
-          type: string
-          enum:
-          - Parameters
-        parameter:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The name of the parameter
-              valueBoolean:
-                type: boolean
-                description: The value of the parameter, represented as a boolean
-              valueString:
-                type: string
-                description: The value of the parameter, represented as a string
-    OID:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-    ConceptMapTranslateInParameter:
-      type: object
-      required:
-      - parameter
-      properties:
-        resourceType:
-          type: string
-          enum:
-          - Parameters
-        parameter:
-          type: array
-          items:
-            type: object
-            required:
-            - name
-            - valueCoding
-            properties:
-              name:
-                type: string
-                enum:
-                - coding
-                - codeableConcept
-                - reverse
-              valueCoding:
-                type: object
-                required:
-                - system
-                - code
-                properties:
-                  system:
-                    type: string
-                    description: The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]
-                  code:
-                    type: string
-                    description: The code that is to be located.
-                  version:
-                    type: string
-                    description: The version of the code system.
-              valueCodeableConcept:
-                type: object
-                properties:
-                  coding:
-                    type: array
-                    items:
-                      type: object
-                      required:
-                      - system
-                      - code
-                      properties:
-                        system:
-                          type: string
-                          description: The URI of the code system for the code that is to be located.  If using the code system OID, it must be in the URI format urn:oid:[oid-value]
-                        code:
-                          type: string
-                          description: The code that is to be located.
-                        version:
-                          type: string
-                          description: The version of the code system.
-              valueBoolean:
-                type: boolean
-                enum:
-                - 'true'
-                - 'false'
 externalDocs:
   description: Find out more
   url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway

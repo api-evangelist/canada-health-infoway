@@ -429,6 +429,82 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
+    Packages:
+      type: object
+      properties:
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Package'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          description: currently returned page
+        totalPages:
+          type: integer
+          description: total number of pages required to displayed the entire result set
+        pageSize:
+          type: integer
+          description: page size
+        totalRecords:
+          type: integer
+          description: total number of records in the result set
+        firstRecord:
+          type: integer
+          description: first record returned by the current page
+        lastRecord:
+          type: integer
+          description: last record returned by the current page
+        nextPage:
+          type: integer
+          description: next page in the result set or -1 if this is the last page
+        nextRecord:
+          type: integer
+          description: next record in the result set or -1 if there are no more records to be returned
+    Package:
+      type: object
+      properties:
+        id:
+          type: string
+          description: package identifier
+        name:
+          type: string
+          description: package name
+        url:
+          type: string
+          description: package url
+        latestVersion:
+          type: string
+          description: latest version of the package
+        status:
+          type: string
+          description: package status
+        viewer:
+          type: string
+          description: hint for the viewer for package to be rendered in
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageVersion'
+          description: versions of the package
+        tags:
+          type: string
+          description: tags associated with the package
+        properties:
+          type: object
+          description: additional properties
+        owner:
+          type: string
+          description: maintaining organization of the package
+        domains:
+          type: array
+          items:
+            type: string
+          description: domains the package belongs to
     PackageArtifact:
       type: object
       properties:
@@ -476,79 +552,3 @@ components:
         releaseNotes:
           type: string
           description: description of the package version
-    Package:
-      type: object
-      properties:
-        id:
-          type: string
-          description: package identifier
-        name:
-          type: string
-          description: package name
-        url:
-          type: string
-          description: package url
-        latestVersion:
-          type: string
-          description: latest version of the package
-        status:
-          type: string
-          description: package status
-        viewer:
-          type: string
-          description: hint for the viewer for package to be rendered in
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PackageVersion'
-          description: versions of the package
-        tags:
-          type: string
-          description: tags associated with the package
-        properties:
-          type: object
-          description: additional properties
-        owner:
-          type: string
-          description: maintaining organization of the package
-        domains:
-          type: array
-          items:
-            type: string
-          description: domains the package belongs to
-    Pagination:
-      type: object
-      properties:
-        currentPage:
-          type: integer
-          description: currently returned page
-        totalPages:
-          type: integer
-          description: total number of pages required to displayed the entire result set
-        pageSize:
-          type: integer
-          description: page size
-        totalRecords:
-          type: integer
-          description: total number of records in the result set
-        firstRecord:
-          type: integer
-          description: first record returned by the current page
-        lastRecord:
-          type: integer
-          description: last record returned by the current page
-        nextPage:
-          type: integer
-          description: next page in the result set or -1 if this is the last page
-        nextRecord:
-          type: integer
-          description: next record in the result set or -1 if there are no more records to be returned
-    Packages:
-      type: object
-      properties:
-        packages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Package'
-        pagination:
-          $ref: '#/components/schemas/Pagination'

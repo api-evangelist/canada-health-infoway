@@ -682,6 +682,41 @@ paths:
           description: Missing or invalid credentials
 components:
   schemas:
+    CodeSystemVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: codesystem id
+        name:
+          type: string
+          description: codesystem name
+        versionId:
+          type: string
+          description: codesystem version id
+        defaultLanguage:
+          type: string
+          enum:
+          - en
+          description: codesystem version language in ISO639-1 format
+        supportedLanguage:
+          type: string
+          description: codesystem version language in ISO639-1 format
+        propertyNames:
+          type: object
+          description: map of the property names to their abbreviated form
+        propertyCodes:
+          type: object
+          description: map of the abbreviated property names to their long form
+    Subsets:
+      type: object
+      properties:
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subset'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     CodeSystem:
       type: object
       properties:
@@ -710,41 +745,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CodeSystemVersion'
-    Subsets:
-      type: object
-      properties:
-        subsets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Subset'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    CodeSystemVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          description: codesystem id
-        name:
-          type: string
-          description: codesystem name
-        versionId:
-          type: string
-          description: codesystem version id
-        defaultLanguage:
-          type: string
-          enum:
-          - en
-          description: codesystem version language in ISO639-1 format
-        supportedLanguage:
-          type: string
-          description: codesystem version language in ISO639-1 format
-        propertyNames:
-          type: object
-          description: map of the property names to their abbreviated form
-        propertyCodes:
-          type: object
-          description: map of the abbreviated property names to their long form
     Relationship:
       type: object
       properties:
@@ -768,6 +768,28 @@ components:
         toAssociationType:
           type: string
           description: new value of concept's associationType
+    SubsetVersionReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subset id
+        name:
+          type: string
+          description: subset name
+        versionId:
+          type: string
+          description: subset version id
+        effectiveDate:
+          type: string
+          description: date when the subset was added, in yyyyMMdd format
+          default: '20170101'
+        active:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: 'subset status: active or inactive'
     Pagination:
       type: object
       properties:
@@ -795,6 +817,45 @@ components:
         nextRecord:
           type: integer
           description: next record in the result set or -1 if there are no more records to be returned
+    Delta:
+      type: object
+      properties:
+        fromVersionId:
+          type: string
+          description: previous version including data that has been modified
+        toVersionId:
+          type: string
+          description: version where the change has been introduced
+        type:
+          type: string
+          description: type of change
+          enum:
+          - SUBSET_ADDED
+          - SUBSET_INACTIVATED
+          - SUBSET_METADATA_UPDATED
+          - CONCEPT_ADDED
+          - CONCEPT_UPDATED
+          - CONCEPT_INACTIVATED
+          - CONCEPT_REMOVED
+          - RELATIONSHIP_ADDED
+          - RELATIONSHIP_REMOVED
+          - RELATIONSHIP_MOVED
+          - RELATIONSHIP_TYPE_CHANGED
+        change:
+          type: string
+          description: textual description of the change
+        effectiveDate:
+          type: string
+          description: date when the change has been introduced
+        subsetMetadata:
+          $ref: '#/components/schemas/SubsetVersion'
+        concept:
+          $ref: '#/components/schemas/Concept'
+        relationship:
+          $ref: '#/components/schemas/Relationship'
+        comments:
+          type: string
+          description: additional comments
     Subset:
       type: object
       properties:
@@ -820,6 +881,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubsetVersion'
+    Concepts:
+      type: object
+      properties:
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     SubsetVersion:
       type: object
       properties:
@@ -924,73 +994,3 @@ components:
         properties:
           type: object
           description: additional properties
-    Delta:
-      type: object
-      properties:
-        fromVersionId:
-          type: string
-          description: previous version including data that has been modified
-        toVersionId:
-          type: string
-          description: version where the change has been introduced
-        type:
-          type: string
-          description: type of change
-          enum:
-          - SUBSET_ADDED
-          - SUBSET_INACTIVATED
-          - SUBSET_METADATA_UPDATED
-          - CONCEPT_ADDED
-          - CONCEPT_UPDATED
-          - CONCEPT_INACTIVATED
-          - CONCEPT_REMOVED
-          - RELATIONSHIP_ADDED
-          - RELATIONSHIP_REMOVED
-          - RELATIONSHIP_MOVED
-          - RELATIONSHIP_TYPE_CHANGED
-        change:
-          type: string
-          description: textual description of the change
-        effectiveDate:
-          type: string
-          description: date when the change has been introduced
-        subsetMetadata:
-          $ref: '#/components/schemas/SubsetVersion'
-        concept:
-          $ref: '#/components/schemas/Concept'
-        relationship:
-          $ref: '#/components/schemas/Relationship'
-        comments:
-          type: string
-          description: additional comments
-    Concepts:
-      type: object
-      properties:
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    SubsetVersionReference:
-      type: object
-      properties:
-        id:
-          type: string
-          description: subset id
-        name:
-          type: string
-          description: subset name
-        versionId:
-          type: string
-          description: subset version id
-        effectiveDate:
-          type: string
-          description: date when the subset was added, in yyyyMMdd format
-          default: '20170101'
-        active:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: 'subset status: active or inactive'
