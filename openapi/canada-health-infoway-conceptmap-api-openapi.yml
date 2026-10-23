@@ -475,3 +475,9 @@ components:
 externalDocs:
   description: Find out more
   url: https://infocentral.infoway-inforoute.ca/3_Tools_and_solutions/Terminology_Tools/Terminology_Gateway
+x-provenance:
+  method: harvested
+  publisher: Canada Health Infoway
+  source: https://termapi.infoway-inforoute.ca/fhir/fhir-apidocs/v1/swagger.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
